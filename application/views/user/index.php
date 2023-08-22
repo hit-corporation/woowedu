@@ -35,12 +35,32 @@
 								</div>
 							</div>
 	
+							<!-- NAMA LENGKAP - JIKA USER LEVEL MURID -->
+							<?php if($user_data['user_level'] == 4) : ?>
 							<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 								<label for="full_name" class="form-label">Nama Lengkap</label>
 								<input type="text" class="form-control" id="full_name" name="full_name" value="<?=isset($user_data['student_name']) ? $user_data['student_name'] : ''?>" disabled>
 							</div>
+							<?php endif ?>
+
+							<!-- NAMA LENGKAP - JIKA USER LEVEL GURU -->
+							<?php if($user_data['user_level'] == 3) : ?>
+							<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+								<label for="full_name" class="form-label">Nama Lengkap</label>
+								<input type="text" class="form-control" id="full_name" name="full_name" value="<?=isset($user_data['teacher_name']) ? $user_data['teacher_name'] : ''?>" disabled>
+							</div>
+							<?php endif ?>
+
+							<!-- NAMA LENGKAP - JIKA USER LEVEL ORTU -->
+							<?php if($user_data['user_level'] == 5) : ?>
+							<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+								<label for="full_name" class="form-label">Nama Lengkap</label>
+								<input type="text" class="form-control" id="full_name" name="full_name" value="<?=isset($user_data['name']) ? $user_data['name'] : ''?>" disabled>
+							</div>
+							<?php endif ?>
+
 	
-							<!-- JIKA USER LEVEL MURID -->
+							<!-- NIS - JIKA USER LEVEL MURID -->
 							<?php if($user_data['user_level'] == 3) { ?>
 								<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 									<label for="nis" class="form-label">Nomor Induk Siswa</label>
@@ -54,7 +74,7 @@
 								<span>Ini adalah alamat email utama Anda dan akan digunakan untuk mengirim email pemberitahuan</span>
 							</div>
 	
-							<!-- JIKA USER LEVEL MURID -->
+							<!-- ALAMAT - JIKA USER LEVEL MURID -->
 							<?php if($user_data['user_level'] == 3) { ?> 
 								<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 									<label for="address" class="form-label">Alamat</label>
