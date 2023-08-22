@@ -12,8 +12,14 @@
 				<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 					<button class="nav-link active" id="v-pills-info-dasar-tab" data-bs-toggle="pill" data-bs-target="#v-pills-info-dasar" type="button" role="tab" aria-controls="v-pills-info-dasar" aria-selected="true">Informasi Dasar</button>
 					
-					<?php if ($user_data['user_level'] == 3) : ?>
+					<!-- JIKA USER LEVEL MURID -->
+					<?php if ($user_data['user_level'] == 4) : ?>
 					<button class="nav-link" id="v-pills-wali-akun-tertaut-tab" data-bs-toggle="pill" data-bs-target="#v-pills-wali-akun-tertaut" type="button" role="tab" aria-controls="v-pills-wali-akun-tertaut" aria-selected="false">Wali Akun Tertaut</button>
+					<?php endif ?>
+
+					<!-- JIKA USER LEVEL ORTU -->
+					<?php if ($user_data['user_level'] == 5) : ?>
+					<button class="nav-link" id="v-pills-tautan-akun-anak-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tautan-akun-anak" type="button" role="tab" aria-controls="v-pills-tautan-akun-anak" aria-selected="false">Tautan Akun Anak</button>
 					<?php endif ?>
 
 					<button class="nav-link" id="v-pills-change-password-tab" data-bs-toggle="pill" data-bs-target="#v-pills-change-password" type="button" role="tab" aria-controls="v-pills-change-password" aria-selected="false">Kata Sandi</button>
@@ -125,7 +131,34 @@
 							</div>
 						</form>
 						
+					</div>
 
+					<div class="tab-pane fade" id="v-pills-tautan-akun-anak" role="tabpanel" aria-labelledby="v-pills-tautan-akun-anak-tab" tabindex="0">
+						<div class="container p-0" style="text-align: right;">
+							<button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#tambahAnakModal">
+								Tambahkan Anak
+							</button>
+						</div>
+						<table class="table border">
+							<thead>
+								<tr>
+									<th>Anak</th>
+									<th>Email</th>
+									<th>Aksi</th>
+								</tr>
+							</thead>
+							<tbody id="table-body-student-list">
+								<?php if(isset($students)) : ?>
+									<?php foreach ($students as $key => $value) { ?>
+										<tr>
+											<td><input type="hidden" value="<?=$value['nis']?>"> <?=$value['student_name']?></td>
+											<td><?=$value['email']?></td>
+											<td><button class="btn btn-sm btn-clear border" onclick="deleteStudent(this)"><i class="bi bi-trash3-fill"></i></button></td>
+										</tr>
+									<?php } ?>
+								<?php endif ?>
+							</tbody>
+						</table>
 					</div>
 					
 					<div class="tab-pane fade" id="v-pills-change-password" role="tabpanel" aria-labelledby="v-pills-change-password-tab" tabindex="0">
@@ -158,6 +191,26 @@
 	</div>
 	
 </section>
+
+<!-- MODAL TAMBAH ANAK -->
+<div class="modal fade" id="tambahAnakModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Hubungkan dengan akun anak</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center">
+				<p>Masukkan Nomor Induk Siswa agar Bapak/Ibu dapat terhubung dengan akun anak.</p>
+				<input type="text" class="form-control" id="nis" name="nis">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal" name="simpan-siswa">Simpan</button>
+			</div>
+		</div>
+	</div>
+</div>
        
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -183,6 +236,7 @@
 		}
 	});
 
+	// BUTTON SIMPAN PROFILE
 	$('button[name="save-profile"]').on('click', function(e){
 		e.preventDefault();
 		let formData = $('#student-profile')[0];
@@ -207,6 +261,7 @@
 		});
 	});
 
+	// BUTTON UBAH PASSWORD
 	$('button[name="change_password"]').on('click', function(e){
 		e.preventDefault();
 		let formData = $('#form-change-password')[0];
@@ -238,6 +293,7 @@
 		});
 	});
 
+	// BUTTON SIMPAN DATA ORANG TUA
 	$('a[name="save-parent"]').on('click', function(){
 		let formData = $('#parent-profile')[0];
 		let form = new FormData(formData);
@@ -269,4 +325,80 @@
 		});
 	});
 
+	// BUTTON SIMPAN TAUTAN SISWA
+	$('button[name="simpan-siswa"]').on('click', function(){
+		let nis = $('#tambahAnakModal #nis').val();
+		let userId = $('#student-profile #user_id').val();
+		
+		$.ajax({
+			type: "POST",
+			url: BASE_URL+"user/store_tautan_anak",
+			data: {
+				nis: nis,
+				userId: userId
+			},
+			dataType: "JSON",
+			success: function (res) {
+				if(res.success == true){
+					Swal.fire({
+						icon: 'success',
+						title: '<h4 class="text-success"></h4>',
+						html: `<span class="text-success">${res.message}</span>`,
+						timer: 5000
+					});
+
+					$('#table-body-student-list').html('');
+					$.each(res.data, function (index, val) {
+						$('#table-body-student-list').append(`
+							<tr>
+								<td><input type="hidden" value="${val.nis}">${val.student_name}</td>
+								<td>${(val.email !== null) ? val.email : ''}</td>
+								<td><button class="btn btn-sm btn-clear border" onclick="deleteStudent(this)"><i class="bi bi-trash3-fill"></i></button></td>
+							</tr>
+						`);	
+					});
+				}else{
+					Swal.fire({
+						icon: 'error',
+						title: '<h4 class="text-warning"></h4>',
+						html: `<span class="text-warning">${JSON.stringify(res.message)}</span>`,
+						timer: 5000
+					});
+				}
+			}
+		});
+	});
+
+	// BUTTON DELETE STUDENT DI KLIK
+	const deleteStudent = function(e){
+		let nis = e.parentElement.parentElement.children[0].children[0].value;
+
+		$.ajax({
+			type: "POST",
+			url: BASE_URL+"user/delete_tautan_anak",
+			data: {
+				nis: nis
+			},
+			dataType: "JSON",
+			success: function (response) {
+				if(response.success == true){
+					Swal.fire({
+						icon: 'success',
+						title: '<h4 class="text-success"></h4>',
+						html: `<span class="text-success">${response.message}</span>`,
+						timer: 5000
+					});
+					
+					e.parentElement.parentElement.remove();
+				}else{
+					Swal.fire({
+						icon: 'error',
+						title: '<h4 class="text-warning"></h4>',
+						html: `<span class="text-warning">${JSON.stringify(response.message)}</span>`,
+						timer: 5000
+					});
+				}
+			}
+		});
+	};
 </script>

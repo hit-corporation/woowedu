@@ -12,8 +12,16 @@ class User extends CI_Controller {
 
 	public function index()
 	{
-
-		$data['user_data'] = $this->user_model->get_user(17); // hardcode sementara
+		$userId = 18; // hardcode sementara
+		$data['user_data'] = $this->user_model->get_user($userId); 
+		
+		// JIKA USER LEVEL ORTU
+		if($data['user_data']['user_level'] == 5){
+			$username = $this->db->where('userid', $userId)->get('users')->row_array()['username'];
+			$parentId = $this->db->where('username', $username)->get('parent')->row_array()['parent_id'];
+			$students = $this->db->where('parent_id', $parentId)->get('student')->result_array();
+			$data['students'] = $students;
+		}
 
 		$this->load->view('header');
 		$this->load->view('user/index', $data);
@@ -165,5 +173,37 @@ class User extends CI_Controller {
 		}else{
 			return false;
 		}
+	}
+
+	public function store_tautan_anak(){
+		$post = $this->input->post();
+
+		$userId = $post['userId'];
+		$userNameOrtu = $this->db->where('userid', $userId)->get('users')->row_array()['username'];
+		$parentId = $this->db->where('username', $userNameOrtu)->get('parent')->row_array()['parent_id'];
+
+		$update = $this->db->where('nis', $post['nis'])->update('student', ['parent_id' => $parentId]);
+		if($update){
+			$students = $this->db->where('parent_id', $parentId)->get('student')->result_array();
+			$res = [ 'success' => true, 'message' => 'Data berhasil di simpan', 'data' => $students ];
+		}else{
+			$res = [ 'success' => false, 'message' => 'Data gagal di simpan', 'data' => []];
+		}
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode($res);
+	}
+
+	public function delete_tautan_anak(){
+		$post = $this->input->post();
+
+		$update = $this->db->where('nis', $post['nis'])->update('student', ['parent_id' => null]);
+		if($update){
+			$res = ['success' => true, 'message' => 'Data berhasil dihapus'];
+		} else {
+			$res = ['success' => false, 'message' => 'Data gagal dihapus'];
+		}
+		
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode($res);
 	}
 }
