@@ -14,15 +14,21 @@
 		<div class="row">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">Tugas</button>
+					<button class="nav-link active" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">
+						<i class="bi bi-pen-fill me-2"></i>Tugas
+					</button>
 				</li>
 
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing-tab-pane" type="button" role="tab" aria-controls="marketing-tab-pane" aria-selected="false">Sesi</button>
+					<button class="nav-link" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing-tab-pane" type="button" role="tab" aria-controls="marketing-tab-pane" aria-selected="false">
+						<i class="bi bi-clock-fill me-2"></i>Sesi
+					</button>
 				</li>
 
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="papan-pengumuman-tab" data-bs-toggle="tab" data-bs-target="#papan-pengumuman-tab-pane" type="button" role="tab" aria-controls="papan-pengumuman-tab-pane" aria-selected="false">Papan Pengumuman</button>
+					<button class="nav-link" id="papan-pengumuman-tab" data-bs-toggle="tab" data-bs-target="#papan-pengumuman-tab-pane" type="button" role="tab" aria-controls="papan-pengumuman-tab-pane" aria-selected="false">
+						<i class="bi bi-clipboard-check-fill me-2"></i>Papan Pengumuman
+					</button>
 				</li>
 				
 			</ul>
@@ -36,7 +42,28 @@
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="design-tab-pane" role="tabpanel" aria-labelledby="design-tab" tabindex="0">
 						<div class="row">
-							<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+
+							<?php foreach ($tasks as $key => $value) : ?>
+
+								<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12  mb-4">
+									<div class="custom-block bg-white shadow-lg">
+										<a href="topics-detail.html">
+											<div class="d-flex">
+												<div>
+													<h5 class="mb-2"><?=$value['subject_name']?></h5>
+													<p class="fs-12">Guru: <?=$value['teacher_name']?></p>
+													<p><?=$value['note_materi']?></p>
+													<?=$value['note']?>
+													<p class="fs-14 mt-4 bg-warning d-inline rounded p-1"><?= date('d M Y H:i', strtotime($value['due_date'])) ?></p>
+												</div>
+											</div>
+										</a>
+									</div>
+								</div>
+
+							<?php endforeach ?>
+
+							<!-- <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
 								<div class="custom-block bg-white shadow-lg">
 									<a href="topics-detail.html">
 										<div class="d-flex">
@@ -79,7 +106,7 @@
 										</div>
 									</a>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 

@@ -12,7 +12,7 @@ class User extends CI_Controller {
 
 	public function index()
 	{
-		$userId = 18; // hardcode sementara
+		$userId = $this->session->userdata('userid');
 		$data['user_data'] = $this->user_model->get_user($userId); 
 		
 		// JIKA USER LEVEL ORTU
@@ -166,7 +166,7 @@ class User extends CI_Controller {
 	}
 
 	public function check_password($str): bool{
-		$member = $this->user_model->get_user(17); // hardcode sementara
+		$member = $this->user_model->get_user($this->session->userdata('userid'));
 
 		if(isset($member) &&  password_verify($str, $member['password'])){
 			return true;

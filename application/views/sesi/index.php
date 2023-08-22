@@ -27,7 +27,46 @@
 	</div>
 
 	<div class="row">
-		<div class="container border rounded p-3">
+
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<button class="nav-link active" id="sesi-guru-tab" data-bs-toggle="tab" data-bs-target="#sesi-guru-tab-pane" type="button" role="tab" aria-controls="sesi-guru-tab-pane" aria-selected="true">
+					<i class="bi bi-calendar2-week me-2"></i>Sesi Guru
+				</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+					<i class="bi bi-pen-fill me-2"></i>Tugas
+				</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+					<i class="bi bi-book-half me-2"></i>Materi Guru
+				</button>
+			</li>
+			
+		</ul>
+
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="sesi-guru-tab-pane" role="tabpanel" aria-labelledby="sesi-guru-tab" tabindex="0">
+				Ini adalah sesi guru
+			</div>
+			<div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+				Ini adalah Tugas
+			</div>
+			<div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+				Ini adalah Materi Guru
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+		<!-- <div class="container border rounded p-3">
 			<span class="sesi-class active" id="tab-guru">Sesi Guru</span>
 			<span class="sesi-class" id="tab-tugas">Tugas</span>
 			<span class="sesi-class" id="tab-materi">Materi Guru</span>
@@ -54,7 +93,7 @@
 					<p>tes 3</p>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 
 
