@@ -7,7 +7,8 @@
 	border-radius: 5px;
 	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-	right: 50px;
+	/* right: 50px; */
+	margin-left: -50px;
 }
 .profile-container > p {cursor: pointer;}
 .fs-12{ font-size: 12px; }
