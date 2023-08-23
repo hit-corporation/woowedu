@@ -8,6 +8,8 @@ class User extends CI_Controller {
 		parent::__construct();
 		$this->load->model('user_model');
 		$this->load->library('session');
+		
+		if (!isset($_SESSION['username'])) redirect('auth/login');
 	}
 
 	public function index()
