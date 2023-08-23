@@ -1,16 +1,31 @@
 .profile-container{
+	text-align: center;
 	display: none;
 	position: absolute;
 	border: 1px;
 	border-color: aquamarine;
-	background-color: white;
+	background-color: rgb(255, 255, 255);
 	border-radius: 5px;
 	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 	/* right: 50px; */
-	margin-left: -50px;
+	margin-left: -100px;
+	width: 200px;
 }
-.profile-container > p {cursor: pointer;}
+.profile-container > p {
+	cursor: pointer;
+}
+
+.profile-container > p:hover {
+	/* From https://css.glass */
+	background: rgba(255, 255, 255, 0.18);
+	border-radius: 16px;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(5.3px);
+	-webkit-backdrop-filter: blur(5.3px);
+	border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
 .fs-12{ font-size: 12px; }
 .fs-16{ font-size: 16px; }
 .fs-14{ font-size: 14px; }
