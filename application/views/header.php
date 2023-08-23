@@ -86,7 +86,7 @@ https://templatemo.com/tm-590-topic-listing
                             </li>
                             
                             <li class="nav-item">
-                                <a class="nav-link" href="section_6">Pengumuman</a>
+                                <a class="nav-link" href="news">Pengumuman</a>
                             </li>
 
                            
