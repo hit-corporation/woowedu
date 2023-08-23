@@ -55,7 +55,7 @@ https://templatemo.com/tm-590-topic-listing
 						<div class="profile-container p-3 sm">
 							<p><a href="<?=base_url()?>user"><i class="bi-person fa-user"></i> Profile</a></p>
 							<p><i class="bi-gear-fill"></i> Setting</p>
-							<p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p>
+							<a href="<?=base_url()?>auth/logout"><p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p></a>
 						</div>
                     </div>
     
@@ -97,7 +97,7 @@ https://templatemo.com/tm-590-topic-listing
 							<div class="profile-container p-3 lg">
 								<p><a href="<?=base_url()?>user"><i class="bi-person fa-user"></i> Profile</a></p>
 								<p><i class="bi-gear-fill"></i> Setting</p>
-								<p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p>
+								<a href="<?=base_url()?>auth/logout"><p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p></a>
 							</div>
                         </div>
                     </div>
