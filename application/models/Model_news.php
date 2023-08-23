@@ -30,6 +30,12 @@ class Model_news extends CI_Model {
 		if(!empty($title))
 			$this->db->where('LOWER(judul) LIKE \'%'.trim(strtolower($title)).'%\'', NULL, FALSE);
 
+		if(!empty($startDate))
+			$this->db->where('date(tanggal) >=', date('Y-m-d', strtotime($startDate)));
+		
+		if(!empty($endDate))
+			$this->db->where('date(tanggal) <=', date('Y-m-d', strtotime($endDate)));
+
 		$query = $this->db->get('news');
 		return $query->num_rows();
 	}
