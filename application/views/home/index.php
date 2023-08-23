@@ -13,17 +13,20 @@
 	<div class="container-fluid">
 		<div class="row">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
-				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">
-						<i class="bi bi-pen-fill me-2"></i>Tugas
-					</button>
-				</li>
 
-				<li class="nav-item" role="presentation">
+				<?php if($this->session->userdata('user_level') == 4 || $this->session->userdata('user_level') == 5) : ?>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link active" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">
+							<i class="bi bi-pen-fill me-2"></i>Tugas
+						</button>
+					</li>
+				<?php endif ?>
+
+				<!-- <li class="nav-item" role="presentation">
 					<button class="nav-link" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing-tab-pane" type="button" role="tab" aria-controls="marketing-tab-pane" aria-selected="false">
 						<i class="bi bi-clock-fill me-2"></i>Sesi
 					</button>
-				</li>
+				</li> -->
 
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="papan-pengumuman-tab" data-bs-toggle="tab" data-bs-target="#papan-pengumuman-tab-pane" type="button" role="tab" aria-controls="papan-pengumuman-tab-pane" aria-selected="false">
@@ -41,72 +44,27 @@
 			<div class="col-12">
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="design-tab-pane" role="tabpanel" aria-labelledby="design-tab" tabindex="0">
-						<div class="row">
+						<div class="row d-flex justify-content-center">
 
 							<?php foreach ($tasks as $key => $value) : ?>
 
 								<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12  mb-4">
 									<div class="custom-block bg-white shadow-lg">
-										<a href="topics-detail.html">
+										<!-- <a href="topics-detail.html"> -->
 											<div class="d-flex">
 												<div>
 													<h5 class="mb-2"><?=$value['subject_name']?></h5>
 													<p class="fs-12">Guru: <?=$value['teacher_name']?></p>
-													<p><?=$value['note_materi']?></p>
-													<?=$value['note']?>
-													<p class="fs-14 mt-4 bg-warning d-inline rounded p-1"><?= date('d M Y H:i', strtotime($value['due_date'])) ?></p>
+													<p><?=$value['note']?></p>
+													<p class="fs-14 mt-4 bg-warning d-inline rounded p-1 mt-3 d-inline-block"><?= date('d M Y H:i', strtotime($value['due_date'])) ?></p>
 												</div>
 											</div>
-										</a>
+										<!-- </a> -->
 									</div>
 								</div>
 
 							<?php endforeach ?>
 
-							<!-- <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
-								<div class="custom-block bg-white shadow-lg">
-									<a href="topics-detail.html">
-										<div class="d-flex">
-											<div>
-												<h5 class="mb-2">Matematika</h5>
-												<p class="fs-12">Guru: Zaskia, M.Pd</p>
-												<p class="mb-3 fs-16">Menghitung Bagun Ruang</p>
-												<p class="fs-14 mt-4 bg-warning d-inline rounded p-1"><?=date('d M Y H:i', time()+400000)?></p>
-											</div>
-										</div>
-									</a>
-								</div>
-							</div>
-
-							<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
-								<div class="custom-block bg-white shadow-lg">
-									<a href="topics-detail.html">
-										<div class="d-flex">
-											<div>
-												<h5 class="mb-2">Bahasa Indonesia</h5>
-												<p class="fs-12">Guru: Muklis, S.pd</p>
-												<p class="mb-3 fs-16">Latihan wawancara dengan pedagang</p>
-												<p class="fs-14 mt-4 bg-warning d-inline rounded p-1"><?=date('d M Y H:i', time()+500000)?></p>
-											</div>
-										</div>
-									</a>
-								</div>
-							</div>
-
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="custom-block bg-white shadow-lg">
-									<a href="topics-detail.html">
-										<div class="d-flex">
-											<div>
-												<h5 class="mb-2">Bahasa Inggris</h5>
-												<p class="fs-12">Guru: Jamal, S.pd</p>
-												<p class="mb-3 fs-16">Membuat cerita liburan akhir tahun</p>
-												<p class="fs-14 mt-4 bg-warning d-inline rounded p-1"><?=date('d M Y H:i', time()+600000)?></p>
-											</div>
-										</div>
-									</a>
-								</div>
-							</div> -->
 						</div>
 					</div>
 
@@ -139,11 +97,7 @@
 													<p>Guru: Andi Malarangeng</p>
 													<p>Pernafasan pada manusia</p>
 												</div>
-
-		
 											</div>
-
-											
 										</a>
 									</div>
 								</div>
@@ -159,11 +113,7 @@
 													<p>Guru: Albertus</p>
 													<p>Grammar perfect simple present tense</p>
 												</div>
-
-				
 											</div>
-
-											
 										</a>
 									</div>
 								</div>
@@ -171,65 +121,29 @@
 						</div>
 
 					<div class="tab-pane fade" id="papan-pengumuman-tab-pane" role="tabpanel" aria-labelledby="papan-pengumuman-tab" tabindex="0">   <div class="row">
-							<div class="col-lg-6 col-md-6 col-12 mb-4 mb-lg-0">
-								<div class="custom-block bg-white shadow-lg">
-									<a href="topics-detail.html">
-										<div class="d-flex">
-											<div>
-												<h5 class="mb-2">Investment</h5>
-
-												<p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
+							
+							<div class="row">
+								<?php foreach($news as $key => $val) : ?>
+									<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-3">
+										<div class="custom-block custom-block-overlay">
+											<div class="d-flex flex-column h-100">
+												
+												<div class="custom-block-overlay-text d-flex">
+													<div>
+														<h5 class="text-white mb-2"><?=$val['judul']?></h5>
+														<p class="text-white"><?=$val['isi']?></p>
+														<?php if(!empty($val['link'])) : ?>
+															<a href="<?=$val['link']?>" class="btn custom-btn mt-2 mt-lg-3">Detail</a>
+														<?php endif ?>
+													</div>
+												</div>
+												<div class="section-overlay"></div>
 											</div>
-
-											<span class="badge bg-finance rounded-pill ms-auto">30</span>
 										</div>
-
-										
-									</a>
-								</div>
-							</div>
-
-							<div class="col-lg-6 col-md-6 col-12">
-								<div class="custom-block custom-block-overlay">
-									<div class="d-flex flex-column h-100">
-										<!-- <img src="<?=base_url('assets/')?>images/businesswoman-using-tablet-analysis-graph-company-finance-strategy-statistics-success-concept-planning-future-office-room.jpg" class="custom-block-image img-fluid" alt=""> -->
-
-										<div class="custom-block-overlay-text d-flex">
-											<div>
-												<h5 class="text-white mb-2">Finance</h5>
-
-												<p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint animi necessitatibus aperiam repudiandae nam omnis</p>
-
-												<a href="topics-detail.html" class="btn custom-btn mt-2 mt-lg-3">Learn More</a>
-											</div>
-
-											<span class="badge bg-finance rounded-pill ms-auto">25</span>
-										</div>
-
-										<div class="social-share d-flex">
-											<p class="text-white me-4">Share:</p>
-
-											<ul class="social-icon">
-												<li class="social-icon-item">
-													<a href="#" class="social-icon-link bi-twitter"></a>
-												</li>
-
-												<li class="social-icon-item">
-													<a href="#" class="social-icon-link bi-facebook"></a>
-												</li>
-
-												<li class="social-icon-item">
-													<a href="#" class="social-icon-link bi-pinterest"></a>
-												</li>
-											</ul>
-
-											<a href="#" class="custom-icon bi-bookmark ms-auto"></a>
-										</div>
-
-										<div class="section-overlay"></div>
 									</div>
-								</div>
+								<?php endforeach ?>
 							</div>
+
 						</div>
 					</div>
 
