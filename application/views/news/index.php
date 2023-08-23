@@ -97,14 +97,16 @@
 					if(desc.length > 100) desc = desc.substring(0, 300) + ' ...'
 
 					$('#news-content').append(`
-						<div class="container border rounded-4 bg-clear p-3 mb-3">
-							<div class="d-flex justify-content-between">
-								<h6 class="mb-2">${value.judul}</h6>
-								<p style="font-size: 14px;">${value.tanggal}</p>
-							</div>
+						<a href="news/detail/${value.id}">
+							<div class="container border rounded-4 bg-clear p-3 mb-3 news-item">
+								<div class="d-flex justify-content-between">
+									<h6 class="mb-2">${value.judul}</h6>
+									<p style="font-size: 14px;">${value.tanggal}</p>
+								</div>
 
-							<p style="font-size: 14px;">${desc}</p>
-						</div>
+								<p style="font-size: 14px;">${desc}</p>
+							</div>
+						</a>
 					`);
 				});
 

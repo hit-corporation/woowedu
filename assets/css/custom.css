@@ -42,3 +42,7 @@
 .sesi-class{ font-weight: bold; padding: 10px;cursor: pointer; } 
 .sesi-class.active{ border-bottom: 3px solid green; color: green; }
 
+.news-item{ cursor: pointer; }
+.news-item:hover{
+	transform: scale(1.01);
+}

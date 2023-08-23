@@ -36,4 +36,12 @@ class News extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function detail($id = ''){
+		if($id == '') redirect('news');
+
+		$this->load->view('header');
+		$this->load->view('news/detail');
+		$this->load->view('footer');
+	}
+
 }
