@@ -64,6 +64,7 @@
 	
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 	var currentPage = 1;
 	load_data(1,10);
@@ -103,7 +104,7 @@
 								<p style="font-size: 14px;">${value.tanggal}</p>
 							</div>
 							<p style="font-size: 14px;">${desc}</p>
-							<div class="container d-flex justify-content-end">${buttonGroup(response.user_level)}</div>
+							<div class="container d-flex justify-content-end">${buttonGroup(response.user_level, value.id)}</div>
 						</div>
 					`);
 				});
@@ -132,13 +133,49 @@
 	}
 
 	// BUTTON GROUP EDIT & DELETE
-	function buttonGroup(user_level){
-		let buttonGroup = `<button class="btn btn-clear border d-inline me-1 rounded-5"><i class="bi bi-pencil-square"></i></button>
-							<button class="btn btn-clear border d-inline rounded-5"><i class="bi bi-trash3-fill"></i></button>`;
+	function buttonGroup(user_level, id){
+		let buttonGroup = `<a href="${BASE_URL+'news/create/'+id}" class="btn btn-clear border d-inline me-1 rounded-5"><i class="bi bi-pencil-square"></i></a>
+							<a class="btn btn-clear border d-inline rounded-5" onclick="deleteNews(${id})"><i class="bi bi-trash3-fill"></i></a>`;
 		if(user_level == 3 || user_level == 6){
 			return buttonGroup;
 		}
 
 		return '';
+	}
+
+	function deleteNews(id){
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+
+				$.ajax({
+					type: "POST",
+					url: BASE_URL+"news/delete",
+					data: {
+						id: id
+					},
+					dataType: "JSON",
+					success: function (response) {
+						if(response.success == true){
+							Swal.fire(
+								'Deleted!',
+								response.message,
+								'success'
+							);
+							window.location.href = BASE_URL+'news';
+						}
+					}
+				});
+
+				
+			}
+		})
 	}
 </script>
