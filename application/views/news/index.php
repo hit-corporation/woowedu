@@ -97,16 +97,14 @@
 					if(desc.length > 100) desc = desc.substring(0, 300) + ' ...'
 
 					$('#news-content').append(`
-						<a href="news/detail/${value.id}">
-							<div class="container border rounded-4 bg-clear p-3 mb-3 news-item">
-								<div class="d-flex justify-content-between">
-									<h6 class="mb-2">${value.judul}</h6>
-									<p style="font-size: 14px;">${value.tanggal}</p>
-								</div>
-
-								<p style="font-size: 14px;">${desc}</p>
+						<div class="container border rounded-4 bg-clear p-3 mb-3 news-item">
+							<div class="d-flex justify-content-between">
+								<a href="news/detail/${value.id}"><h6 class="mb-2">${value.judul}</h6></a>
+								<p style="font-size: 14px;">${value.tanggal}</p>
 							</div>
-						</a>
+							<p style="font-size: 14px;">${desc}</p>
+							<div class="container d-flex justify-content-end">${buttonGroup(response.user_level)}</div>
+						</div>
 					`);
 				});
 
@@ -131,5 +129,16 @@
 	function page(pageNumber, e){
 		currentPage = pageNumber;
 		load_data(pageNumber);
+	}
+
+	// BUTTON GROUP EDIT & DELETE
+	function buttonGroup(user_level){
+		let buttonGroup = `<button class="btn btn-clear border d-inline me-1 rounded-5"><i class="bi bi-pencil-square"></i></button>
+							<button class="btn btn-clear border d-inline rounded-5"><i class="bi bi-trash3-fill"></i></button>`;
+		if(user_level == 3 || user_level == 6){
+			return buttonGroup;
+		}
+
+		return '';
 	}
 </script>
