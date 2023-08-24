@@ -61,14 +61,10 @@ class User extends CI_Controller {
 			// upload fails
 			// $resp = ['success' => false, 'message' => $this->upload->display_errors()];
 			// $this->session->set_flashdata('error', $resp);
-			
 			// echo json_encode($resp); die;
-
 		}else{
-
 			// upload success
 			$upload_data = $this->upload->data();
-
 			// resize image
 			$config['image_library'] = 'gd2';
 			$config['source_image'] = './assets/images/users/'.$upload_data['file_name'];
@@ -78,21 +74,14 @@ class User extends CI_Controller {
 			$config['height']       = 300;
 
 			$this->load->library('image_lib', $config);
-
 			$this->image_lib->resize();
-
-			
 			// remove old image
 			$old_image = $this->user_model->get_user($post['user_id'])['photo'];
 			if($old_image != '' || $old_image != null){
 				unlink('./assets/images/users/'.$old_image);
 			}
-			
 			// update user data
-			$data = [
-				'photo' => $upload_data['file_name']
-			];
-
+			$data = [ 'photo' => $upload_data['file_name'] ];
 		}
 		
 		if(isset($data['photo'])){
@@ -100,19 +89,21 @@ class User extends CI_Controller {
 			$update = $this->user_model->update($data, $post['user_id']);
 		}
 
-		// update student data
-		$username = $this->db->where('userid', $post['user_id'])->get('users')->row_array()['username'];
-		$update = $this->db->where('nis', $username)->update('student', ['email'=>$post['email'], 'phone'=>$post['phone'], 'edit_at'=>date('Y-m-d H:i:s')]);
-
-		if($update){
-			// set success message
-			$resp = ['success' => true, 'message' => 'Data berhasil diubah.'];
-			$this->session->set_flashdata('success', $resp);
-			
-			echo json_encode($resp);
+		// UPDATE DATA BERDASARKAN USER LEVEL
+		$user = $this->db->where('userid', $post['user_id'])->get('users')->row_array();
+		if($user['user_level'] == 4){
+			$update = $this->db->where('nis', $user['username'])->update('student', ['email'=>$post['email'], 'phone'=>$post['phone'], 'edit_at'=>date('Y-m-d H:i:s')]);
+		}elseif($user['user_level'] == 3 || $user['user_level'] == 6){
+			$update = $this->db->where('nik', $user['username'])->update('teacher', ['email'=>$post['email'], 'phone'=>$post['phone'], 'edit_at'=>date('Y-m-d H:i:s')]);
+		}elseif($user['user_level'] == 5){
+			$update = $this->db->where('username', $user['username'])->update('parent', ['email'=>$post['email'], 'phone'=>$post['phone'], 'edit_at'=>date('Y-m-d H:i:s')]);
 		}
-			
 
+		// update student data
+		$res = ($update) ?  ['success' => true, 'message' => 'Data berhasil diubah.'] :  ['success' => false, 'message' => 'Data gagal diubah.'];
+		// set success message
+		$this->session->set_flashdata('success', $res);
+		echo json_encode($res);
 	}
 
 	public function store_parent(){

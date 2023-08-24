@@ -67,7 +67,7 @@
 
 
 							<!-- NIS - JIKA USER LEVEL MURID -->
-							<?php if($user_data['user_level'] == 3) { ?>
+							<?php if($user_data['user_level'] == 4) { ?>
 								<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 									<label for="nis" class="form-label">Nomor Induk Siswa</label>
 									<input type="text" class="form-control" id="nis" name="nis" value="<?=isset($user_data['nis']) ? $user_data['nis'] : ''?>" disabled>
