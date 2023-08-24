@@ -19,11 +19,7 @@
 				</div>
 
 				<!-- Create the editor container -->
-				<div id="editor" class="form-control mb-3">
-					
-				</div>
-
-
+				<div id="editor" class="form-control mb-3"></div>
 	
 				<div class="mb-3">
 					<a class="btn btn-success" type="submit" name="save">Simpan</a>
