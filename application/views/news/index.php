@@ -43,9 +43,9 @@
 
 	<div class="row mt-4">
 		<div class="container d-flex justify-content-end p-0">
-			<button class="btn btn-success">
+			<a href="<?=base_url()?>news/create" class="btn btn-success">
 				+ Buat Pengumuman
-			</button>
+			</a>
 		</div>
 	</div>
 
