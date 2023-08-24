@@ -10,7 +10,7 @@ class User_model extends CI_Model {
 			$this->db->join('student s', 's.nis = u.username');
 			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id');
 			$query = $this->db->get('users u');
-		}elseif($userLevel == 3){
+		}elseif($userLevel == 3 || $userLevel == 6){
 			$this->db->where('u.userid', $user_id);
 			$this->db->join('teacher t', 't.nik = u.username');
 			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id');
