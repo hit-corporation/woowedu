@@ -15,14 +15,25 @@ class User extends CI_Controller {
 	public function index()
 	{
 		$userId = $this->session->userdata('userid');
-		$data['user_data'] = $this->user_model->get_user($userId); 
+		$data['user_data'] = $this->user_model->get_user($userId);
+		$username = $data['user_data']['username'];
 		
-		// JIKA USER LEVEL ORTU
+		// JIKA USER LEVEL ORTU LAKUKAN QUERY UNTUK MENDAPATKAN DATA STUDENT YG TERTAUT
 		if($data['user_data']['user_level'] == 5){
-			$username = $this->db->where('userid', $userId)->get('users')->row_array()['username'];
 			$parentId = $this->db->where('username', $username)->get('parent')->row_array()['parent_id'];
 			$students = $this->db->where('parent_id', $parentId)->get('student')->result_array();
 			$data['students'] = $students;
+		}
+
+		// JIKA USER LEVEL MURID LAKUKAN QUERY UNTUK MENDAPATKAN DATA ORTU
+		if($data['user_data']['user_level'] == 4){
+			$parentId = $this->db->where('nis', $username)->get('student')->row_array()['parent_id'];
+			if($parentId){
+				$data['parent'] = $this->db->where('parent_id', $parentId)->get('parent')->row_array();
+			}else{
+				$data['parent'] = [];
+			}
+
 		}
 
 		$this->load->view('header');
@@ -108,23 +119,17 @@ class User extends CI_Controller {
 
 	public function store_parent(){
 		$post = $this->input->post();
-
 		$data = [
-			'parent_email' 	=> $post['parent_email'],
-			'parent_phone' 	=> $post['parent_phone'],
+			'email' 	=> $post['parent_email'],
+			'phone' 	=> $post['parent_phone'],
 			'edit_at'		=> date('Y-m-d H:i:s', time())
 		];
+		$username 	= $this->db->where('userid', $post['user_id'])->get('users')->row_array()['username'];
+		$parentId 	= $this->db->where('nis', $username)->get('student', $data)->row_array()['parent_id'];
+		$update		= $this->db->where('parent_id', $parentId)->update('parent', $data);
 
-		$username 	= $this->db->where('userid', $post['user_id'])->get('users')->row_array()['username']; // user id sementara di hardcode
-		$update 	= $this->db->where('nis', $username)->update('student', $data);
-
-		if($update){
-			$res = ['success' => true, 'message' => 'Data berhasil di simpan'];
-			echo json_encode($res);
-		}else{
-			$res = ['success' => false, 'message' => 'Data gagal di simpan'];
-			echo json_encode($res);
-		}
+		$res = ($update) ? ['success' => true, 'message' => 'Data berhasil di simpan'] : ['success' => false, 'message' => 'Data gagal di simpan'];
+		echo json_encode($res);
 	}
 
 	public function change_password(){

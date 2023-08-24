@@ -113,17 +113,17 @@
 
 							<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 								<label for="parent_name" class="form-label">Nama Orang Tua</label>
-								<input type="text" class="form-control" id="parent_name" name="parent_name" value="<?=isset($user_data['parent_name']) ? $user_data['parent_name'] : ''?>" disabled>
+								<input type="text" class="form-control" id="parent_name" name="parent_name" value="<?=isset($parent['name']) ? $parent['name'] : ''?>" disabled>
 							</div>
 
 							<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 								<label for="parent_email" class="form-label">Email</label>
-								<input type="email" class="form-control" id="parent_email" name="parent_email" placeholder="Masukan email orang tua" value="<?=isset($user_data['parent_email']) ? $user_data['parent_email'] : ''?>">
+								<input type="email" class="form-control" id="parent_email" name="parent_email" placeholder="Masukan email orang tua" value="<?=isset($parent['email']) ? $parent['email'] : ''?>">
 							</div>
 
 							<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 								<label for="parent_phone" class="form-label">Nomor Telepon Orang Tua</label>
-								<input type="text" class="form-control" id="parent_phone" name="parent_phone" placeholder="Nomor Telepon Orang Tua" value="<?=isset($user_data['parent_phone']) ? $user_data['parent_phone'] : ''?>">
+								<input type="text" class="form-control" id="parent_phone" name="parent_phone" placeholder="Nomor Telepon Orang Tua" value="<?=isset($parent['phone']) ? $parent['phone'] : ''?>">
 							</div>
 
 							<div class="mb-3">
