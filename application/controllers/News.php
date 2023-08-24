@@ -18,23 +18,29 @@ class News extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	public function create(){
+	public function create($id = ''){
 		$post = $this->input->post();
+		$data = [];
 
-		if( isset($post['id']) && $post['id'] == '' ){
+		if( isset($post['id'])){
 			$data_save = ['judul'=>$post['title'], 'isi'=>$post['isi'], 'tanggal'=>date('Y-m-d H:i:s', time())];
-			$save = $this->db->insert('news', $data_save);
-			if($save){
-				$res = ['success'=>true, 'message'=>'Data berhasil disimpan!'];
+
+			if($post['id'] == ''){
+				$save = $this->db->insert('news', $data_save);
+				$res = ($save) ?  ['success'=>true, 'message'=>'Data berhasil disimpan!'] : ['success'=>false, 'message'=>'Data gagal disimpan!'];
 			}else{
-				$res = ['success'=>false, 'message'=>'Data gagal disimpan!'];
+				$save = $this->db->where('id', $post['id'])->update('news', $data_save);
+				$res =  ($save) ? ['success'=>true, 'message'=>'Data berhasil diupdate!'] :  ['success'=>false, 'message'=>'Data gagal diupdate!'];
 			}
+
 			header('Content-Type: application/json');
 			echo json_encode($res); die;
 		}
 
+		if($id != '') $data = $this->db->where('id', $id)->get('news')->row_array();
+
 		$this->load->view('header');
-		$this->load->view('news/create');
+		$this->load->view('news/create', ['data'=>$data]);
 		$this->load->view('footer');
 	}
 
@@ -67,6 +73,15 @@ class News extends CI_Controller {
 		$this->load->view('header');
 		$this->load->view('news/detail', $data);
 		$this->load->view('footer');
+	}
+
+	public function delete(){
+		$post = $this->input->post();
+		$delete = $this->db->where('id', $post['id'])->delete('news');
+
+		$res = ($delete) ?  ['success'=>true, 'message'=>'Data berhasil dihapus!'] : ['success'=>false, 'message'=>'Data gagal dihapus!'];
+		header('Content-Type: application/json');
+		echo json_encode($res);
 	}
 
 }
