@@ -15,11 +15,11 @@
 	
 				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 					<label for="title" class="form-label">Judul</label>
-					<input type="text" class="form-control" id="title" name="title" value="<?=isset($user_data['title']) ? $user_data['title'] : ''?>">
+					<input type="text" class="form-control" id="title" name="title" value="<?=isset($data['judul']) ? $data['judul'] : ''?>">
 				</div>
 
 				<!-- Create the editor container -->
-				<div id="editor" class="form-control mb-3"></div>
+				<div id="editor" class="form-control mb-3"><?=isset($data['isi']) ? $data['isi'] : '' ?></div>
 	
 				<div class="mb-3">
 					<a class="btn btn-success" type="submit" name="save">Simpan</a>
