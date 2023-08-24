@@ -164,11 +164,7 @@
 					dataType: "JSON",
 					success: function (response) {
 						if(response.success == true){
-							Swal.fire(
-								'Deleted!',
-								response.message,
-								'success'
-							);
+							Swal.fire('Deleted!', response.message, 'success');
 							window.location.href = BASE_URL+'news';
 						}
 					}
