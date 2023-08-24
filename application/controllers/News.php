@@ -19,6 +19,20 @@ class News extends CI_Controller {
 	}
 
 	public function create(){
+		$post = $this->input->post();
+
+		if( isset($post['id']) && $post['id'] == '' ){
+			$data_save = ['judul'=>$post['title'], 'isi'=>$post['isi'], 'tanggal'=>date('Y-m-d H:i:s', time())];
+			$save = $this->db->insert('news', $data_save);
+			if($save){
+				$res = ['success'=>true, 'message'=>'Data berhasil disimpan!'];
+			}else{
+				$res = ['success'=>false, 'message'=>'Data gagal disimpan!'];
+			}
+			header('Content-Type: application/json');
+			echo json_encode($res); die;
+		}
+
 		$this->load->view('header');
 		$this->load->view('news/create');
 		$this->load->view('footer');
