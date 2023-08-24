@@ -131,9 +131,9 @@
 												<div class="custom-block-overlay-text d-flex">
 													<div>
 														<h5 class="text-white mb-2"><?=$val['judul']?></h5>
-														<p class="text-white"><?=$val['isi']?></p>
+														<p class="text-white"><?=substr($val['isi'], 0, 100) . ' ...'?></p>
 														<?php if(!empty($val['link'])) : ?>
-															<a href="<?=$val['link']?>" class="btn custom-btn mt-2 mt-lg-3">Detail</a>
+															<a href="<?=base_url('news/detail/').$val['id']?>" class="btn custom-btn mt-2 mt-lg-3">Detail</a>
 														<?php endif ?>
 													</div>
 												</div>
