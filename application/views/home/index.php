@@ -10,11 +10,13 @@
 		</div>
 	</div>
 
+	<?php $user_level = $this->session->userdata('user_level'); ?>
+
 	<div class="container-fluid">
 		<div class="row">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 
-				<?php if($this->session->userdata('user_level') == 4 || $this->session->userdata('user_level') == 5) : ?>
+				<?php if($user_level == 4 || $user_level == 5) : ?>
 					<li class="nav-item" role="presentation">
 						<button class="nav-link active" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">
 							<i class="bi bi-pen-fill me-2"></i>Tugas
@@ -29,7 +31,7 @@
 				</li> -->
 
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="papan-pengumuman-tab" data-bs-toggle="tab" data-bs-target="#papan-pengumuman-tab-pane" type="button" role="tab" aria-controls="papan-pengumuman-tab-pane" aria-selected="false">
+					<button class="nav-link <?=($user_level == 3) ? 'active' : '' ?>" id="papan-pengumuman-tab" data-bs-toggle="tab" data-bs-target="#papan-pengumuman-tab-pane" type="button" role="tab" aria-controls="papan-pengumuman-tab-pane" aria-selected="true">
 						<i class="bi bi-clipboard-check-fill me-2"></i>Papan Pengumuman
 					</button>
 				</li>
@@ -120,36 +122,38 @@
 							</div>
 						</div>
 
-					<div class="tab-pane fade" id="papan-pengumuman-tab-pane" role="tabpanel" aria-labelledby="papan-pengumuman-tab" tabindex="0">   <div class="row">
+					<div class="tab-pane fade <?=($user_level == 3) ? 'show active' : '' ?>" id="papan-pengumuman-tab-pane" role="tabpanel" aria-labelledby="papan-pengumuman-tab" tabindex="0">   
 							
-							<div class="row">
-								<?php foreach($news as $key => $val) : ?>
-									<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-3">
-										<div class="custom-block custom-block-overlay">
-											<div class="d-flex flex-column h-100">
-												
+						<div class="row">
+							<?php foreach($news as $key => $val) : ?>
+								<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-3">
+									<div class="custom-block custom-block-overlay">
+										<div class="d-flex flex-column h-100">
+											<a href="<?=base_url('news/detail/').$val['id']?>">
 												<div class="custom-block-overlay-text d-flex">
 													<div>
 														<h5 class="text-white mb-2"><?=$val['judul']?></h5>
-														<p class="text-white"><?=substr($val['isi'], 0, 100) . ' ...'?></p>
-														<?php if(!empty($val['link'])) : ?>
-															<a href="<?=base_url('news/detail/').$val['id']?>" class="btn custom-btn mt-2 mt-lg-3">Detail</a>
-														<?php endif ?>
+														<span><?=date('d M Y H:i', strtotime($val['tanggal']))?></span>
+														<p class="text-white"><?=substr(strip_tags($val['isi']), 0, 100) . ' ...'?></p>
+														
+														
 													</div>
 												</div>
-												<div class="section-overlay"></div>
-											</div>
+											</a>
+											<div class="section-overlay"></div>
 										</div>
 									</div>
-								<?php endforeach ?>
-							</div>
-
+								</div>
+							<?php endforeach ?>
 						</div>
+
+						
 					</div>
 
 					
 				</div>
 
+			</div>
 		</div>
 	</div>
 </section>
