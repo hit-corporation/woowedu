@@ -18,6 +18,12 @@ class News extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function create(){
+		$this->load->view('header');
+		$this->load->view('news/create');
+		$this->load->view('footer');
+	}
+
 	public function history(){
 		$page 		= isset($_GET['page']) ? (int)$_GET['page'] : 1;
 		$limit 		= isset($_GET['limit']) ? (int)$_GET['limit'] : 3;
