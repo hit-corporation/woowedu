@@ -66,15 +66,15 @@ https://templatemo.com/tm-590-topic-listing
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-lg-5 me-lg-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/">Home</a>
+                                <a class="nav-link" href="<?=base_url()?>">Home</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="sesi">Sesi</a>
+                                <a class="nav-link" href="<?=base_url()?>sesi">Sesi</a>
                             </li>
     
                             <li class="nav-item">
-                                <a class="nav-link" href="mapel">Mapel</a>
+                                <a class="nav-link" href="<?=base_url()?>mapel">Mapel</a>
                             </li>
 
                             <li class="nav-item">
@@ -86,7 +86,7 @@ https://templatemo.com/tm-590-topic-listing
                             </li>
                             
                             <li class="nav-item">
-                                <a class="nav-link" href="news">Pengumuman</a>
+                                <a class="nav-link" href="<?=base_url()?>news">Pengumuman</a>
                             </li>
 
                            
