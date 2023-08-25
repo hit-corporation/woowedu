@@ -77,7 +77,7 @@
 							<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 								<label for="email" class="form-label">Email</label>
 								<input type="email" class="form-control" id="email" name="email" value="<?=isset($user_data['email']) ? $user_data['email'] : ''?>">
-								<span>Ini adalah alamat email utama Anda dan akan digunakan untuk mengirim email pemberitahuan</span>
+								<span style="font-size: 12px;">Ini adalah alamat email utama Anda dan akan digunakan untuk mengirim email pemberitahuan</span>
 							</div>
 
 							<!-- ALAMAT - JIKA USER LEVEL MURID -->
