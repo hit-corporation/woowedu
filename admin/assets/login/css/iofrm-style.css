@@ -249,6 +249,9 @@ html, body {
     background-size: cover;
     background-position: center;
     z-index: -1;
+	background-color: #0080ff;
+	display: flex;
+	align-items: center;
 }
 
 @media (min-height: 700px) {

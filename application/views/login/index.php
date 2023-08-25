@@ -49,7 +49,7 @@
  
 		<div class="row">
 			<div class="img-holder">
-				<div class="bg"  style="opacity: 0.8;background-image: none;"><img src="<?= base_url('admin/assets/images/bg-login.jpg') ?>" alt="" class="mt-0"></div>
+				<div class="bg"  style="opacity: 0.8;background-image: none;"><img src="<?= base_url('admin/assets/images/woowedu-logo.png') ?>" alt="" class="mt-0" width="500"></div>
 				<div class="info-holder">
 					
 				</div>
