@@ -97,7 +97,7 @@ https://templatemo.com/tm-590-topic-listing
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="section_4">Ebook</a>
+                                <a class="nav-link" href="<?=base_url()?>ebook">Ebook</a>
                             </li>
     
                             <li class="nav-item">
