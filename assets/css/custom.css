@@ -12,20 +12,16 @@
 	margin-left: -100px;
 	width: 200px;
 }
-.profile-container > p {
-	cursor: pointer;
-}
-
-.profile-container > p:hover {
+.profile-container > p, .profile-container a p {  cursor: pointer;  margin-top: 5px;  margin-bottom: 5px; font-size: 16px; } 
+.profile-container > p:hover, .profile-container a p:hover {
 	/* From https://css.glass */
 	background: rgba(255, 255, 255, 0.18);
 	border-radius: 16px;
-	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 	backdrop-filter: blur(5.3px);
-	-webkit-backdrop-filter: blur(5.3px);
-	border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+} 
 .fs-12{ font-size: 12px; }
 .fs-16{ font-size: 16px; }
 .fs-14{ font-size: 14px; }
@@ -40,8 +36,8 @@
     font-weight: 600;
 }
 .sesi-class{ font-weight: bold; padding: 10px;cursor: pointer; } 
-.sesi-class.active{ border-bottom: 3px solid green; color: green; }
-
+.sesi-class.active{ border-bottom: 3px solid green; color: green; } 
 .news-item h6:hover{ color: rgb(0, 142, 0) !important; cursor: pointer; }
 .news-item:hover{ transform: scale(1.01); }
 .btn-clear:hover{ background-color: rgba(0, 0, 0, 0.1); }
+.profile-image-menu img{ border-radius: 50%; margin-top: 20px; margin-bottom: 20px; }

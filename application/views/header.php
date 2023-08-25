@@ -41,6 +41,20 @@ https://templatemo.com/tm-590-topic-listing
     
     <body id="top">
 
+		<?php 
+			$userid 	= $this->session->userdata('userid');
+			$user 		= $this->db->where('userid', $userid)->get('users')->row_array();
+			$imageLink 	= base_url('assets/images/users/').$user['photo'];
+
+			if($user['user_level'] == 3 || $user['user_level'] == 6){
+				$name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'];
+			}elseif($user['user_level'] == 4){
+				$name = $this->db->where('nis', $user['username'])->get('student')->row_array()['student_name'];
+			}else{
+				$name = $this->db->where('username', $user['username'])->get('parent')->row_array()['name'];
+			}
+		?>
+
         <main>
 
             <nav class="navbar navbar-expand-lg">
@@ -53,9 +67,14 @@ https://templatemo.com/tm-590-topic-listing
                     <div class="d-lg-none ms-auto me-4">
                         <a href="#top" class="navbar-icon bi-person smoothscroll person-sm"></a>
 						<div class="profile-container p-3 sm">
+							<div class="profile-image-menu">
+								<img src="<?=$imageLink?>" alt="" width="100">
+								<span class="d-block mb-3">Hi <?=$name?></span>
+							</div>
+							<hr>
 							<p><a href="<?=base_url()?>user"><i class="bi-person fa-user"></i> Profile</a></p>
 							<p><i class="bi-gear-fill"></i> Setting</p>
-							<a href="<?=base_url()?>auth/logout"><p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p></a>
+							<a class="d-block" href="<?=base_url()?>auth/logout"><p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p></a>
 						</div>
                     </div>
     
@@ -95,9 +114,14 @@ https://templatemo.com/tm-590-topic-listing
                         <div class="d-none d-lg-block">
                             <a href="#top" class="navbar-icon bi-person smoothscroll person-lg"></a>
 							<div class="profile-container p-3 lg">
+								<div class="profile-image-menu">
+									<img src="<?=$imageLink?>" alt="" width="100">
+									<span class="d-block mb-3">Hi <?=$name?></span>
+								</div>
+								<hr>
 								<p><a href="<?=base_url()?>user"><i class="bi-person fa-user"></i> Profile</a></p>
 								<p><i class="bi-gear-fill"></i> Setting</p>
-								<a href="<?=base_url()?>auth/logout"><p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p></a>
+								<a class="d-block" href="<?=base_url()?>auth/logout"><p class="text-red"><i class="bi-box-arrow-left"></i> Logout</p></a>
 							</div>
                         </div>
                     </div>

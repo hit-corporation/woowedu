@@ -258,6 +258,7 @@
 						html: `<span class="text-success">${res.message}</span>`,
 						timer: 5000
 					});
+					window.location.href = BASE_URL+'user';
 				}
 			}
 		});
