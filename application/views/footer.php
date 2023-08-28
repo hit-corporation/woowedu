@@ -1,6 +1,6 @@
 		</main>
 
-		<footer class="site-footer section-padding">
+		<footer class="site-footer pt-3">
             <div class="container">
                 <div class="row">
 					<p class="fs-16 mb-0">Dipersembahkan oleh</p>
