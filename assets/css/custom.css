@@ -41,3 +41,32 @@
 .news-item:hover{ transform: scale(1.01); }
 .btn-clear:hover{ background-color: rgba(0, 0, 0, 0.1); }
 .profile-image-menu img{ border-radius: 50%; margin-top: 20px; margin-bottom: 20px; }
+.stat-circle {
+    height: 116px;
+    width: 116px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+	background-color: rgba(57, 201, 167, 0.1);
+}
+.stat-number {
+	color: rgb(52, 196, 199);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 38px;
+    text-align: center;
+}
+.btn-eye{ cursor: pointer; }
+.btn-eye i:hover{ color: rgb(0, 183, 0); transition: all .3s ease-in-out;}
+.image-content img{
+	border-radius: 50%;
+    border-color: black;
+    border: 1px solid #bdc1b8;
+    padding: 2px;
+}
+.data-by-date input{
+	border-radius: 10px;
+	border: 1px solid #bdc1b8;
+}
