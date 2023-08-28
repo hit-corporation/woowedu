@@ -6,37 +6,7 @@
 
 	<!-- section search -->
 	<div class="row mt-4">
-
-		<div class="col-lg-6 col-md-6 col-sm-12">
-			<div class="mb-3 row">
-				<label for="judul" class="col-xl-2 col-lg-4 col-md-4 col-sm-2 col-form-label">Judul Buku</label>
-				<div class="col-xl-10 col-lg-8 col-md-8 col-sm-10">
-					<input type="text" class="form-control" id="judul" name="judul">
-				</div>
-			</div>
-		</div>
-
-		<div class="col-lg-6 col-md-6 col-sm-12">
-			<div class="mb-3 row">
-				<label for="category" class="col-lg-2 col-md-2 col-sm-2 col-form-label">Kategori</label>
-				<div class="col-lg-8 col-md-8 col-sm-8">
-					<input type="text" class="form-control" id="category" name="category">
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 d-flex justify-content-end">
-					<button class="btn btn-clear border shadow-sm" id="search">Cari</button>
-				</div>
-			</div>
-		</div>
-
 		
-	</div>
-
-	<div class="row mt-4">
-		<div class="container d-flex justify-content-end p-0">
-			<a href="<?=base_url()?>news/create" class="btn btn-success">
-				+ Buat Pengumuman
-			</a>
-		</div>
 	</div>
 
 	<!-- content -->

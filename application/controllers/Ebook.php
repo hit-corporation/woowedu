@@ -18,6 +18,7 @@ class Ebook extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+
 	public function history(){
 		$username 	= $this->session->userdata('username');
 		$user_level = $this->db->where('username', $username)->get('users')->row_array()['user_level'];

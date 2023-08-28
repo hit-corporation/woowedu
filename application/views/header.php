@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <base href="<?=base_url()?>" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -29,14 +30,18 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-		<script>var BASE_URL = "<?=base_url()?>";</script>
-<!--
+		<script>var BASE_URL = document.querySelector('base').href;</script>
 
-TemplateMo 590 topic listing
+    <style>
+        html {
+            min-height: 100%;
+        }
 
-https://templatemo.com/tm-590-topic-listing
+        main {
+            min-height: 80vh;
+        }
+    </style>
 
--->
     </head>
     
     <body id="top">
@@ -47,13 +52,23 @@ https://templatemo.com/tm-590-topic-listing
 			$imageLink 	= base_url('assets/images/users/').$user['photo'];
 			$user_level	= $user['user_level'];
 
-			if($user_level == 3 || $user_level == 6){
-				$name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'];
-			}elseif($user_level == 4){
-				$name = $this->db->where('nis', $user['username'])->get('student')->row_array()['student_name'];
-			}else{
-				$name = $this->db->where('username', $user['username'])->get('parent')->row_array()['name'];
-			}
+            $name = '';
+            
+            switch($user_level)
+            {
+                case 3:
+                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'];
+                    break;
+                case 4:
+                    $name = $this->db->where('nis', $user['username'])->get('student')->row_array()['student_name'] ?? '';
+                    break;
+                case 6:
+                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'] ?? '';
+                    break;
+                default:
+                    $name = $this->db->where('username', $user['username'])->get('parent')->row_array()['name'] ?? '';
+                    break;
+            }
 		?>
 
         <main>
