@@ -45,10 +45,11 @@ https://templatemo.com/tm-590-topic-listing
 			$userid 	= $this->session->userdata('userid');
 			$user 		= $this->db->where('userid', $userid)->get('users')->row_array();
 			$imageLink 	= base_url('assets/images/users/').$user['photo'];
+			$user_level	= $user['user_level'];
 
-			if($user['user_level'] == 3 || $user['user_level'] == 6){
+			if($user_level == 3 || $user_level == 6){
 				$name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'];
-			}elseif($user['user_level'] == 4){
+			}elseif($user_level == 4){
 				$name = $this->db->where('nis', $user['username'])->get('student')->row_array()['student_name'];
 			}else{
 				$name = $this->db->where('username', $user['username'])->get('parent')->row_array()['name'];
@@ -91,6 +92,18 @@ https://templatemo.com/tm-590-topic-listing
                             <li class="nav-item">
                                 <a class="nav-link" href="<?=base_url()?>sesi">Sesi</a>
                             </li>
+
+							<?php if($user_level == 6) : ?>
+								<li class="nav-item">
+									<a class="nav-link" href="<?=base_url()?>student">Siswa</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" href="<?=base_url()?>teacher">Guru</a>
+								</li>
+							<?php endif ?>
+
+
     
                             <li class="nav-item">
                                 <a class="nav-link" href="<?=base_url()?>mapel">Mapel</a>
