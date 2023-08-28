@@ -18,6 +18,27 @@ class Ebook extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	/**
+	 * Lists Books 
+	 *
+	 * @return void
+	 */
+	public function list(): void {
+
+		$total  = $this->input->get('count');
+		$offset = $this->input->get('page');
+
+		$data = $this->model_ebook->list($total, $offset);
+
+		$json = [
+			'data' 		=> $data,
+			'totalData' => $this->db->count_all_results('ebooks'),
+		];
+
+		header('Content-Type: application/json');
+		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+	}
+
 
 	public function history(){
 		$username 	= $this->session->userdata('username');
