@@ -90,9 +90,26 @@
 
 						</tbody>
 					</table>
+
+					<div class="pagination"></div>
 				</div>	
 				<div class="tab-pane fade" id="nav-ujian" role="tabpanel" aria-labelledby="nav-ujian-tab" tabindex="0">
-					Ujian Content
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Nama Mapel</th>
+								<th>Jenis Tugas</th>
+								<th>Total Nilai</th>
+								<th>Batas Waktu</th>
+								<th>Tanggal Submit</th>
+							</tr>
+						</thead>
+						<tbody id="tugas-body-content">
+
+						</tbody>
+					</table>
+
+					<div class="pagination"></div>
 				</div>
 			</div>
 		</div>
@@ -179,11 +196,11 @@
 				for(let i = 0; i < response.total_pages; i++){
 					if(currentPage == i+1){
 						$('.pagination').append(`
-							<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, this)">${i+1}</a></li>
+							<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
 						`);
 					}else{
 						$('.pagination').append(`
-							<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, this)">${i+1}</a></li>
+							<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
 						`);
 					}
 
@@ -196,5 +213,12 @@
 	$('#nav-tugas-tab').on('click', function(){
 		getTask(1, 10, student_id);
 	});
+
+	// JIKA PAGE NUMBER DI KLIK
+	function page(pageNumber, e){
+		e.preventDefault();
+		currentPage = pageNumber;
+		getTask(pageNumber, 10, student_id);
+	}
 </script>
 a
