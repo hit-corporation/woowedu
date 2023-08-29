@@ -19,7 +19,9 @@ class Model_ebook extends CI_Model {
         if(!empty($limit) && !empty($offset))
             $this->db->limit($limit, $offset);
 
-        $get = $this->db->get('ebooks');
+        $get = $this->db
+                        ->select('a.*, b.category_name')
+                        ->join('categories b', 'a.category_id=b.id')->get('ebooks a');
 
         return $get->result_array() ?? [];
     }
