@@ -12,7 +12,7 @@
 	<!-- content -->
 	<div class="row mt-4" id="content">
 
-		<div id="grid">
+		<div id="grid" class="row">
 			
 		</div>
 		
