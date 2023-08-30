@@ -75,9 +75,8 @@
 
             <nav class="navbar navbar-expand-lg">
                 <div class="container">
-                    <a class="navbar-brand" href="index.html">
-                        <i class="bi-back"></i>
-                        <span>Topic</span>
+                    <a class="navbar-brand" href="#">
+                        	<img src="<?= base_url('assets/images/logo-small-in.png') ?>" alt="" width="200">
                     </a>
 
                     <div class="d-lg-none ms-auto me-4">
