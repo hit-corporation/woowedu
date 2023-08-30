@@ -1,8 +1,8 @@
 'use strict';
+import PaginationSystem from '../node_modules/pagination-system/dist/pagination-system.esm.min.js';
 
 const grid = document.querySelector('#grid');
-const pageinationContainer = document.querySelector('.pagination');
-
+const paginationContainer = document.querySelector('.pagination');
 
 /**
  * @descsription add new grid for a book for list
@@ -53,7 +53,7 @@ const createBookGrid = e => {
     const kategori = document.createTextNode(e.category_name);
     title.appendChild(judul);
     content.appendChild(kategori);
-
+    console.log(column);
     return column;
 }
 
@@ -82,6 +82,8 @@ const getBooks = async (page, count) => {
 }
 
 
+
+
 /**
  * @description show list of books
  * @date 8/30/2023 - 2:09:10 PM
@@ -99,6 +101,8 @@ const viewBookList = async (page, limit) => {
             grid.appendChild(createBookGrid(props));
         });
     }
+
+    await pagination(ebooks.totalData, limit);
 }
 
 // pagination
@@ -132,19 +136,44 @@ const prevPage = async () => {
     await viewBookList(currentPage, 9);
 } 
 
-const pagination = async () => {
+const pagination = async (countData, limit) => {
     // page
-   const next = document.createElement('li');
-   const prev = document.createElement('li');
-   const firstPage = document.createElement('li');
-   const lastPage = document.createElement('li');
+    const liNext = document.createElement('li');
+    const liPrev = document.createElement('li');
 
-   
+    const aNext = document.createElement('a');
+    const aPrev = document.createElement('a');
 
+    liPrev.classList.add('page-item');
+    aPrev.classList.add('page-link');
+
+    aPrev.innerHTML = '<';
+    liPrev.appendChild(aPrev);
+    paginationContainer.appendChild(liPrev);
+
+    let pages = totalPage(countData, limit);
+    Array.from({ length: pages  }, (item, idx) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+
+        li.classList.add('page-item');
+        a.classList.add('page-link');
+
+        a.innerHTML = idx + 1;
+        li.appendChild(a);
+        paginationContainer.appendChild(li);
+    });
+
+    liNext.classList.add('page-item');
+    aNext.classList.add('page-link');
+
+    aNext.innerHTML = '>';
+    liNext.appendChild(aNext);
+
+    paginationContainer.appendChild(liNext);
 }
 
 (async () => {
     
     await viewBookList(1, 9);
-
 })();

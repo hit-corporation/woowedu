@@ -32,6 +32,15 @@
 
 		<script>var BASE_URL = document.querySelector('base').href;</script>
 
+        <?php if(!empty($add_css)): 
+                foreach($add_css as $css):
+        ?>
+        <link rel="stylesheet" href="<?=html_escape(base_url($css))?>" />
+        <?php
+                endforeach; 
+            endif; 
+        ?>
+
     <style>
         html {
             min-height: 100%;

@@ -18,6 +18,10 @@ class Ebook extends CI_Controller {
 			'libs/htmx.min.js'
 		];
 
+		$header['add_css'] = [
+			'assets/node_modules/pagination-system/dist/pagination-system.min.css'
+		];
+
 		$this->load->view('header', $header);
 		$this->load->view('ebook/index');
 		$this->load->view('footer');
@@ -52,6 +56,7 @@ class Ebook extends CI_Controller {
 			'totalData' => $this->db->count_all_results('ebooks'),
 		];
 
+		header('X-Total-Count: '.$json['totalData']);
 		header('Content-Type: application/json');
 		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 	}

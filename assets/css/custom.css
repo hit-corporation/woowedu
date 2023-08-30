@@ -85,3 +85,7 @@
 .table-rounded td:first-child, .table-rounded th:first-child {
 	border-left: none;
 }
+
+a {
+	cursor: pointer;
+}
