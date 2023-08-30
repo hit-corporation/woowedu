@@ -15,7 +15,10 @@ class Task extends CI_Controller {
 	public function detail($id = ''){
 		if(!$id) redirect('dashboard');
 
+		$student = $this->db->where('nis', $this->session->userdata('username'))->get('student')->row_array();
+
 		$data['task'] = $this->model_task->get_tasks_detail($id);
+		$data['task_student'] = $this->db->where('student_id', $student['student_id'])->where('task_id', $id)->order_by('ts_id', 'desc')->get('task_student')->row_array();
 
 		$this->load->view('header');
 		$this->load->view('task/detail', $data);
