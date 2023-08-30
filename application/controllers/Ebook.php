@@ -13,6 +13,23 @@ class Ebook extends CI_Controller {
 	}
 
 	public function index(){
+
+		$header['add_js'] = [
+			'libs/htmx.min.js'
+		];
+
+		$this->load->view('header', $header);
+		$this->load->view('ebook/index');
+		$this->load->view('footer');
+	}
+
+	/**
+	 * Detail of a book
+	 *
+	 * @param string $param
+	 * @return void
+	 */
+	public function detail(string $param): void {
 		$this->load->view('header');
 		$this->load->view('ebook/index');
 		$this->load->view('footer');
@@ -38,6 +55,8 @@ class Ebook extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 	}
+
+	public function getOne() {}
 
 
 	public function history(){

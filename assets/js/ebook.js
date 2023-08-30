@@ -1,6 +1,7 @@
 'use strict';
 
-var currentPage = 1;
+const grid = document.querySelector('#grid');
+const pageinationContainer = document.querySelector('.pagination');
 
 
 /**
@@ -18,11 +19,13 @@ const createBookGrid = e => {
     const img = new Image(imgWidth, imgHeight);
     const figcaption = document.createElement('div');
     const title = document.createElement('p');
+    const content = document.createElement('p');
     // add to child
     column.appendChild(figure);
     figure.appendChild(img);
     figure.appendChild(figcaption);
     figcaption.appendChild(title);
+    figcaption.appendChild(content);
     // styles and attr
     column.classList.add('col-4', 'p-2');
     figure.classList.add('card', 'flex-row', 'flex-nowrap', 'justify-content-around', 'border-0', 'shadow-sm');
@@ -47,11 +50,12 @@ const createBookGrid = e => {
     };
     // title
     const judul = document.createTextNode(e.title);
+    const kategori = document.createTextNode(e.category_name);
     title.appendChild(judul);
+    content.appendChild(kategori);
 
     return column;
 }
-
 
 /**
  * @description Get All Books
@@ -73,18 +77,74 @@ const getBooks = async (page, count) => {
     }
     catch(err)
     {
-        
+        console.error(err);
     }
 }
 
 
-(async () => {
-    const grid = document.querySelector('#grid');
-    const ebooks = await getBooks(1, 9);
+/**
+ * @description show list of books
+ * @date 8/30/2023 - 2:09:10 PM
+ *
+ * @async
+ * @returns {*}
+ */
+const viewBookList = async (page, limit) => {
+    const ebooks = await getBooks(page, limit);
 
-    grid.innerHTML = null;
-    Array.from(ebooks.data, props => {
-        grid.appendChild(createBookGrid(props));
-    });
+    if(ebooks.data.length)
+    {
+        grid.innerHTML = null;
+        Array.from(ebooks.data, props => {
+            grid.appendChild(createBookGrid(props));
+        });
+    }
+}
+
+// pagination
+
+let currentPage = 1;
+let totalPage = (countData, limit) => Math.ceil(countData / limit);
+
+
+/**
+ * nexPage
+ * @date 8/30/2023 - 10:37:24 AM
+ *
+ * @async
+ * @returns {*}
+ */
+const nextPage = async () => {
+    currentPage = (currentPage >= totalPage) ? (currentPage = totalPage) : currentPage++;
+    await viewBookList(currentPage, 9);
+}
+
+
+/**
+ * previous Page
+ * @date 8/30/2023 - 10:37:36 AM
+ *
+ * @async
+ * @returns {*}
+ */
+const prevPage = async () => {
+    currentPage = currentPage <= 0 ? (currentPage = 0) : currentPage--;
+    await viewBookList(currentPage, 9);
+} 
+
+const pagination = async () => {
+    // page
+   const next = document.createElement('li');
+   const prev = document.createElement('li');
+   const firstPage = document.createElement('li');
+   const lastPage = document.createElement('li');
+
+   
+
+}
+
+(async () => {
+    
+    await viewBookList(1, 9);
 
 })();
