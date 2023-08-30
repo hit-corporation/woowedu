@@ -13,16 +13,21 @@
 	<div class="row mt-4" id="content">
 
 		<div id="grid" class="row">
-			
+			<div class="d-flex flex-column justify-content-center w-100">
+				<i class="bi bi-database-x text-center" style="font-size: 5.8rem"></i>
+				<h4 class="text-center">NO DATA</h4>
+			</div>
 		</div>
+
+		<nav aria-label="Page navigation example" class="d-flex justify-content-center">
+			<ul class="pagination">
+				
+			</ul>
+		</nav>
 		
 	</div>
 		
-	<nav aria-label="Page navigation example" class="d-flex justify-content-center">
-		<ul class="pagination">
-			
-		</ul>
-	</nav>
+	
 	
 </section>
 

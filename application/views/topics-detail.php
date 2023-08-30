@@ -21,6 +21,15 @@
         <link href="css/bootstrap-icons.css" rel="stylesheet">
 
         <link href="css/templatemo-topic-listing.css" rel="stylesheet">
+
+        <?php if(!empty($add_js)): 
+            foreach($add_js as $js):
+        ?>
+        <script src="<?=html_escape(base_url($js))?>"></script>
+        <?php 
+            endforeach;
+            endif; 
+        ?>
 <!--
 
 TemplateMo 590 topic listing
