@@ -66,4 +66,63 @@ class Student extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function get_summary(){
+		$post 				= $this->input->post();
+		$class_id 			= $this->db->where('student_id', $post['student_id'])->get('student')->row_array()['class_id'];
+		$data['total_exam']	= $this->model_student->get_total_exam($class_id, $post['start'], $post['end']);
+		$data['average_exam_score'] = $this->model_student->average_exam_score($post['student_id'], $post['start'], $post['end'])['exam_total_nilai'];
+
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function get_task(){
+		$get = $this->input->get();
+		$page 		= isset($get['page']) ? (int)$get['page'] : 1;
+		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 3;
+
+		$page = ($page - 1) * $limit;
+
+		$data['data']	= $this->model_student->get_task($limit, $page, $get['student_id']);
+		$i = 0;
+		foreach($data['data'] as $key => $val){
+			$task_student = $this->db->where('task_id', $val['task_id'])->where('student_id', $get['student_id'])->get('task_student')->row_array();
+			$data['data'][$i]['task_file_answer'] = ($task_student) ? $task_student['task_file'] : '';
+			$data['data'][$i]['task_submit'] = ($task_student) ? $task_student['task_submit'] : '';
+			$i++;
+		}
+
+		$data['total_records'] 	= $this->model_student->get_total_task($get['student_id']);
+		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function get_exam(){
+		$get = $this->input->get();
+		$page 		= isset($get['page']) ? (int)$get['page'] : 1;
+		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 3;
+
+		$page = ($page - 1) * $limit;
+
+		$data['data']	= $this->model_student->get_exam($limit, $page, $get['student_id']);
+
+		$i = 0;
+		foreach($data['data'] as $key => $val){
+			$exam_student = $this->db->where('exam_id', $val['exam_id'])->where('student_id', $get['student_id'])->get('exam_student')->row_array();
+			$data['data'][$i]['exam_total_nilai'] = ($exam_student) ? $exam_student['exam_total_nilai'] : '';
+			$data['data'][$i]['exam_submit'] = ($exam_student) ? $exam_student['exam_submit'] : '';
+			$i++;
+		}
+
+		$data['total_records'] 	= $this->model_student->get_total_row_exam($get['student_id']);
+		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
 }

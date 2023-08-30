@@ -18,7 +18,7 @@
 
 				<?php if($user_level == 4 || $user_level == 5) : ?>
 					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">
+						<button class="nav-link active" id="tugas-tab" data-bs-toggle="tab" data-bs-target="#tugas-tab-pane" type="button" role="tab" aria-controls="tugas-tab-pane" aria-selected="true">
 							<i class="bi bi-pen-fill me-2"></i>Tugas
 						</button>
 					</li>
@@ -45,27 +45,27 @@
 
 			<div class="col-12">
 				<div class="tab-content" id="myTabContent">
-					<div class="tab-pane fade show active" id="design-tab-pane" role="tabpanel" aria-labelledby="design-tab" tabindex="0">
+					<div class="tab-pane fade show active" id="tugas-tab-pane" role="tabpanel" aria-labelledby="tugas-tab" tabindex="0">
 						<div class="row d-flex justify-content-center">
 
-							<?php foreach ($tasks as $key => $value) : ?>
-
+							<?php  if(isset($tasks)) : ?>
+								<?php foreach ($tasks as $key => $value) : ?>
 								<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12  mb-4">
 									<div class="custom-block bg-white shadow-lg">
-										<!-- <a href="topics-detail.html"> -->
+										<a href="<?=base_url('task/detail/').$value['task_id']?>">
 											<div class="d-flex">
 												<div>
 													<h5 class="mb-2"><?=$value['subject_name']?></h5>
 													<p class="fs-12">Guru: <?=$value['teacher_name']?></p>
 													<p><?=$value['note']?></p>
-													<p class="fs-14 mt-4 bg-warning d-inline rounded p-1 mt-3 d-inline-block"><?= date('d M Y H:i', strtotime($value['due_date'])) ?></p>
+													<span class="text-white fs-14 mt-4 bg-warning d-inline rounded p-1 mt-3 d-inline-block">batas akhir: <?= date('d M Y H:i', strtotime($value['due_date'])) ?></span>
 												</div>
 											</div>
-										<!-- </a> -->
+										</a>
 									</div>
 								</div>
-
-							<?php endforeach ?>
+								<?php endforeach; ?>
+							<?php endif; ?>
 
 						</div>
 					</div>
@@ -73,56 +73,57 @@
 					<div class="tab-pane fade" id="marketing-tab-pane" role="tabpanel" aria-labelledby="marketing-tab" tabindex="0">
 						<div class="row">
 							<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
-									<div class="custom-block bg-white shadow-lg">
-										<a href="topics-detail.html">
-											<div class="d-flex">
-												<div>
-													<h5 class="mb-2"><?=date('l')?></h5>
-													<span class="mb-0 fs-16"><?=date('d M Y')?></span> <span>10:30 - 12:00</span>
-													<p class="mt-2">Matematika</p>
-													<p>Guru: Saifudin</p>
-													<p>pemahaman tentang deret bilangan tak hingga</p>
-												</div>
+								<div class="custom-block bg-white shadow-lg">
+									<a href="topics-detail.html">
+										<div class="d-flex">
+											<div>
+												<h5 class="mb-2"><?=date('l')?></h5>
+												<span class="mb-0 fs-16"><?=date('d M Y')?></span> <span>10:30 - 12:00</span>
+												<p class="mt-2">Matematika</p>
+												<p>Guru: Saifudin</p>
+												<p>pemahaman tentang deret bilangan tak hingga</p>
 											</div>
-										</a>
-									</div>
+										</div>
+									</a>
 								</div>
+							</div>
 
-								<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
-									<div class="custom-block bg-white shadow-lg">
-										<a href="topics-detail.html">
-											<div class="d-flex">
-												<div>
-													<h5 class="mb-2"><?=date('l')?></h5>
-													<span class="mb-0 fs-16"><?=date('d M Y')?></span> <span>13:00 - 13:30</span>
-													<p class="mt-2">IPA</p>
-													<p>Guru: Andi Malarangeng</p>
-													<p>Pernafasan pada manusia</p>
-												</div>
+							<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
+								<div class="custom-block bg-white shadow-lg">
+									<a href="topics-detail.html">
+										<div class="d-flex">
+											<div>
+												<h5 class="mb-2"><?=date('l')?></h5>
+												<span class="mb-0 fs-16"><?=date('d M Y')?></span> <span>13:00 - 13:30</span>
+												<p class="mt-2">IPA</p>
+												<p>Guru: Andi Malarangeng</p>
+												<p>Pernafasan pada manusia</p>
 											</div>
-										</a>
-									</div>
+										</div>
+									</a>
 								</div>
+							</div>
 
-								<div class="col-lg-4 col-md-6 col-12">
-									<div class="custom-block bg-white shadow-lg">
-										<a href="topics-detail.html">
-											<div class="d-flex">
-												<div>
-													<h5 class="mb-2"><?=date('l')?></h5>
-													<span class="mb-0"><?=date('d M Y')?></span> <span>14:00 - 15:00</span>
-													<p class="mt-2">Bahasa Inggris</p>
-													<p>Guru: Albertus</p>
-													<p>Grammar perfect simple present tense</p>
-												</div>
+							<div class="col-lg-4 col-md-6 col-12">
+								<div class="custom-block bg-white shadow-lg">
+									<a href="topics-detail.html">
+										<div class="d-flex">
+											<div>
+												<h5 class="mb-2"><?=date('l')?></h5>
+												<span class="mb-0"><?=date('d M Y')?></span> <span>14:00 - 15:00</span>
+												<p class="mt-2">Bahasa Inggris</p>
+												<p>Guru: Albertus</p>
+												<p>Grammar perfect simple present tense</p>
 											</div>
-										</a>
-									</div>
+										</div>
+									</a>
 								</div>
 							</div>
 						</div>
-
-					<div class="tab-pane fade <?=($user_level == 3) ? 'show active' : '' ?>" id="papan-pengumuman-tab-pane" role="tabpanel" aria-labelledby="papan-pengumuman-tab" tabindex="0">   
+					</div>
+					
+					<!-- TAB PENGUMUMAN -->
+					<div class="tab-pane fade <?=($user_level == 3 || $user_level == 6 || $user_level == 10) ? 'show active' : '' ?>" id="papan-pengumuman-tab-pane" role="tabpanel" aria-labelledby="papan-pengumuman-tab" tabindex="0">   
 							
 						<div class="row">
 							<?php foreach($news as $key => $val) : ?>
