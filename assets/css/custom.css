@@ -66,7 +66,22 @@
     border: 1px solid #bdc1b8;
     padding: 2px;
 }
-.data-by-date input{
+.data-by-date input{ border-radius: 10px; border: 1px solid #bdc1b8; }
+.table-rounded{
+	border-collapse: separate;
+	border: solid #a8ded8 1px;
 	border-radius: 10px;
-	border: 1px solid #bdc1b8;
+}
+.table-rounded td, .table-rounded th {
+	border-left: solid #a8ded8 1px;
+	border-top: solid #a8ded8 1px;
+	padding: 10px;
+}
+.table-rounded th {
+	background-color: #a8ded8;
+	border-top: none;
+}
+
+.table-rounded td:first-child, .table-rounded th:first-child {
+	border-left: none;
 }

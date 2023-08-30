@@ -100,4 +100,29 @@ class Student extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function get_exam(){
+		$get = $this->input->get();
+		$page 		= isset($get['page']) ? (int)$get['page'] : 1;
+		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 3;
+
+		$page = ($page - 1) * $limit;
+
+		$data['data']	= $this->model_student->get_exam($limit, $page, $get['student_id']);
+
+		$i = 0;
+		foreach($data['data'] as $key => $val){
+			$exam_student = $this->db->where('exam_id', $val['exam_id'])->where('student_id', $get['student_id'])->get('exam_student')->row_array();
+			$data['data'][$i]['exam_total_nilai'] = ($exam_student) ? $exam_student['exam_total_nilai'] : '';
+			$data['data'][$i]['exam_submit'] = ($exam_student) ? $exam_student['exam_submit'] : '';
+			$i++;
+		}
+
+		$data['total_records'] 	= $this->model_student->get_total_row_exam($get['student_id']);
+		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
 }

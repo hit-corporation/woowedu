@@ -5,6 +5,7 @@
 
 	<div class="container">
 		<div class="row">
+			<!-- profile content -->
 			<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-3">
 				<div class="card border rounded p-3 h-100">
 					<div class="image-content">
@@ -25,7 +26,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xl-5 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-3 h-100">
+
+			<!-- skor by date range content -->
+			<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-3 h-100">
 				<div class="card border rounded p-3 data-by-date h-100">
 					<input class="border-width-1 rounded-lg ml-3"  style="height: 40px; text-align:center; border-color: rgba(0, 0, 255, 0.3);" type="text" name="daterange" 
 						value="<?php 
@@ -40,7 +43,7 @@
 							echo date('m/d/Y', time()); 
 						}?>" />
 
-					<div class="row data-content mt-4">
+					<div class="row data-content mt-4 justify-content-center">
 						<div class="col-3 total-exam text-center">
 							<h4>0</h4>
 							<span>Total Tugas</span>
@@ -60,6 +63,7 @@
 		</div>
 	</div>
 
+	<!-- laporan kinerja siswa -->
 	<div class="container p-4">
 		<div class="row border rounded">
 			<h6 class="text-center mt-4">Laporan Kinerja Siswa</h6>
@@ -70,12 +74,12 @@
 					<button class="nav-link" id="nav-ujian-tab" data-bs-toggle="tab" data-bs-target="#nav-ujian" type="button" role="tab" aria-controls="nav-ujian" aria-selected="false">Ujian</button>
 				</div>
 			</nav>
-			<div class="tab-content mb-4" id="nav-tabContent">
+			<div class="tab-content mb-4" id="nav-tabContent" style="overflow-x: auto;">
 				<div class="tab-pane fade show active" id="nav-ebook" role="tabpanel" aria-labelledby="nav-ebook-tab" tabindex="0">
 					
 				</div>
-				<div class="tab-pane fade" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
-					<table class="table">
+				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
+					<table class="table-rounded">
 						<thead>
 							<tr>
 								<th>Nama Tugas</th>
@@ -93,8 +97,8 @@
 
 					<div class="pagination"></div>
 				</div>	
-				<div class="tab-pane fade" id="nav-ujian" role="tabpanel" aria-labelledby="nav-ujian-tab" tabindex="0">
-					<table class="table">
+				<div class="tab-pane fade p-3" id="nav-ujian" role="tabpanel" aria-labelledby="nav-ujian-tab" tabindex="0">
+					<table class="table-rounded w-100">
 						<thead>
 							<tr>
 								<th>Nama Mapel</th>
@@ -104,12 +108,12 @@
 								<th>Tanggal Submit</th>
 							</tr>
 						</thead>
-						<tbody id="tugas-body-content">
+						<tbody id="exam-body-content">
 
 						</tbody>
 					</table>
 
-					<div class="pagination"></div>
+					<div class="pagination pagination2"></div>
 				</div>
 			</div>
 		</div>
@@ -209,6 +213,47 @@
 		});
 	}
 
+	// FUNGSI UNTUK ISI LIST DATA EXAM
+	function getExam(page = 1, limit = 10, student_id){
+		$.ajax({
+			type: "GET",
+			url: BASE_URL+"student/get_exam",
+			data: {
+				page: page,
+				limit: limit,
+				student_id: student_id
+			},
+			success: function (response) {
+				$('#exam-body-content').html('');
+				$.each(response.data, function (key, value){
+					$('#exam-body-content').append(`
+						<tr>
+							<td>${value.subject_name}</td>
+							<td>${value.category_name}</td>
+							<td>${value.exam_total_nilai}</td>
+							<td>${value.end_date}</td>
+							<td>${value.exam_submit}</td>
+						</tr>
+					`);
+				});
+
+				$('.pagination2').html('');
+				for(let i = 0; i < response.total_pages; i++){
+					if(currentPage == i+1){
+						$('.pagination2').append(`
+							<li class="page-item active"><a class="page-link" href="#" onclick="page2(${i+1}, event)">${i+1}</a></li>
+						`);
+					}else{
+						$('.pagination2').append(`
+							<li class="page-item"><a class="page-link" href="#" onclick="page2(${i+1}, event)">${i+1}</a></li>
+						`);
+					}
+
+				}
+			}
+		});
+	}
+
 	// JIKA nav-tugas-tab DI KLIK
 	$('#nav-tugas-tab').on('click', function(){
 		getTask(1, 10, student_id);
@@ -220,5 +265,16 @@
 		currentPage = pageNumber;
 		getTask(pageNumber, 10, student_id);
 	}
+
+	// JIKA PAGE NUMBER 2 DI KLIK
+	function page2(pageNumber, e){
+		e.preventDefault();
+		currentPage = pageNumber;
+		getExam(pageNumber, 10, student_id);
+	}
+
+	// JIKA nav-ujian-tab DI KLIK
+	$('#nav-ujian-tab').on('click', function(){
+		getExam(1, 10, student_id);
+	});
 </script>
-a

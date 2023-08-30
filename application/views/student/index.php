@@ -52,7 +52,7 @@
 
 			<div class="container mt-3 p-0">
 				<table class="table table-bordered table-hover w-100">
-					<thead class="bg-success text-white">
+					<thead class="text-white" style="background-color: #80d0c7;">
 						<tr>
 							<th>Nama Siswa</th>
 							<th>Email</th>

@@ -65,6 +65,28 @@ class Model_student extends CI_Model {
 		return $this->db->get()->num_rows();
 	}
 
+	public function get_exam($limit = null, $page = null, $student_id){
+		$class_id = $this->get_class($student_id);
+		$this->db->select('e.*, s.subject_name, ec.category_name');
+		$this->db->from('exam e');
+		$this->db->join('subject s', 's.subject_id = e.subject_id');
+		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
+		$this->db->where('e.class_id', $class_id);
+		$this->db->order_by('start_date', 'desc');
+		$this->db->limit($limit, $page);
+		return $this->db->get()->result_array();
+	}
+
+	public function get_total_row_exam($student_id){
+		$class_id = $this->get_class($student_id);
+		$this->db->select('e.*, s.subject_name');
+		$this->db->from('exam e');
+		$this->db->join('subject s', 's.subject_id = e.subject_id');
+		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
+		$this->db->where('e.class_id', $class_id);
+		return $this->db->get()->num_rows();
+	}
+
 	public function get_class($student_id){
 		$this->db->where('student_id', $student_id);
 		return $this->db->get('student s')->row_array()['class_id'];
