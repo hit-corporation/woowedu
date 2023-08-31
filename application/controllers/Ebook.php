@@ -36,7 +36,7 @@ class Ebook extends CI_Controller {
 	 */
 	public function detail(string $param): void {
 
-		$body['book'] = $this->db->get_where('ebooks', ['book_code' => $param])->row_array();
+		$body['book'] = $this->model_ebook->getByCode($param);
 
 		$this->load->view('header');
 		$this->load->view('ebook/detail', $body);
