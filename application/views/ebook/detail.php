@@ -9,13 +9,19 @@
 	<h4></h4>
 
 	<!-- section search -->
-	<div class="row mt-4 border rounded p-3">
+	<div class="row mt-4">
 
         <div class="col-12 col-lg-3">
-            <img class="img-fluid" src="<?= html_escape(base_url('assets/images/ebooks/cover/'.$book['cover_img'])) ?>"/>
+            <img class="img-thumbnail" src="<?= html_escape(base_url('assets/images/ebooks/cover/'.$book['cover_img'])) ?>"/>
         </div>
-        <div class="col-12 col-lg-6"></div>
-        <div class="col-12 col-lg-3"></div>
+        <div class="col-12 col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <h3><?=$book['title']?></h3>
+                </div>
+            </div>
+            
+        </div>
 
 	</div>
 	
