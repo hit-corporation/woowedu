@@ -7,6 +7,7 @@
 <style>
 	#muridPerKelas { width: 100%; height: 250px; }
 	#guruChart { width: 100%; height: 250px; }
+	#loginBulananChart { width: 100%; height: 350px; }
 </style>
 
 <?php $user_level = $this->session->userdata('user_level'); ?>
@@ -28,7 +29,12 @@
 						<div id="guruChart"></div>
 					</div>
 				</div>
-				<div class="col-6">tes</div>
+				<div class="col-12 p-2 text-center">
+					<div class="container border rounded shadow-sm p-3">
+						<span class="mb-2">Total Login bulanan</span>
+						<div id="loginBulananChart"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	<?php endif ?>
@@ -135,7 +141,6 @@
 	</div>
 </section>
 
-<!-- CHART MURID PER KELAS -->
 <script>
 	$(document).ready(function () {
 		let userLevel = <?=$user_level?>;
@@ -146,6 +151,7 @@
 	});
 </script>
 
+<!-- CHART MURID PER KELAS -->
 <script>
 	function muridPerKelas(){
 		// Create root and chart
@@ -238,4 +244,153 @@
 		legend.data.setAll(series.dataItems);
 
 	}
+</script>
+
+<!-- CHART TOTAL LOGIN PER BULAN GURU VS MURID -->
+<script>
+	var root = am5.Root.new("loginBulananChart");
+
+
+	// Set themes
+	// https://www.amcharts.com/docs/v5/concepts/themes/
+	root.setThemes([
+		am5themes_Animated.new(root)
+	]);
+
+
+	// Create chart
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/
+	var chart = root.container.children.push(am5xy.XYChart.new(root, {
+		panX: false,
+		panY: false,
+		wheelX: "panX",
+		wheelY: "zoomX",
+		layout: root.verticalLayout
+	}));
+
+
+	// Add legend
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+	var legend = chart.children.push(
+		am5.Legend.new(root, {
+			centerX: am5.p50,
+			x: am5.p50
+		})
+	);
+
+	var data = [{
+			category: "Jan",
+			categoryLabel: "Jan",
+			teacher: 100,
+			student: 75
+		}, {
+			category: "Feb",
+			categoryLabel: "Feb",
+			teacher: 80,
+			student: 50
+		}, {
+			category: "Mar",
+			categoryLabel: "Mar",
+			teacher: 65,
+			student: 40
+		}, {
+			category: "Apr",
+			categoryLabel: "Apr",
+			teacher: 50,
+			student: 95
+		}];
+
+
+	// Create axes
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+	var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+		categoryField: "category",
+		renderer: am5xy.AxisRendererX.new(root, {
+			cellStartLocation: 0.1,
+			cellEndLocation: 0.9,
+			minGridDistance: 30
+		}),
+		tooltip: am5.Tooltip.new(root, {})
+	}));
+
+	xAxis.get("renderer").labels.template.adapters.add("text", function(text, target) {
+		if (target.dataItem && target.dataItem.dataContext) {
+			return target.dataItem.dataContext.categoryLabel;
+		}
+		return text;
+	});
+
+	xAxis.data.setAll(data);
+
+	var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+		renderer: am5xy.AxisRendererY.new(root, {})
+	}));
+
+
+	// Add series
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+	function makeSeries(name, fieldName) {
+	var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+		name: name,
+		xAxis: xAxis,
+		yAxis: yAxis,
+		valueYField: fieldName,
+		categoryXField: "category"
+	}));
+
+	series.columns.template.setAll({
+		tooltipText: "{name}, {categoryX}:{valueY}",
+		width: am5.percent(90),
+		tooltipY: 0
+	});
+
+	series.bullets.push(function () {
+		return am5.Bullet.new(root, {
+		locationY: 0.5,
+		sprite: am5.Label.new(root, {
+			text: "{valueY}",
+			fill: root.interfaceColors.get("alternativeText"),
+			centerY: am5.p50,
+			centerX: am5.p50,
+			populateText: true
+		})
+		});
+	});
+
+	series.data.setAll(data);
+	series.appear();
+	legend.data.push(series);
+	}
+
+	makeSeries("Guru", "teacher");
+	makeSeries("Murid", "student");
+
+	function makeRange(start, end, label) {
+	var rangeDataItem = xAxis.makeDataItem({
+		category: start,
+		endCategory: end
+	});
+	
+	var range = xAxis.createAxisRange(rangeDataItem);
+	
+	rangeDataItem.get("label").setAll({
+		fill: am5.color(0x000000),
+		text: label,
+		fontWeight: "bold",
+		dy: 25
+	});
+	
+	rangeDataItem.get("grid").setAll({
+		strokeOpacity: 0.2,
+		location: 1
+	});
+	}
+
+	// makeRange("2021 - JAN", "2021 - APR", "2021");
+	// makeRange("2022 - Q1", "2022 - Q4", "2022");
+
+
+	// Make stuff animate on load
+	// https://www.amcharts.com/docs/v5/concepts/animations/
+	chart.appear(1000, 100);
 </script>

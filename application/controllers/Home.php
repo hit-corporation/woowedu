@@ -42,6 +42,30 @@ class Home extends CI_Controller {
 		$data['teacher_status'] = $teacher_status;
 
 		// =============================================================================
+		// =================== CREATE COUNT LOGIN STUDENT & TEACHER ====================
+		// var data = [{
+		// 	category: "Jan",
+		// 	categoryLabel: "Jan",
+		// 	teacher: 100,
+		// 	student: 75
+		// }, {
+		// 	category: "Feb",
+		// 	categoryLabel: "Feb",
+		// 	teacher: 80,
+		// 	student: 50
+		// }, {
+		// 	category: "Mar",
+		// 	categoryLabel: "Mar",
+		// 	teacher: 65,
+		// 	student: 40
+		// }, {
+		// 	category: "Apr",
+		// 	categoryLabel: "Apr",
+		// 	teacher: 50,
+		// 	student: 95
+		// }];
+
+		// =============================================================================
 
 		$this->load->view('header');
 		$this->load->view('home/index', $data);
