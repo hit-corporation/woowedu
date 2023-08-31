@@ -19,7 +19,8 @@ class Ebook extends CI_Controller {
 		];
 
 		$header['add_css'] = [
-			'assets/node_modules/pagination-system/dist/pagination-system.min.css'
+			'assets/node_modules/pagination-system/dist/pagination-system.min.css',
+			'assets/css/ebook.css'
 		];
 
 		$this->load->view('header', $header);
@@ -46,14 +47,16 @@ class Ebook extends CI_Controller {
 	 */
 	public function list(): void {
 
-		$total  = $this->input->get('count');
-		$offset = $this->input->get('page');
-
-		$data = $this->model_ebook->list($total, $offset);
+		$limit  = $this->input->get('count');
+		$page 	= $this->input->get('page');
+		$total	= $this->db->count_all_results('ebooks');
+		$offset = $page == 1 ? $page * $limit : ($page - 1) * ($limit + 1); 
+		
+		$data = $this->model_ebook->list($limit, $offset);
 
 		$json = [
 			'data' 		=> $data,
-			'totalData' => $this->db->count_all_results('ebooks'),
+			'totalData' => $total,
 		];
 
 		header('X-Total-Count: '.$json['totalData']);
