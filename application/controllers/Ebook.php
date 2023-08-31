@@ -35,8 +35,11 @@ class Ebook extends CI_Controller {
 	 * @return void
 	 */
 	public function detail(string $param): void {
+
+		$body['book'] = $this->db->get_where('ebooks', ['book_code' => $param])->row_array();
+
 		$this->load->view('header');
-		$this->load->view('ebook/index');
+		$this->load->view('ebook/detail', $body);
 		$this->load->view('footer');
 	}
 

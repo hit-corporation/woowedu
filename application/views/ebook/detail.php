@@ -8,7 +8,7 @@
 	<div class="row mt-4">
 
         <div class="col-12 col-lg-3">
-            <img class="img-fluid">
+            <img class="img-fluid" src="<?= html_escape(base_url('assets/images/ebooks/cover/'.$book['cover_img'])) ?>"/>
         </div>
         <div class="col-12 col-lg-6"></div>
         <div class="col-12 col-lg-3"></div>
