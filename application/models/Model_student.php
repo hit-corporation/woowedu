@@ -92,4 +92,17 @@ class Model_student extends CI_Model {
 		return $this->db->get('student s')->row_array()['class_id'];
 	}
 
+	public function get_student_class($username){
+		$teacher = $this->db->where('nik', $username)->get('teacher')->row_array();
+
+		$this->db->select('COUNT(s.class_id) as value, k.class_name as category');
+		$this->db->from('student s');
+		$this->db->join('kelas k', 'k.class_id = s.class_id');
+		$this->db->where('sekolah_id', $teacher['sekolah_id']);
+		$this->db->where('s.ta_aktif', 1);
+		$this->db->group_by('s.class_id, k.class_name');
+		$this->db->order_by('s.class_id', 'asc');
+		return $this->db->get()->result_array();
+	}
+
 }
