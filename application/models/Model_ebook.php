@@ -27,10 +27,24 @@ class Model_ebook extends CI_Model {
     }
 
     public function get() {
-
+        $get = $this->db
+        ->select('a.*, b.category_name')
+        ->where()
+        ->join('categories b', 'a.category_id=b.id')->get('ebooks a');
     }
 
-    public function getByCode() {
+    /**
+     * Get a book dta by book code
+     *
+     * @param string $code
+     * @return array
+     */
+    public function getByCode(string $code): array {
+        $get = $this->db->select('a.*, b.category_name')
+                        ->where('a.book_code', $code)
+                        ->join('categories b', 'a.category_id=b.id')
+                        ->get('ebooks a');
+        return $get->row_array();
 
     }
 

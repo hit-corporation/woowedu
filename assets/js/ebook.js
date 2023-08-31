@@ -12,8 +12,7 @@ const paginationContainer = document.querySelector('.pagination');
  * @returns {HTMLDivElement}
  */
 const createBookGrid = e => {
-    const imgWidth = 78 * 1.5;
-    const imgHeight = 105 * 1.5;
+  
     const column = document.createElement('div');
     const figure = document.createElement('a');
     const img = new Image(imgWidth, imgHeight);
@@ -83,97 +82,160 @@ const getBooks = async (page, count) => {
 
 
 
+// /**
+//  * @description show list of books
+//  * @date 8/30/2023 - 2:09:10 PM
+//  *
+//  * @async
+//  * @returns {*}
+//  */
+// const viewBookList = async (page, limit) => {
+//     const ebooks = await getBooks(page, limit);
 
-/**
- * @description show list of books
- * @date 8/30/2023 - 2:09:10 PM
- *
- * @async
- * @returns {*}
- */
-const viewBookList = async (page, limit) => {
-    const ebooks = await getBooks(page, limit);
+//     if(ebooks.data.length)
+//     {
+//         grid.innerHTML = null;
+//         Array.from(ebooks.data, props => {
+//             grid.appendChild(createBookGrid(props));
+//         });
+//     }
 
-    if(ebooks.data.length)
-    {
-        grid.innerHTML = null;
-        Array.from(ebooks.data, props => {
-            grid.appendChild(createBookGrid(props));
-        });
-    }
+//     await pagination(ebooks.totalData, limit);
+// }
 
-    await pagination(ebooks.totalData, limit);
-}
+// // pagination
 
-// pagination
-
-let currentPage = 1;
-let totalPage = (countData, limit) => Math.ceil(countData / limit);
-
-
-/**
- * nexPage
- * @date 8/30/2023 - 10:37:24 AM
- *
- * @async
- * @returns {*}
- */
-const nextPage = async () => {
-    currentPage = (currentPage >= totalPage) ? (currentPage = totalPage) : currentPage++;
-    await viewBookList(currentPage, 9);
-}
+// let currentPage = 1;
+// let totalPage = (countData, limit) => Math.ceil(countData / limit);
 
 
-/**
- * previous Page
- * @date 8/30/2023 - 10:37:36 AM
- *
- * @async
- * @returns {*}
- */
-const prevPage = async () => {
-    currentPage = currentPage <= 0 ? (currentPage = 0) : currentPage--;
-    await viewBookList(currentPage, 9);
-} 
+// /**
+//  * nexPage
+//  * @date 8/30/2023 - 10:37:24 AM
+//  *
+//  * @async
+//  * @returns {*}
+//  */
+// const nextPage = async () => {
+//     currentPage = (currentPage >= totalPage) ? (currentPage = totalPage) : currentPage++;
+//     await viewBookList(currentPage, 9);
+// }
 
-const pagination = async (countData, limit) => {
-    // page
-    const liNext = document.createElement('li');
-    const liPrev = document.createElement('li');
 
-    const aNext = document.createElement('a');
-    const aPrev = document.createElement('a');
+// /**
+//  * previous Page
+//  * @date 8/30/2023 - 10:37:36 AM
+//  *
+//  * @async
+//  * @returns {*}
+//  */
+// const prevPage = async () => {
+//     currentPage = currentPage <= 1 ? (currentPage = 1) : currentPage--;
+//     await viewBookList(currentPage, 9);
+// } 
 
-    liPrev.classList.add('page-item');
-    aPrev.classList.add('page-link');
 
-    aPrev.innerHTML = '<';
-    liPrev.appendChild(aPrev);
-    paginationContainer.appendChild(liPrev);
+// const currPage = async idx => {
+//     currentPage = idx;
+//     await viewBookList(currentPage, 9);
+// }
 
-    let pages = totalPage(countData, limit);
-    Array.from({ length: pages  }, (item, idx) => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
 
-        li.classList.add('page-item');
-        a.classList.add('page-link');
+// /**
+//  * Pagination Logic
+//  * @date 8/31/2023 - 10:57:08 AM
+//  *
+//  * @async
+//  * @param {*} countData
+//  * @param {*} limit
+//  * @returns {*}
+//  */
+// const pagination = async (countData, limit) => {
+//     // page
+//     const liNext = document.createElement('li');
+//     const liPrev = document.createElement('li');
 
-        a.innerHTML = idx + 1;
-        li.appendChild(a);
-        paginationContainer.appendChild(li);
-    });
+//     const aNext = document.createElement('a');
+//     const aPrev = document.createElement('a');
+//     // previos page
+//     liPrev.classList.add('page-item');
+//     aPrev.classList.add('page-link');
+//     aPrev.innerHTML = '<';
+//     aPrev.onclick = async e => await prevPage(); 
+//     liPrev.appendChild(aPrev);
+//     paginationContainer.appendChild(liPrev);
+//     // perpages
+//     let pages = totalPage(countData, limit);
 
-    liNext.classList.add('page-item');
-    aNext.classList.add('page-link');
+//     const createPaging = (linkText, link, idx) => {
+//         const li = document.createElement('li');
+//         const a = document.createElement('a');
+//         li.classList.add('page-item');
+//         a.classList.add('page-link');
+//         a.innerHTML = linkText;
+//         a.onclick = async e => await currPage(idx);
+//         li.appendChild(a);
+//         paginationContainer.appendChild(li);
+//     }
+    
+//     if(currentPage > 1 && currentPage < totaPage)
+//     {
+//         // jika halaman lebih dari 3
+//         if(currentPage > 3)
+//         {
+//             createPaging();
+//         }
+//         // jika halaman kurang dari total - 3
+//     }
+   
+//     // next page
+//     liNext.classList.add('page-item');
+//     aNext.classList.add('page-link');
+//     aNext.innerHTML = '>';
+//     aNext.onclick = async e => await nextPage(); 
+//     liNext.appendChild(aNext);
 
-    aNext.innerHTML = '>';
-    liNext.appendChild(aNext);
+//     paginationContainer.appendChild(liNext);
 
-    paginationContainer.appendChild(liNext);
-}
+//     await viewBookList(currentPage, limit);
+// }
 
 (async () => {
     
-    await viewBookList(1, 9);
+    const pageOption = {
+        url: new URL("ebook/list", BASE_URL).href,
+        urlParams: {
+            limit: 'count',
+            pageNumber: 'page'
+        },
+        dataContainer: grid,
+        dataRenderFn: item => item.data.map(e => { 
+            const imgWidth = 78 * 1.5;
+            const imgHeight = 105 * 1.5;
+            const url = new URL('/ebook/detail/' + e.book_code, BASE_URL);
+            const img = (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
+    
+            return `<div class="col-4 p-2">
+                <a class="card ebook-card flex-row flex-nowrap justify-content-around border-0 shadow-sm" href="${ url.href }"
+                    onmouseover="this.classList.remove('shadow-sm'); this.classList.add('shadow')"
+                    onmouseout="this.classList.remove('shadow'); this.classList.add('shadow-sm')"
+                    style="height: 223px"
+                >
+                    <img width="${imgWidth}" 
+                         height="${imgHeight}" 
+                         src="${ img }"
+                         class="ms-2 my-2" 
+                         onerror="this.src = 'assets/images/ebooks/cover/default.png';"/>
+                    <div class="card-body flex-grow-1">
+                        <p class="title p-0">${e.title}</p>
+                        <p class="fs-14 py-2">${e.category_name}</p>
+                    </div>
+                </a>
+            </div>
+        `}).join(''),
+        perPage: 9,
+        pagingContainer: paginationContainer
+    }
+    
+    new PaginationSystem(pageOption);
 })();
