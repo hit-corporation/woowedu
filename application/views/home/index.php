@@ -239,7 +239,8 @@
 			}) 
 		);
 	
-		var data = <?=json_encode($teacher_status)?>;
+		var Teacherdata = <?=json_encode($teacher_status)?>;
+		console.log(Teacherdata);
 	
 		// Create series
 		var series = chart.series.push(
@@ -259,7 +260,7 @@
 			am5.color(0xbb9f06)
 		]);
 
-		series.data.setAll(data);
+		series.data.setAll(Teacherdata);
 	
 		// Add legend
 		var legend = chart.children.push(am5.Legend.new(root, {

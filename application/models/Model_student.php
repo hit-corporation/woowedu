@@ -105,4 +105,15 @@ class Model_student extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
+	public function download($class = null, $nama = null){
+		if(!empty($nama))
+			$this->db->where('LOWER(student_name) LIKE \'%'.trim(strtolower($nama)).'%\'', NULL, FALSE);
+
+		if(!empty($class))
+			$this->db->where('class_id', $class);
+
+		$this->db->select('s.nis, s.student_name, s.gender, s.address, s.phone, s.email');
+		$this->db->from('student s');
+		return $this->db->get()->result_array();
+	}
 }

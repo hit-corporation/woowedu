@@ -9,6 +9,8 @@ class Student extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('model_student');
 		
+		$this->load->library('xlsxwriter');
+		
 		if (!isset($_SESSION['username'])) redirect('auth/login');
 	}
 
@@ -123,6 +125,58 @@ class Student extends CI_Controller {
 		// create json header	
 		header('Content-Type: application/json');
 		echo json_encode($data);
+	}
+
+	public function download(){
+		$post = $this->input->post();
+
+		$kelas 	= isset($post['kelas']) ? $post['kelas'] : null;
+		$nama 	= isset($post['nama']) ? ($post['nama']) : null;
+
+		$students = $this->model_student->download($kelas, $nama);
+
+		$header2 = array(
+			'NIS'			=>'string',
+			'Nama Murid'	=>'string',
+			'Jenis Kelamin'	=>'string',
+			'Alamat'		=>'string',
+			'Telp'			=>'string',
+			'Email'			=>'string',
+		);
+
+		// FORMAT FILE NAME = LIST_DATA_SISWA_TIMESTAMP
+		$name = 'assets\files\student\LIST_DATA_SISWA_'.date('Ymd-His', time()).'.xlsx';
+		
+		$writer = new xlsxwriter();
+
+		$header_style = array(
+			'widths'		=>array(30,40,30,50,20,10,30),
+			'font'			=>'Arial',
+			'font-size'		=>12, 
+			'wrap_text'		=>true, 
+			'border'		=>'left,right,top,bottom',
+			'border-style'	=>'medium', 
+			'border-color'	=>'#4A8C42', 
+			'valign'		=>'top', 
+			'color'			=>'#FFFFFF', 
+			'fill'			=>'#4A8C42'
+		);
+
+		$writer->writeSheetHeader('Sheet1', $header2, $header_style);	
+		// $writer->writeSheetRow('Sheet1', ['Data Siswa: ']);
+
+		foreach($students as $row)
+			$writer->writeSheetRow('Sheet1', $row );
+		
+		$writer->writeToFile($name);
+		
+		header("Content-Description: File Transfer"); 
+		header("Content-Type: application/octet-stream"); 
+		header("Content-Disposition: attachment; filename=\"".basename($name)."\""); 
+
+		readfile($name);
+		exit(); 
+
 	}
 
 }

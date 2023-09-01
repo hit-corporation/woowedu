@@ -46,7 +46,7 @@
 				</div>
 
 				<div class="col-xl-9 col-lg-8 col-md-7 col-sm-5 col-xs-4" style="text-align: right;">
-					<button class="btn btn-success">Download</button>
+					<button class="btn btn-success" id="download">Download</button>
 				</div>
 			</div>
 
@@ -72,6 +72,8 @@
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="<?=base_url('assets/js/jquery.redirect.js')?>"></script>
+
 <script>
 	$(document).ready(function() {
 		// ISI DATA PILIH KELAS
@@ -153,5 +155,15 @@
 		load_data(pageNumber);
 	}
 
-	// 
+	// DOWNLOAD DATA STUDENT
+	$('#download').click(function (e) { 
+		e.preventDefault();
+
+		$.redirect(BASE_URL+"student/download",
+			{
+				kelas: $('select[name="pilih-kelas"]').val(),
+				nama: $('input[name="nama-siswa"]').val()
+			},
+		"POST", "_blank");
+	});
 </script>
