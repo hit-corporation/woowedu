@@ -18,6 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3><?=$book['title']?></h3>
+                    <p class="fs-14"><?=$book['description']?></p>
                 </div>
             </div>
             
