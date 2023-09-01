@@ -40,9 +40,10 @@ class Model_ebook extends CI_Model {
      * @return array
      */
     public function getByCode(string $code): array {
-        $get = $this->db->select('a.*, b.category_name')
+        $get = $this->db->select('a.*, b.category_name, c.publisher_name')
                         ->where('a.book_code', $code)
                         ->join('categories b', 'a.category_id=b.id')
+                        ->join('publishers c', 'a.publisher_id=c.id')
                         ->get('ebooks a');
         return $get->row_array();
 
