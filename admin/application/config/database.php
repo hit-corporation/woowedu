@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -97,3 +98,5 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
+=======
+>>>>>>> a31d419be625fd677aec64f579ee2969fdc554d0
