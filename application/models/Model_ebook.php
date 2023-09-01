@@ -26,11 +26,19 @@ class Model_ebook extends CI_Model {
         return $get->result_array() ?? [];
     }
 
-    public function get() {
-        $get = $this->db
-        ->select('a.*, b.category_name')
-        ->where()
-        ->join('categories b', 'a.category_id=b.id')->get('ebooks a');
+    /**
+     * get by id
+     *
+     * @return array
+     */
+    public function get($id): array {
+        $get = $this->db->select('a.*, b.category_name, c.publisher_name')
+                        ->where('a.id', $id)
+                        ->join('categories b', 'a.category_id=b.id')
+                        ->join('publishers c', 'a.publisher_id=c.id')
+                        ->get('ebooks a');
+
+        return $get->row_array();
     }
 
     /**

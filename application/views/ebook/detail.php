@@ -16,7 +16,7 @@
         </div>
         <div class="col-12 col-lg-9">
             <div class="card" style="min-height: 60vh">
-                <div class="card-body">
+                <div class="card-body h-100">
                     <h3><?=$book['title']?></h3>
                     <p class="fs-14"><?=$book['description']?></p>
                     <table class="mt-3 table table-sm table-borderless fs-14">
@@ -36,10 +36,11 @@
                             <td><?=$book['isbn']?></td>
                         </tr>
                     </table>
-                    <div class="d-flex flex-nowrap w-100 justify-content-end">
-                        <button class="btn btn-sm btn-primary">Baca</button>
-                    </div>
+                    
                 </div>
+                <div class="card-footer d-flex flex-nowrap w-100 justify-content-end">
+                        <a class="btn btn-sm btn-primary" href="<?=html_escape(base_url('ebook/open_book?id='.$book['id']))?>">Baca</a>
+                    </div>
             </div>
             
         </div>
