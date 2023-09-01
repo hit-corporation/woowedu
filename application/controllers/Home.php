@@ -64,7 +64,16 @@ class Home extends CI_Controller {
 		// 	teacher: 50,
 		// 	student: 95
 		// }];
+		// $countLogin = [];
+		// $bulan = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+		// foreach ($bulan as $key => $value) {
+		// 	$countLogin[$key]['category'] = $value; 
+		// 	$countLogin[$key]['categoryLabel'] = $value;
+		// 	$teacher_login = $this->model_teacher->get_teacher_login_month($key+1);
+		// 	var_dump($teacher_login);
+		// }die;
 
+		// echo (json_encode($countLogin));die;
 		// =============================================================================
 
 		$this->load->view('header');

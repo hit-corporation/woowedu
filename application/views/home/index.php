@@ -29,7 +29,9 @@
 						<div id="guruChart"></div>
 					</div>
 				</div>
-				<div class="col-12 p-2 text-center">
+
+				<!-- SEMENTARA DI HIDE DULU -->
+				<div class="col-12 p-2 text-center d-none">
 					<div class="container border rounded shadow-sm p-3">
 						<span class="mb-2">Total Login bulanan</span>
 						<div id="loginBulananChart"></div>
@@ -204,6 +206,22 @@
 				})
 			});
 		});
+
+		// setting warna
+		series.columns.template.adapters.add("fill", (fill, target) => {
+			return chart.get("colors").getIndex(series.columns.indexOf(target));
+		});
+		
+		series.columns.template.set("fillGradient", am5.LinearGradient.new(root, {
+			stops: [{
+				color: am5.color(0x00FF00),
+				offset: 0.7,
+				brighten: -0.3
+			}, {
+				color: am5.color(0x00FF00)
+			}],
+			rotation: 90
+		}));
 	
 		series.data.setAll(data);
 
@@ -231,6 +249,15 @@
 				categoryField: "country"
 			})
 		);
+
+		// SETTING WARNA
+		series.get("colors").set("colors", [
+			am5.color(0x0062FF),
+			am5.color(0xFF0000),
+			am5.color(0x5aaa95),
+			am5.color(0x86a873),
+			am5.color(0xbb9f06)
+		]);
 
 		series.data.setAll(data);
 	

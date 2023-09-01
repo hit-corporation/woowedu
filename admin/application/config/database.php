@@ -74,16 +74,17 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '', 
-	'hostname' => 'localhost',
+	'dsn'	=> '',
+	// 'hostname' => '192.168.1.150',
+	'hostname' => 'pgsql:host=192.168.1.150;port=65432;dbname=woowedu',
 	'username' => 'postgres',
-	'password' => 'postgroow', 
-	'database' => 'incerdb',
-	'port'		=> '65432', 
-	'dbdriver' => 'postgre',
+	'password' => 'postgroow',
+	'database' => 'woowedu',
+	// 'dbdriver' => 'mysqli',
+	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => TRUE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
@@ -95,3 +96,4 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
