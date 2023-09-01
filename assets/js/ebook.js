@@ -212,7 +212,7 @@ const getBooks = async (page, count) => {
         dataRenderFn: item => item.data.map(e => { 
             const imgWidth = 78 * 1.5;
             const imgHeight = 105 * 1.5;
-            const url = new URL('/ebook/detail/' + e.book_code, BASE_URL);
+            const url = new URL('/ebook/detail/' + e.id, BASE_URL);
             const img = (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
     
             return `<div class="col-4 p-2">
