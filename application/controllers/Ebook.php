@@ -67,7 +67,14 @@ class Ebook extends CI_Controller {
 		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 	}
 
-	public function getOne() {}
+	/**
+	 * Start read a book
+	 *
+	 * @return void
+	 */
+	public function openBook(): void {
+		$transcode = strtoupper(bin2hex(random_bytes(8)));
+	}
 
 
 	public function history(){
