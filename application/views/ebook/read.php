@@ -117,8 +117,8 @@
 </div>
     <!-- async -->
 
-    <script src="<?=html_escape('assets/js/libs/pdfjs-dist/build/pdf.min.js')?>"></script>
-    <script src="<?=html_escape('assets/js/libs/pdfjs-dist/web/pdf_viewer.js')?>"></script>
+    <script src="<?=html_escape('assets/node_modules/pdfjs-dist/build/pdf.min.js')?>"></script>
+    <script src="<?=html_escape('assets/node_modules/pdfjs-dist/web/pdf_viewer.js')?>"></script>
     <script defer>
         const main = document.getElementById('main-content'),
               BASE_URL = document.querySelector('base').href,
@@ -271,7 +271,7 @@
                 time = setTimeout(() => {
                     window.location.href = BASE_URL + 'ebook/close_book?id=<?=$_GET['id']?>';
                     
-                }, seconds * 1000);
+                }, 86400);
             }
         }
 
