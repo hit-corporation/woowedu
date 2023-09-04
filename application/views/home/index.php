@@ -20,7 +20,7 @@
 				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 p-2 text-center">
 					<div class="container border rounded shadow-sm p-3">
 						<span class="mb-2">Murid perkelas</span>
-						<div id="muridPerKelas"></div>
+						<canvas id="muridPerKelas"></canvas>
 					</div>
 				</div>
 				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 p-2 text-center">
@@ -143,11 +143,12 @@
 	</div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 	$(document).ready(function () {
 		let userLevel = <?=$user_level?>;
 		if(userLevel == 6){
-			muridPerKelas();
 			guruChart();
 		}
 	});
@@ -155,77 +156,55 @@
 
 <!-- CHART MURID PER KELAS -->
 <script>
-	function muridPerKelas(){
-		// Create root and chart
-		var root = am5.Root.new("muridPerKelas");  
-		root.setThemes([ am5themes_Animated.new(root) ]); 
-		var chart = root.container.children.push( 
-			am5xy.XYChart.new(root, { panY: false, wheelY: "zoomX", layout: root.verticalLayout }) 
-		);
-	
-		var data = <?=json_encode($student_class)?>;
-	
-		// Craete Y-axis
-		var yAxis = chart.yAxes.push(
-			am5xy.ValueAxis.new(root, {
-				extraTooltipPrecision: 1,
-				renderer: am5xy.AxisRendererY.new(root, {})
-			})
-		);
-	
-		// CREATE XAXIS
-		var xAxis = chart.xAxes.push(
-			am5xy.CategoryAxis.new(root, {
-				categoryField: "category",
-				renderer: am5xy.AxisRendererX.new(root, {})
-			})
-		);
-	
-		xAxis.data.setAll(data);
-	
-		var series = chart.series.push(
-			am5xy.ColumnSeries.new(root, {
-				name: "Series",
-				xAxis: xAxis,
-				yAxis: yAxis,
-				valueYField: "value",
-				categoryXField: "category"
-			})
-		);
+	const ctx = document.getElementById('muridPerKelas');
+	let dataMurid = <?=json_encode($student_class)?>;
 
-		// label angka yang ada di tengah bar
-		series.bullets.push(function () {
-			return am5.Bullet.new(root, {
-			locationY: 0.5,
-			sprite: am5.Label.new(root, {
-					text: "{valueY}",
-					fill: root.interfaceColors.get("alternativeText"),
-					centerY: am5.p50,
-					centerX: am5.p50,
-					populateText: true
-				})
-			});
-		});
+	let labels 		= [];
+	let jumlahMurid = [];
 
-		// setting warna
-		series.columns.template.adapters.add("fill", (fill, target) => {
-			return chart.get("colors").getIndex(series.columns.indexOf(target));
-		});
-		
-		series.columns.template.set("fillGradient", am5.LinearGradient.new(root, {
-			stops: [{
-				color: am5.color(0x00FF00),
-				offset: 0.7,
-				brighten: -0.3
-			}, {
-				color: am5.color(0x00FF00)
-			}],
-			rotation: 90
-		}));
-	
-		series.data.setAll(data);
+	$.each(dataMurid, function (i, val) { 
+		 labels.push(val.class_name);
+		 jumlahMurid.push(val.value);
+	});
 
-	}
+	new Chart(ctx, {
+		type: 'bar',
+		data: {
+			// labels: ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2'],
+			labels: labels,
+			datasets: [
+					{
+						label: 'Kelas',
+						// data: [35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25],
+						data: jumlahMurid,
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.9)',
+							'rgba(255, 159, 64, 0.9)',
+							'rgba(255, 205, 86, 0.9)',
+							'rgba(75, 192, 192, 0.9)',
+							'rgba(54, 162, 235, 0.9)',
+							'rgba(153, 102, 255, 0.9)',
+							'rgba(201, 203, 207, 0.9)',
+							'rgba(255, 99, 132, 0.9)',
+							'rgba(255, 159, 64, 0.9)',
+							'rgba(255, 205, 86, 0.9)',
+							'rgba(75, 192, 192, 0.9)',
+							'rgba(54, 162, 235, 0.9)',
+							'rgba(153, 102, 255, 0.9)',
+							'rgba(201, 203, 207, 0.9)'
+						],
+						borderWidth: 1
+					}
+				]
+		},
+		options: {
+			scales: {
+			y: {
+				beginAtZero: true
+			}
+			}
+		}
+	});
 </script>
 
 <!-- CHART GURU -->
@@ -240,7 +219,6 @@
 		);
 	
 		var Teacherdata = <?=json_encode($teacher_status)?>;
-		console.log(Teacherdata);
 	
 		// Create series
 		var series = chart.series.push(
