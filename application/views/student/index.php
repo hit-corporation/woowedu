@@ -21,6 +21,12 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="col-xl-10 col-lg-10 col-md-9 col-sm-9 col-xs-12">
+					<div>
+						<canvas id="myChart"></canvas>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -73,6 +79,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="<?=base_url('assets/js/jquery.redirect.js')?>"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -165,5 +172,58 @@
 				nama: $('input[name="nama-siswa"]').val()
 			},
 		"POST", "_blank");
+	});
+</script>
+
+<!-- CHART MURID PER KELAS -->
+<script>
+	const ctx = document.getElementById('myChart');
+	let data = <?=json_encode($kelas)?>;
+
+	let labels 		= [];
+	let jumlahMurid = [];
+
+	$.each(data, function (i, val) { 
+		 labels.push(val.class_name);
+		 jumlahMurid.push(val.value);
+	});
+
+	new Chart(ctx, {
+		type: 'bar',
+		data: {
+			// labels: ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2'],
+			labels: labels,
+			datasets: [
+					{
+						label: 'Kelas',
+						// data: [35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25],
+						data: jumlahMurid,
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.9)',
+							'rgba(255, 159, 64, 0.9)',
+							'rgba(255, 205, 86, 0.9)',
+							'rgba(75, 192, 192, 0.9)',
+							'rgba(54, 162, 235, 0.9)',
+							'rgba(153, 102, 255, 0.9)',
+							'rgba(201, 203, 207, 0.9)',
+							'rgba(255, 99, 132, 0.9)',
+							'rgba(255, 159, 64, 0.9)',
+							'rgba(255, 205, 86, 0.9)',
+							'rgba(75, 192, 192, 0.9)',
+							'rgba(54, 162, 235, 0.9)',
+							'rgba(153, 102, 255, 0.9)',
+							'rgba(201, 203, 207, 0.9)'
+						],
+						borderWidth: 1
+					}
+				]
+		},
+		options: {
+			scales: {
+			y: {
+				beginAtZero: true
+			}
+			}
+		}
 	});
 </script>

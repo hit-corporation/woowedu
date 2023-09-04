@@ -15,8 +15,14 @@ class Student extends CI_Controller {
 	}
 
 	public function index(){
+		$kelas = $this->db->get('kelas')->result_array();
+		foreach ($kelas as $key => $value) {
+			$rowStudent = $this->db->where('class_id', $value['class_id'])->get('student')->num_rows();
+			$kelas[$key]['value'] = ($rowStudent) ? $rowStudent : 0;
+		}
+
 		$this->load->view('header');
-		$this->load->view('student/index');
+		$this->load->view('student/index', ['kelas'=>$kelas]);
 		$this->load->view('footer');
 	}
 
