@@ -17,7 +17,7 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
                         
-        <link href="<?=base_url('assets/css/bootstrap.css')?>" rel="stylesheet">
+        <link href="<?=base_url('assets/css/bootstrap.min.css')?>" rel="stylesheet">
 
         <link href="<?=base_url('assets/css/bootstrap-icons.css')?>" rel="stylesheet">
         <link href="<?=base_url('assets/css/custom.css')?>" rel="stylesheet">

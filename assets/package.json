@@ -2,5 +2,9 @@
   "dependencies": {
     "pagination-system": "^2.0.2",
     "pdfjs-dist": "^3.10.111"
+  },
+  "devDependencies": {
+    "node-sass": "^9.0.0",
+    "sass": "^1.66.1"
   }
 }
