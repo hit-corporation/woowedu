@@ -34,3 +34,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 /assets/node_modules/
 /assets/package-lock.json
+
+/admin/application/logs/*
+/admin/application/session/*

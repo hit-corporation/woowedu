@@ -146,7 +146,7 @@
         
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/node_modules/pdfjs-dist/build/pdf.worker.min.js';
 
-        const pdfLoad = pdfjsLib.getDocument("<?=html_escape(base_url('assets/files/books/'.$book['file_1']))?>");
+        const pdfLoad = pdfjsLib.getDocument("<?=html_escape(base_url('assets/files/ebooks/'.$book['file_1']))?>");
 
         // render pdf by pages
         const PdfPage = numPage => {
@@ -269,7 +269,7 @@
                 document.activeElement.focus();
                 clearTimeout(time);
                 time = setTimeout(() => {
-                    window.location.href = BASE_URL + 'book/close_book?id=<?=$_GET['id']?>';
+                    window.location.href = BASE_URL + 'ebook/close_book?id=<?=$_GET['id']?>';
                     
                 }, seconds * 1000);
             }
@@ -281,10 +281,10 @@
            
             // check history
             if (window.history && window.history.pushState)
-                window.history.pushState('forward', null, './book/read_book?id=<?=$_GET['id']?>');
+                window.history.pushState('forward', null, './ebook/read_book?id=<?=$_GET['id']?>');
             // redirect after cookie has expired
             setTimeout(() => {
-                window.location.href = BASE_URL + 'book/close_book?id=<?=$_GET['id']?>&last-page=' + currentPageText.value;
+                window.location.href = BASE_URL + 'ebook/close_book?id=<?=$_GET['id']?>&last-page=' + currentPageText.value;
             }, (expired - Date.now()));
             // idle time 
             idleLogout();
@@ -292,7 +292,7 @@
 
         // back to page before
         document.getElementById('last-page').addEventListener('click', e => {
-            e.target.href =  window.location.href = BASE_URL + 'book/close_book?id=<?=$_GET['id']?>&last-page=' + currentPageText.value;
+            e.target.href =  window.location.href = BASE_URL + 'ebook/close_book?id=<?=$_GET['id']?>&last-page=' + currentPageText.value;
         });
        
     </script>

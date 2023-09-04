@@ -3,13 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ebook extends CI_Controller {
 
+	private $settings;
+
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->library('session');
-		$this->load->model('model_ebook');
+		$this->load->model(['model_ebook', 'model_settings', 'transaction_model']);
 		
 		if (!isset($_SESSION['username'])) redirect('auth/login');
+
+		$this->settings = json_decode(json_encode($this->model_settings->get_settings()), TRUE);
 	}
 
 	public function index(){
@@ -67,6 +71,12 @@ class Ebook extends CI_Controller {
 		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 	}
 
+	public function test() {
+		echo '<pre>';
+		print_r($this->settings);
+		echo '</pre>';
+	}
+
 	/**
 	 * Start read a book
 	 *
@@ -75,7 +85,7 @@ class Ebook extends CI_Controller {
 	public function open_book(): void {
 		$id = $this->input->get('id');
 		// only active member that can read the book
-		if (!isset($_SESSION['user']) && empty($_SESSION['user']['user_name'])) {
+		if (!isset($_SESSION['logged_in']) && empty($_SESSION['username'])) {
 			$data['heading'] = 'PERINGATAN';
 			$data['message'] = '<p>Halaman hanya di peruntukan untuk anggota aktif. Silahkan login terlebih dahulu !!!' .
 				'<br/> <a href="' . $_SERVER['HTTP_REFERER'] . '">Kembali</a></p>';
@@ -87,7 +97,7 @@ class Ebook extends CI_Controller {
 		// set cookie for reading time limit and idle time limit
 		$cookie_option = [
 			'expires'	=> strtotime('+' . $this->settings['limit_idle_value'] . ' ' . $this->settings['limit_idle_unit']),
-			'path'		=> '/ebook',
+			'path'		=> '/',
 			'samesite'	=> 'Lax'
 		];
 
@@ -95,20 +105,20 @@ class Ebook extends CI_Controller {
 			setcookie('read_book', base64_encode(json_encode(['key' => $transcode, 'expired' => date('Y-m-d H:i:s', $cookie_option['expires'])])), $cookie_option);
 
 		// get latest transaction book
-		$latest_transaction = $this->transaction_model->get_latest_transaction($id, $_SESSION['user']['id']);
+		// $latest_transaction = $this->transaction_model->get_latest_transaction($id, $_SESSION['userid']);
 
 		$insert = [
 			'trans_code' 	=> $transcode,
 			'start_time' 	=> date('Y-m-d H:i:s.u'),
-			'member_id' 	=> $_SESSION['user']['id'],
+			'member_id' 	=> $_SESSION['userid'],
 			'book_id'		=> $id,
 			// 'config_idle'	=> $this->settings['limit_idle_value'].' '.$this->settings['limit_idle_unit'],
 			// 'config_borrow_limit' => $this->settings['max_allowed'],
 			// 'end_time'		=> isset($latest_transaction['end_time']) ? $latest_transaction['end_time'] : date('Y-m-d H:i:s.u', strtotime('+'.$this->settings['due_date_value'].' '.$this->settings['due_date_unit'])),
 		];
 
-		$book = $this->db->get_where('ebooks', ['id' => $id])->row_array();
-		$url = base_url('ebook/detail/'.$book['book_code']);
+		// $book = $this->db->get_where('ebooks', ['id' => $id])->row_array();
+		// $url = base_url('ebook/detail/'.$book['book_code']);
 
 		if($this->db->insert('read_log', $insert))
 			$url = base_url('ebook/read_book?id=' . $id);
@@ -132,9 +142,33 @@ class Ebook extends CI_Controller {
 			return;
 		}
 
-		$data['book'] = $this->book_model->get_one($id);
+		$data['book'] = $this->model_ebook->get($id);
 		$data['setting'] = $this->settings;
-		$this->load->view('book/read', $data);
+		$this->load->view('ebook/read', $data);
+	}
+
+		/**
+	 * Closing after read book
+	 *
+	 * @return void
+	 */
+	public function close_book(): void
+	{
+		$id = $this->input->get('id');
+		$lastPage = $this->input->get('last-page');
+		$cookie = json_decode(base64_decode($_COOKIE['read_book']), TRUE);
+
+		$update = [
+			'trans_code' => $cookie['key'],
+			'book_id'  => $id,
+			'end_time' => date('Y-m-d H:i:s.u'),
+			'last_page'	=> $lastPage
+		];
+
+		$this->db->update('read_log', $update, ['trans_code' => trim($cookie['key'])]);
+
+		setcookie('read_book', NULL, time() - 1000);
+		redirect('ebook/detail/' . $id);
 	}
 
 

@@ -7,13 +7,14 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Book extends MY_Controller
 {
+	private $settings;
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model(['book_model', 'kategori_model', 'publisher_model']);
-		$this->load->library('form_validation');
-
+		$this->load->model(['book_model', 'kategori_model', 'publisher_model', 'model_settings']);
+		$this->load->library(['form_validation']);
+		$this->settings = $this->model_settings->get_settings();
 	}
 
 	/**
@@ -23,7 +24,8 @@ class Book extends MY_Controller
 	 */
 	public function index()
 	{
-		echo $this->template->render('index');
+
+		$this->template->load('template', 'book/index');
 	}
 	
 	/**
