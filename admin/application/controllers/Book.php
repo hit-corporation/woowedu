@@ -31,6 +31,7 @@ class Book extends MY_Controller
 
 		$data['page_js'] = [
 			['path' => 'assets/node_modules/jstree/dist/jstree.min.js', 'defer' => true],
+			['path' => 'assets/node_modules/@selectize/selectize/dist/js/selectize.min.js', 'defer' => true],
 			['path' => 'assets/new/js/pages/book.js', 'defer' => true],
 		];
 
