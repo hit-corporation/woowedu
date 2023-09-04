@@ -283,11 +283,11 @@
             if (window.history && window.history.pushState)
                 window.history.pushState('forward', null, './ebook/read_book?id=<?=$_GET['id']?>');
             // redirect after cookie has expired
-            setTimeout(() => {
-                window.location.href = BASE_URL + 'ebook/close_book?id=<?=$_GET['id']?>&last-page=' + currentPageText.value;
-            }, (expired - Date.now()));
+            // setTimeout(() => {
+            //     window.location.href = BASE_URL + 'ebook/close_book?id=<?=$_GET['id']?>&last-page=' + currentPageText.value;
+            // }, (expired - Date.now()));
             // idle time 
-            idleLogout();
+            //idleLogout();
         });
 
         // back to page before
