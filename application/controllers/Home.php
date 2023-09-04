@@ -20,7 +20,13 @@ class Home extends CI_Controller {
 		$username 				= $this->session->userdata('username');
 		$user 					= $this->db->where('username', $username)->get('users')->row_array();
 
-		$data['student_class'] 	= ($user['user_level'] == 6) ? $this->model_student->get_student_class($username) : [];
+		$kelas = $this->db->get('kelas')->result_array();
+		foreach ($kelas as $key => $value) {
+			$rowStudent = $this->db->where('class_id', $value['class_id'])->get('student')->num_rows();
+			$kelas[$key]['value'] = ($rowStudent) ? $rowStudent : 0;
+		}
+
+		$data['student_class'] 	= $kelas;
 		$data['tasks'] 			= $this->model_task->get_tasks($username);
 		$data['news']			= $this->model_news->get_news();
 
