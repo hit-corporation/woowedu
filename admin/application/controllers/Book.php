@@ -7,13 +7,13 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Book extends MY_Controller
 {
-	private $settings;
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model(['book_model', 'kategori_model', 'publisher_model', 'model_settings']);
 		$this->load->library(['form_validation']);
+		$this->load->helper('assets');
 		$this->settings = $this->model_settings->get_settings();
 	}
 
@@ -24,8 +24,17 @@ class Book extends MY_Controller
 	 */
 	public function index()
 	{
+		$data['page_css'] = [
+			'assets/node_modules/@selectize/selectize/dist/css/selectize.bootstrap4.css',
+			'assets/node_modules/jstree/dist/themes/default/style.min.css'
+		];
 
-		$this->template->load('template', 'book/index');
+		$data['page_js'] = [
+			['path' => 'assets/node_modules/jstree/dist/jstree.min.js', 'defer' => true],
+			['path' => 'assets/new/js/pages/book.js', 'defer' => true],
+		];
+
+		$this->template->load('template', 'book/index', $data);
 	}
 	
 	/**

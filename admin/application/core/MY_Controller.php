@@ -3,6 +3,8 @@
 class MY_Controller extends CI_Controller 
 {
 
+	protected $settings;
+
 	public function __construct()
 	{
 		parent::__construct();

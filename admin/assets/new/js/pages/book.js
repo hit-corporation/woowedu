@@ -5,6 +5,7 @@ const formSearch = document.forms['form-search'];
 const form = document.forms['form-input'],
 display = document.querySelector('#ul-display'),
 imgCover = document.getElementById('img-cover');
+const BASE_URL = document.querySelector('base').href;
 
 // get all Categories
 const getCategories = async () => {
@@ -40,7 +41,7 @@ const getBooks = async () => {
 
     try
     {
-        const f = await fetch(`${BASE_URL}book/get_all`);
+        const f = await fetch(`${BASE_URL}/admin/book/get_all`);
         const j = await f.json();
 
         return j;
@@ -128,7 +129,7 @@ const getBooks = async () => {
 			serverSide: true,
 			processing: true,
 			ajax: {
-				url: BASE_URL + 'book/get_all_paginated'
+				url: BASE_URL + 'admin/book/get_all_paginated'
 			},
 			columns: [
 				{
@@ -190,12 +191,6 @@ const getBooks = async () => {
                     visible: false
 				},
 				{
-					data: 'rack_no',
-					className: 'align-middle',
-					width: '55px',
-                    visible: false
-				},
-				{
 					data: null,
 					className: 'align-middle',
 					render(data, type, row, _meta)
@@ -233,6 +228,13 @@ const getBooks = async () => {
         $('#modal-show').modal('show');
     });
 
+    // file
+    document.getElementById('input-file1').addEventListener('change', e => {
+        const berkas = new Object(e.target.files[0]);
+        
+        document.querySelector('label[for="input-file1"]').innerText = berkas.name;
+    });
+
     // reset
     form.addEventListener('reset', e => {
         e.preventDefault();
@@ -242,7 +244,7 @@ const getBooks = async () => {
     // add data
     document.getElementById('btn-add').addEventListener('click', e => {
          // reset form
-         form.action = BASE_URL + 'book/store';
+         form.action = BASE_URL + 'admin/book/store';
          resetForm();
     });
 
@@ -251,7 +253,7 @@ const getBooks = async () => {
         var row = table.row(e.target.parentNode.closest('tr')).data();
 
         // reset form
-        form.action = BASE_URL + 'book/edit';
+        form.action = BASE_URL + 'admin/book/edit';
         resetForm();
 
         form['book-id'].value = row.id;
