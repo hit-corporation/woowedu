@@ -81,10 +81,58 @@ class Teacher extends CI_Controller {
 
 	public function get_summary(){
 		$post 				= $this->input->post();
-		$class_id 			= $this->db->where('student_id', $post['student_id'])->get('student')->row_array()['class_id'];
-		$data['total_exam']	= $this->model_teacher->get_total_exam($class_id, $post['start'], $post['end']);
-		$data['total_task'] = $this->model_teacher->get_total_task($class_id, $post['start'], $post['end']);
+		$data['total_exam']	= $this->model_teacher->get_total_exam($post['teacher_id'], $post['start'], $post['end']);
+		$data['total_task'] = $this->model_teacher->get_total_task($post['teacher_id'], $post['start'], $post['end']);
 
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function get_exam(){
+		$get = $this->input->get();
+		$page 		= isset($get['page']) ? (int)$get['page'] : 1;
+		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 3;
+
+		$page = ($page - 1) * $limit;
+
+		$data['data']	= $this->model_teacher->get_exam($limit, $page, $get['teacher_id']);
+
+		$i = 0;
+		foreach($data['data'] as $key => $val){
+			$exam = $this->db->where('exam_id', $val['exam_id'])->where('teacher_id', $get['teacher_id'])->get('exam_student')->row_array();
+			$data['data'][$i]['exam_total_nilai'] = ($exam) ? $exam['exam_total_nilai'] : '';
+			$data['data'][$i]['exam_submit'] = ($exam) ? $exam['exam_submit'] : '';
+			$i++;
+		}
+
+		$data['total_records'] 	= $this->model_teacher->get_total_row_exam($get['teacher_id']);
+		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function get_task(){
+		$get = $this->input->get();
+		$page 		= isset($get['page']) ? (int)$get['page'] : 1;
+		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 3;
+
+		$page = ($page - 1) * $limit;
+
+		$data['data']	= $this->model_teacher->get_task($limit, $page, $get['teacher_id']);
+		$i = 0;
+		foreach($data['data'] as $key => $val){
+			$task = $this->db->where('task_id', $val['task_id'])->where('teacher_id', $get['teacher_id'])->get('task')->row_array();
+			$data['data'][$i]['task_file_answer'] = ($task) ? $task['task_file'] : '';
+			$data['data'][$i]['task_submit'] = ($task) ? $task['task_submit'] : '';
+			$i++;
+		}
+
+		$data['total_records'] 	= $this->db->where('teacher_id', $get['teacher_id'])->get('task')->num_rows();
+		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+
+		// create json header	
 		header('Content-Type: application/json');
 		echo json_encode($data);
 	}
