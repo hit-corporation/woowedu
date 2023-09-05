@@ -30,13 +30,13 @@
 			</div>
 		</div>
 
-		<div class="row mt-3">
+		<!-- <div class="row mt-3">
 			<div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12">
 				<select class="pilih-kelas form-control" name="pilih-kelas">
 					<option value="">Semua Kelas</option>
 				</select>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="container border rounded p-4 mt-3">
 			<h6 class="total-data"></h6>
@@ -77,21 +77,21 @@
 	</div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
 <script src="<?=base_url('assets/js/jquery.redirect.js')?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 	$(document).ready(function() {
 		// ISI DATA PILIH KELAS
-		$.get(BASE_URL+'teacher/get_class', function(data){
-			$.each(data, function (i, val) { 
-				 $('select[name="pilih-kelas"]').append(`<option value="${val.class_id}">${val.class_name}</option>`);
-			});
+		// $.get(BASE_URL+'teacher/get_class', function(data){
+		// 	$.each(data, function (i, val) { 
+		// 		 $('select[name="pilih-kelas"]').append(`<option value="${val.class_id}">${val.class_name}</option>`);
+		// 	});
 
-		});
+		// });
 
-		$('.pilih-kelas').select2();
+		// $('.pilih-kelas').select2();
 
 		// ISI DATA TOTAL GURU AKTIF
 		$.get(BASE_URL+'teacher/get_total', function(data){
@@ -109,31 +109,29 @@
 
 	// create function load data
 	function load_data(page = 1, limit = 10){
-		let kelas = $('select[name="pilih-kelas"]').val();
-		let namaSiswa = $('input[name="nama-siswa"]').val();
+		let namaGuru = $('input[name="nama-siswa"]').val();
 
 		$.ajax({
 			type: "GET",
-			url: BASE_URL+"student/search",
+			url: BASE_URL+"teacher/search",
 			data: {
 				page: page,
 				limit: limit,
 				filter: {
-					kelas: kelas,
-					namaSiswa: namaSiswa
+					namaGuru: namaGuru
 				}
 			},
 			success: function (response) {
 				$('.total-data').text(response.total_records + ' Siswa');
 
 				$('#table-body-content').html('');
-				$.each(response.students, function (key, value){
+				$.each(response.data, function (key, value){
 					$('#table-body-content').append(`
 						<tr class="bg-clear">
-							<td>${value.student_name}</td>
+							<td>${value.teacher_name}</td>
 							<td>${(value.email != null) ? value.email : ''}</td>
-							<td>${(value.ta_aktif == 1) ? 'aktif' : 'tidak aktif'}</td>
-							<td class="btn-eye"><a href="${BASE_URL+'student/detail/'+value.student_id}"><i class="bi bi-eye"></i></a></td>
+							<td>${(value.status == 1) ? 'aktif' : 'tidak aktif'}</td>
+							<td class="btn-eye"><a href="${BASE_URL+'teacher/detail/'+value.teacher_id}"><i class="bi bi-eye"></i></a></td>
 						</tr>
 					`);
 				});
@@ -166,9 +164,8 @@
 	$('#download').click(function (e) { 
 		e.preventDefault();
 
-		$.redirect(BASE_URL+"student/download",
+		$.redirect(BASE_URL+"teacher/download",
 			{
-				kelas: $('select[name="pilih-kelas"]').val(),
 				nama: $('input[name="nama-siswa"]').val()
 			},
 		"POST", "_blank");
