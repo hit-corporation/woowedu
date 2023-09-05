@@ -74,7 +74,7 @@
 					
 				</div>
 				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
-					<table class="table-rounded">
+					<table class="table-rounded w-100">
 						<thead>
 							<tr>
 								<th>Nama Tugas</th>
@@ -122,11 +122,11 @@
 
 <script>
 	var currentPage = 1;
-	var student_id 	= <?=$detail['teacher_id']?>;
+	var teacher_id 	= <?=$detail['teacher_id']?>;
 	let startDate 	= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
 	let endDate		= moment().startOf('day').format('YYYY-MM-DD');
 
-	getSummary(student_id, startDate, endDate);
+	getSummary(teacher_id, startDate, endDate);
 
 	$(document).ready(function () {
 		$('input[name="daterange"]').daterangepicker({
@@ -143,18 +143,18 @@
 			}, function(start, end, label) {
 				console.log(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 
-				getSummary(student_id, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+				getSummary(teacher_id, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
 			}
 		);
 	});
 
 	// FUNGSI UNTUK UBAH DATA CONTENT SUMMARY
-	function getSummary(student_id, start, end){
+	function getSummary(teacher_id, start, end){
 		$.ajax({
 			type: "POST",
 			url: BASE_URL+"teacher/get_summary",
 			data: {
-				student_id, student_id,
+				teacher_id, teacher_id,
 				start: start,
 				end: end
 			},
@@ -167,14 +167,14 @@
 	}
 
 	// FUNGSI UNTUK ISI LIST DATA TUGAS
-	function getTask(page = 1, limit = 10, student_id){
+	function getTask(page = 1, limit = 10, teacher_id){
 		$.ajax({
 			type: "GET",
-			url: BASE_URL+"student/get_task",
+			url: BASE_URL+"teacher/get_task",
 			data: {
 				page: page,
 				limit: limit,
-				student_id: student_id
+				teacher_id: teacher_id
 			},
 			success: function (response) {
 				$('#tugas-body-content').html('');
@@ -209,14 +209,14 @@
 	}
 
 	// FUNGSI UNTUK ISI LIST DATA EXAM
-	function getExam(page = 1, limit = 10, student_id){
+	function getExam(page = 1, limit = 10, teacher_id){
 		$.ajax({
 			type: "GET",
-			url: BASE_URL+"student/get_exam",
+			url: BASE_URL+"teacher/get_exam",
 			data: {
 				page: page,
 				limit: limit,
-				student_id: student_id
+				teacher_id: teacher_id
 			},
 			success: function (response) {
 				$('#exam-body-content').html('');
@@ -251,25 +251,25 @@
 
 	// JIKA nav-tugas-tab DI KLIK
 	$('#nav-tugas-tab').on('click', function(){
-		getTask(1, 10, student_id);
+		getTask(1, 10, teacher_id);
 	});
 
 	// JIKA PAGE NUMBER DI KLIK
 	function page(pageNumber, e){
 		e.preventDefault();
 		currentPage = pageNumber;
-		getTask(pageNumber, 10, student_id);
+		getTask(pageNumber, 10, teacher_id);
 	}
 
 	// JIKA PAGE NUMBER 2 DI KLIK
 	function page2(pageNumber, e){
 		e.preventDefault();
 		currentPage = pageNumber;
-		getExam(pageNumber, 10, student_id);
+		getExam(pageNumber, 10, teacher_id);
 	}
 
 	// JIKA nav-ujian-tab DI KLIK
 	$('#nav-ujian-tab').on('click', function(){
-		getExam(1, 10, student_id);
+		getExam(1, 10, teacher_id);
 	});
 </script>
