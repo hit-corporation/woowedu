@@ -85,7 +85,7 @@
             <nav class="navbar navbar-expand-lg">
                 <div class="container">
                     <a class="navbar-brand pt-0" href="#">
-                        <img src="<?= base_url('assets/images/logo-small-in.png') ?>" alt="" width="120">
+                        <img src="<?= base_url('assets/images/logo-small-in2.png') ?>" alt="" width="120">
                     </a>
 
                     <div class="d-lg-none ms-auto me-4">
