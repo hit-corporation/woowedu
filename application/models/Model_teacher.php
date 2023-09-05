@@ -82,4 +82,11 @@ class Model_teacher extends CI_Model {
 		$this->db->where('e.teacher_id', $teacher_id);
 		return $this->db->get()->num_rows();
 	}
+
+	public function get_all_task_by_date($sekolah_id, $date){
+		$this->db->where('DATE(t.available_date)', $date);
+		$this->db->where('tc.sekolah_id', $sekolah_id);
+		$this->db->join('teacher tc', 'tc.teacher_id = t.teacher_id');
+		return $this->db->get('task t');
+	}
 }

@@ -15,20 +15,32 @@ class Teacher extends CI_Controller {
 	}
 
 	public function index(){
-		// $begin = new DateTime('2010-05-01');
-		// $end = new DateTime('2010-05-10');
-
-		// $interval = DateInterval::createFromDateString('1 day');
-		// $period = new DatePeriod($begin, $interval, $end);
-
-		// foreach ($period as $dt) {
-		// 	echo $dt->format("Y-m-d\n");
-		// }
-
-
 		$this->load->view('header');
 		$this->load->view('teacher/index');
 		$this->load->view('footer');
+	}
+
+	public function get_task_chart(){
+		$sekolah_id = $this->session->userdata('sekolah_id');
+
+		$post = $this->input->post();
+
+		$start = new DateTime($post['start']);
+		$end = new DateTime($post['end']);
+		$end = $end->modify('+1 day');
+
+		$interval = DateInterval::createFromDateString('1 day');
+		$period = new DatePeriod($start, $interval, $end);
+
+		$data = [];
+		foreach ($period as $key => $dt) {
+			$data[$key]['tanggal'] 	= $dt->format("Y-m-d");
+			$hasil 	= $this->model_teacher->get_all_task_by_date($sekolah_id, $dt->format("Y-m-d"))->num_rows();
+			$data[$key]['value'] 	= ($hasil) ? $hasil : 0;
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($data);
 	}
 
 	public function get_total(){

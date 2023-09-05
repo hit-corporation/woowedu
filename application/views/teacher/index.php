@@ -23,8 +23,26 @@
 				</div>
 
 				<div class="col-xl-10 col-lg-10 col-md-9 col-sm-9 col-xs-12">
-					<div>
-						<canvas id="myChart"></canvas>
+					<!-- chart by date range content -->
+					<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-3 h-100">
+						<div class="card border rounded p-3 data-by-date h-100">
+							<input class="border-width-1 rounded-lg ml-3"  style="height: 40px; text-align:center; border-color: rgba(0, 0, 255, 0.3);" type="text" name="daterange" 
+								value="<?php 
+								if(isset($start)){ 
+									echo date('m/d/Y', strtotime($start));
+								} else { 
+									echo date('m', time()).'//1//'.date('Y', time()); 
+								}?> - <?php 
+								if(isset($end)){ 
+									echo date('m/d/Y', strtotime($end)); 
+								}else{ 
+									echo date('m/d/Y', time()); 
+								}?>" />
+
+							<div class="row data-content mt-4 justify-content-center">
+								<canvas id="myChart"></canvas>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -80,6 +98,9 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
 <script src="<?=base_url('assets/js/jquery.redirect.js')?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -97,7 +118,47 @@
 		$.get(BASE_URL+'teacher/get_total', function(data){
 			$('.stat-number').text(data.total_row);
 		});
+
+		// INPUT DATE RANGE
+		$('input[name="daterange"]').daterangepicker({
+			opens: 'right',
+			minYear: 2000,
+			maxYear: 2025,
+			showDropdowns: true,
+			ranges: {
+					'Today': [moment().startOf('day'), moment().endOf('day')],
+					'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+					'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+					'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+				}
+			}, function(start, end, label) {
+				// console.log(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+				$('#myChart').html('');
+				getLineChart(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+			}
+		);
+		
 	});
+
+	let startDate 	= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
+	let endDate		= moment().startOf('day').format('YYYY-MM-DD');
+
+	// FUNGSI UNTUK UBAH DATA LINE CHART
+	function getLineChart(start, end){
+		$.ajax({
+			type: "POST",
+			url: BASE_URL+"teacher/get_task_chart",
+			data: {
+				start: start,
+				end: end
+			},
+			dataType: "JSON",
+			success: function (response) {
+				drawLineChart(response);
+			}
+		});
+	}
+	
 
 	var currentPage = 1;
 	load_data(1,10);
@@ -122,7 +183,7 @@
 				}
 			},
 			success: function (response) {
-				$('.total-data').text(response.total_records + ' Siswa');
+				$('.total-data').text(response.total_records + ' Guru');
 
 				$('#table-body-content').html('');
 				$.each(response.data, function (key, value){
@@ -174,53 +235,41 @@
 
 <!-- CHART MURID PER KELAS -->
 <script>
-	const ctx = document.getElementById('myChart');
-	let data = <?=json_encode($kelas)?>;
-
-	let labels 		= [];
-	let jumlahMurid = [];
-
-	$.each(data, function (i, val) { 
-		 labels.push(val.class_name);
-		 jumlahMurid.push(val.value);
-	});
-
-	new Chart(ctx, {
-		type: 'bar',
-		data: {
-			// labels: ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2'],
-			labels: labels,
-			datasets: [
-					{
-						label: 'Kelas',
-						// data: [35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25],
-						data: jumlahMurid,
-						backgroundColor: [
-							'rgba(255, 99, 132, 0.9)',
-							'rgba(255, 159, 64, 0.9)',
-							'rgba(255, 205, 86, 0.9)',
-							'rgba(75, 192, 192, 0.9)',
-							'rgba(54, 162, 235, 0.9)',
-							'rgba(153, 102, 255, 0.9)',
-							'rgba(201, 203, 207, 0.9)',
-							'rgba(255, 99, 132, 0.9)',
-							'rgba(255, 159, 64, 0.9)',
-							'rgba(255, 205, 86, 0.9)',
-							'rgba(75, 192, 192, 0.9)',
-							'rgba(54, 162, 235, 0.9)',
-							'rgba(153, 102, 255, 0.9)',
-							'rgba(201, 203, 207, 0.9)'
-						],
-						borderWidth: 1
-					}
-				]
-		},
-		options: {
-			scales: {
-			y: {
-				beginAtZero: true
+	function drawLineChart(data){
+		const ctx = document.getElementById('myChart');
+		let dataChart = data;
+	
+		let labels 		= [];
+		let jumlahTask = [];
+	
+		$.each(dataChart, function (i, val) { 
+			 labels.push(val.tanggal);
+			 jumlahTask.push(val.value);
+		});
+	
+		new Chart(ctx, {
+			type: 'line',
+			data: {
+				// labels: ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2'],
+				labels: labels,
+				datasets: [
+						{
+							label: 'Kelas',
+							// data: [35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25],
+							data: jumlahTask,
+							fill: false,
+							borderColor: 'rgb(75, 192, 192)',
+							tension: 0.1
+						}
+					]
+			},
+			options: {
+				scales: {
+				y: {
+					beginAtZero: true
+				}
+				}
 			}
-			}
-		}
-	});
+		});
+	}
 </script>
