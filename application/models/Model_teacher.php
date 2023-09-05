@@ -38,10 +38,48 @@ class Model_teacher extends CI_Model {
 		return $query->num_rows();
 	}
 
-	public function get_total_exam($class_id, $start_dt, $end_dt){
-		$this->db->where('class_id', $class_id);
+	public function get_exam($limit = null, $page = null, $teacher_id){
+		$this->db->select('e.*, s.subject_name, ec.category_name');
+		$this->db->from('exam e');
+		$this->db->join('subject s', 's.subject_id = e.subject_id');
+		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
+		$this->db->where('e.teacher_id', $teacher_id);
+		$this->db->order_by('start_date', 'desc');
+		$this->db->limit($limit, $page);
+		return $this->db->get()->result_array();
+	}
+
+	public function get_total_exam($teacher_id, $start_dt, $end_dt){
+		$this->db->where('teacher_id', $teacher_id);
 		$this->db->where('DATE(start_date) >=', $start_dt);
 		$this->db->where('DATE(end_date) <=', $end_dt);
 		return $this->db->get('exam')->num_rows();
+	}
+
+	public function get_task($limit = null, $page = null, $teacher_id){
+
+		$this->db->select('t.*, m.title');
+		$this->db->from('task t');
+		$this->db->join('materi m', 'm.materi_id = t.materi_id');
+		$this->db->where('t.teacher_id', $teacher_id);
+		$this->db->order_by('available_date', 'desc');
+		$this->db->limit($limit, $page);
+		return $this->db->get()->result_array();
+	}
+
+	public function get_total_task($teacher_id, $start_dt, $end_dt){
+		$this->db->where('teacher_id', $teacher_id);
+		$this->db->where('DATE(available_date) >=', $start_dt);
+		$this->db->where('DATE(available_date) <=', $end_dt);
+		return $this->db->get('task')->num_rows();
+	}
+
+	public function get_total_row_exam($teacher_id){
+		$this->db->select('e.*, s.subject_name');
+		$this->db->from('exam e');
+		$this->db->join('subject s', 's.subject_id = e.subject_id');
+		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
+		$this->db->where('e.teacher_id', $teacher_id);
+		return $this->db->get()->num_rows();
 	}
 }
