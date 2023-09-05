@@ -231,8 +231,8 @@
 
 		// SETTING WARNA
 		series.get("colors").set("colors", [
-			am5.color(0x0062FF),
-			am5.color(0xFF0000),
+			am5.color(0x556ee6),
+			am5.color(0xf46a6a),
 			am5.color(0x5aaa95),
 			am5.color(0x86a873),
 			am5.color(0xbb9f06)
