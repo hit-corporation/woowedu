@@ -22,10 +22,11 @@
 					</div>
 				</div>
 
-				<div class="col-xl-10 col-lg-10 col-md-9 col-sm-9 col-xs-12">
+				<div class="col-xl-10 col-lg-10 col-md-9 col-sm-9 col-xs-12 mb-3 h-100">
+					<h6 class="text-center">Total Tugas Dibuat</h6>
 					<!-- chart by date range content -->
-					<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-3 h-100">
-						<div class="card border rounded p-3 data-by-date h-100">
+					<!-- <div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 "> -->
+						<div class="card border rounded p-3 data-by-date">
 							<input class="border-width-1 rounded-lg ml-3"  style="height: 40px; text-align:center; border-color: rgba(0, 0, 255, 0.3);" type="text" name="daterange" 
 								value="<?php 
 								if(isset($start)){ 
@@ -40,10 +41,10 @@
 								}?>" />
 
 							<div class="row data-content mt-4 justify-content-center">
-								<canvas id="myChart"></canvas>
+								<canvas id="myChart" style="height: 200px;"></canvas>
 							</div>
 						</div>
-					</div>
+					<!-- </div> -->
 				</div>
 			</div>
 		</div>
@@ -140,8 +141,11 @@
 		
 	});
 
-	let startDate 	= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
-	let endDate		= moment().startOf('day').format('YYYY-MM-DD');
+	// JALANKAN GRAFIK PERTAMA KALI KETIKA HALAMAN DI LOAD
+		let startDate 	= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
+		let endDate		= moment().startOf('day').format('YYYY-MM-DD');
+
+		getLineChart(startDate, endDate);
 
 	// FUNGSI UNTUK UBAH DATA LINE CHART
 	function getLineChart(start, end){
@@ -235,10 +239,12 @@
 
 <!-- CHART MURID PER KELAS -->
 <script>
+	var myChart;
+
 	function drawLineChart(data){
-		const ctx = document.getElementById('myChart');
+		
+		const ctx = document.getElementById('myChart').getContext("2d");
 		let dataChart = data;
-	
 		let labels 		= [];
 		let jumlahTask = [];
 	
@@ -246,20 +252,20 @@
 			 labels.push(val.tanggal);
 			 jumlahTask.push(val.value);
 		});
-	
-		new Chart(ctx, {
+
+		let config = {
 			type: 'line',
 			data: {
 				// labels: ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2'],
 				labels: labels,
 				datasets: [
 						{
-							label: 'Kelas',
+							label: 'Tugas',
 							// data: [35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25,35, 30, 29, 28, 30, 25],
 							data: jumlahTask,
 							fill: false,
 							borderColor: 'rgb(75, 192, 192)',
-							tension: 0.1
+							tension: 0.1,
 						}
 					]
 			},
@@ -268,8 +274,17 @@
 				y: {
 					beginAtZero: true
 				}
-				}
+				},
+				responsive: true,
+    			maintainAspectRatio: false
 			}
-		});
+		}
+
+		if(myChart){
+			myChart.destroy();
+			myChart = new Chart(ctx, config);
+		}else{
+			myChart = new Chart(ctx, config);
+		}
 	}
 </script>
