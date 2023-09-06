@@ -39,8 +39,9 @@ class Model_teacher extends CI_Model {
 	}
 
 	public function get_exam($limit = null, $page = null, $teacher_id){
-		$this->db->select('e.*, s.subject_name, ec.category_name');
+		$this->db->select('e.*, s.subject_name, ec.category_name, k.class_name');
 		$this->db->from('exam e');
+		$this->db->join('kelas k', 'k.class_id = e.class_id');
 		$this->db->join('subject s', 's.subject_id = e.subject_id');
 		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
 		$this->db->where('e.teacher_id', $teacher_id);
@@ -58,9 +59,10 @@ class Model_teacher extends CI_Model {
 
 	public function get_task($limit = null, $page = null, $teacher_id){
 
-		$this->db->select('t.*, m.title');
+		$this->db->select('t.*, m.title, s.subject_name');
 		$this->db->from('task t');
 		$this->db->join('materi m', 'm.materi_id = t.materi_id');
+		$this->db->join('subject s', 's.subject_id = m.subject_id');
 		$this->db->where('t.teacher_id', $teacher_id);
 		$this->db->order_by('available_date', 'desc');
 		$this->db->limit($limit, $page);
