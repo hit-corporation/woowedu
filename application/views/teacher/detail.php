@@ -77,10 +77,10 @@
 					<table class="table-rounded w-100">
 						<thead>
 							<tr>
-								<th>Nama Tugas</th>
+								<th>Materi</th>
+								<th>Mapel</th>
 								<th>Ditugaskan</th>
 								<th>Batas waktu</th>
-								<th>Tanggal penyerahan</th>
 								<th>File</th>
 								<th>Notes</th>
 							</tr>
@@ -96,11 +96,12 @@
 					<table class="table-rounded w-100">
 						<thead>
 							<tr>
+								<th>Kode</th>
+								<th>Kelas</th>
 								<th>Nama Mapel</th>
 								<th>Jenis Tugas</th>
-								<th>Total Nilai</th>
-								<th>Batas Waktu</th>
-								<th>Tanggal Submit</th>
+								<th>Waktu Dibuat</th>
+								<th>Waktu Berakhir</th>
 							</tr>
 						</thead>
 						<tbody id="exam-body-content">
@@ -182,11 +183,11 @@
 					$('#tugas-body-content').append(`
 						<tr>
 							<td>${value.title}</td>
-							<td>${value.available_date}</td>
-							<td>${value.due_date}</td>
-							<td>${value.task_submit}</td>
-							<td><a href="${BASE_URL+`assets/files/student_task/`+value.task_file_answer}">${value.task_file_answer}</a></td>
-							<td>${value.note}</td>
+							<td>${value.subject_name}</td>
+							<td>${moment(value.available_date).format('DD MMM YYYY, HH:mm')}</td>
+							<td>${moment(value.due_date).format('DD MMM YYYY, HH:mm')}</td>
+							<td><a href="${BASE_URL+`assets/files/student_task/`+value.task_file_answer}">${(value.task_file_answer != undefined) ? value.task_file_answer : ``}</a></td>
+							<td>${value.note.substring(0,100)}</td>
 						</tr>
 					`);
 				});
@@ -223,11 +224,12 @@
 				$.each(response.data, function (key, value){
 					$('#exam-body-content').append(`
 						<tr>
+							<td>${value.code}</td>
+							<td>${value.class_name}</td>
 							<td>${value.subject_name}</td>
 							<td>${value.category_name}</td>
-							<td>${value.exam_total_nilai}</td>
-							<td>${value.end_date}</td>
-							<td>${value.exam_submit}</td>
+							<td>${moment(value.end_date).format('DD MMM YYYY, HH:mm')}</td>
+							<td>${moment(value.exam_submit).format('DD MMM YYYY, HH:mm')}</td>
 						</tr>
 					`);
 				});
