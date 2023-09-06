@@ -107,16 +107,7 @@ class Teacher extends CI_Controller {
 
 		$page = ($page - 1) * $limit;
 
-		$data['data']	= $this->model_teacher->get_exam($limit, $page, $get['teacher_id']);
-
-		$i = 0;
-		foreach($data['data'] as $key => $val){
-			$exam = $this->db->where('exam_id', $val['exam_id'])->where('teacher_id', $get['teacher_id'])->get('exam_student')->row_array();
-			$data['data'][$i]['exam_total_nilai'] = ($exam) ? $exam['exam_total_nilai'] : '';
-			$data['data'][$i]['exam_submit'] = ($exam) ? $exam['exam_submit'] : '';
-			$i++;
-		}
-
+		$data['data']			= $this->model_teacher->get_exam($limit, $page, $get['teacher_id']);
 		$data['total_records'] 	= $this->model_teacher->get_total_row_exam($get['teacher_id']);
 		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
 
@@ -128,19 +119,11 @@ class Teacher extends CI_Controller {
 	public function get_task(){
 		$get = $this->input->get();
 		$page 		= isset($get['page']) ? (int)$get['page'] : 1;
-		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 3;
+		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 10;
 
 		$page = ($page - 1) * $limit;
 
 		$data['data']	= $this->model_teacher->get_task($limit, $page, $get['teacher_id']);
-		$i = 0;
-		foreach($data['data'] as $key => $val){
-			$task = $this->db->where('task_id', $val['task_id'])->where('teacher_id', $get['teacher_id'])->get('task')->row_array();
-			$data['data'][$i]['task_file_answer'] = ($task) ? $task['task_file'] : '';
-			$data['data'][$i]['task_submit'] = ($task) ? $task['task_submit'] : '';
-			$i++;
-		}
-
 		$data['total_records'] 	= $this->db->where('teacher_id', $get['teacher_id'])->get('task')->num_rows();
 		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
 
