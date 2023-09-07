@@ -77,7 +77,7 @@
 	border-top: solid #a8ded8 1px;
 	padding: 10px;
 }
-.table-rounded th { background-color: #a8ded8; border-top: none; } 
+.table-rounded th { background-color: #59c2ff; border-top: none; } 
 .table-rounded td:first-child, .table-rounded th:first-child { border-left: none; } 
 a { cursor: pointer; } 
 
@@ -90,3 +90,6 @@ a { cursor: pointer; }
 		height: 95%;
 	}
 }
+
+.dataTables_length, .dataTables_filter{ display: none; }
+#tableTask_info { display: none; }

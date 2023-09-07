@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 <section class="explore-section section-padding" id="section_2">
 	<div class="container">
 		<p class="mt-4"><a href="<?=base_url()?>student" class="text-secondary">Semua Siswa</a> > <span class="fw-bold">Detail Siswa</span></p>
@@ -79,15 +81,18 @@
 					
 				</div>
 				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
-					<table class="table-rounded">
+					<table class="table-rounded" id="tableTask" style="width: 100%;">
 						<thead>
 							<tr>
+								<th>Id</th>
+								<th>Kode</th>
 								<th>Nama Tugas</th>
 								<th>Ditugaskan</th>
 								<th>Batas waktu</th>
 								<th>Tanggal penyerahan</th>
 								<th>File</th>
 								<th>Notes</th>
+								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody id="tugas-body-content">
@@ -106,6 +111,7 @@
 								<th>Total Nilai</th>
 								<th>Batas Waktu</th>
 								<th>Tanggal Submit</th>
+								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody id="exam-body-content">
@@ -124,6 +130,8 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <script>
 	var currentPage = 1;
@@ -172,46 +180,99 @@
 	}
 
 	// FUNGSI UNTUK ISI LIST DATA TUGAS
-	function getTask(page = 1, limit = 10, student_id){
-		$.ajax({
-			type: "GET",
-			url: BASE_URL+"student/get_task",
-			data: {
-				page: page,
-				limit: limit,
-				student_id: student_id
-			},
-			success: function (response) {
-				$('#tugas-body-content').html('');
-				$.each(response.data, function (key, value){
-					$('#tugas-body-content').append(`
-						<tr>
-							<td>${value.title}</td>
-							<td>${value.available_date}</td>
-							<td>${value.due_date}</td>
-							<td>${value.task_submit}</td>
-							<td><a href="${BASE_URL+`assets/files/student_task/`+value.task_file_answer}">${value.task_file_answer}</a></td>
-							<td>${value.note}</td>
-						</tr>
-					`);
-				});
+	// function getTask(page = 1, limit = 10, student_id){
+	// 	$.ajax({
+	// 		type: "GET",
+	// 		url: BASE_URL+"student/get_task",
+	// 		data: {
+	// 			page: page,
+	// 			limit: limit,
+	// 			student_id: student_id
+	// 		},
+	// 		success: function (response) {
+	// 			$('#tugas-body-content').html('');
+	// 			$.each(response.data, function (key, value){
+	// 				$('#tugas-body-content').append(`
+	// 					<tr>
+	// 						<td>${value.title}</td>
+	// 						<td>${value.available_date}</td>
+	// 						<td>${value.due_date}</td>
+	// 						<td>${value.task_submit}</td>
+	// 						<td><a href="${BASE_URL+`assets/files/student_task/`+value.class_id+`/`+value.task_file_answer}">${value.task_file_answer}</a></td>
+	// 						<td>${value.note}</td>
+	// 					</tr>
+	// 				`);
+	// 			});
 
-				$('.pagination').html('');
-				for(let i = 0; i < response.total_pages; i++){
-					if(currentPage == i+1){
-						$('.pagination').append(`
-							<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
-					}else{
-						$('.pagination').append(`
-							<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
-					}
+	// 			$('.pagination').html('');
+	// 			for(let i = 0; i < response.total_pages; i++){
+	// 				if(currentPage == i+1){
+	// 					$('.pagination').append(`
+	// 						<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
+	// 					`);
+	// 				}else{
+	// 					$('.pagination').append(`
+	// 						<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
+	// 					`);
+	// 				}
 
+	// 			}
+	// 		}
+	// 	});
+	// }
+
+	var tableTask = $('#tableTask').DataTable({
+			// destroy: true,
+			serverSide: true,
+			ajax: {
+				url: BASE_URL + 'student/get_task',
+				method: 'GET',
+				data: {
+					student_id: student_id
 				}
-			}
+			},
+			select: {
+				style:	'multi',  
+				selector: 'td:first-child'
+			},
+			columns: [
+				{
+					data: 'task_id',
+					visible: false
+				},
+				{
+					data: 'code',
+				},
+				{
+					data: 'title',
+				},
+				{
+					data: 'available_date'
+				},
+				{
+					data: 'due_date'
+				},
+				{
+					data: 'task_submit'
+				},
+				{
+					data: 'task_file'
+				},
+				{
+					data: 'task_note'
+				},
+				{
+					data: null,
+					className: 'align-center',
+					render(data, row, type, meta) {
+						var view = `<div class="btn-group btn-group-sm float-right">
+										<button class="btn btn-success edit_subject"><i class="bi bi-pencil-square"></i></button>
+									</div>`;
+						return view;
+					}
+				}
+			]
 		});
-	}
 
 	// FUNGSI UNTUK ISI LIST DATA EXAM
 	function getExam(page = 1, limit = 10, student_id){
@@ -253,11 +314,6 @@
 			}
 		});
 	}
-
-	// JIKA nav-tugas-tab DI KLIK
-	$('#nav-tugas-tab').on('click', function(){
-		getTask(1, 10, student_id);
-	});
 
 	// JIKA PAGE NUMBER DI KLIK
 	function page(pageNumber, e){
