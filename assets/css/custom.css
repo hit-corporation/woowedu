@@ -77,19 +77,16 @@
 	border-top: solid #a8ded8 1px;
 	padding: 10px;
 }
-.table-rounded th {
-	background-color: #a8ded8;
-	border-top: none;
-}
+.table-rounded th { background-color: #a8ded8; border-top: none; } 
+.table-rounded td:first-child, .table-rounded th:first-child { border-left: none; } 
+a { cursor: pointer; } 
 
-.table-rounded td:first-child, .table-rounded th:first-child {
-	border-left: none;
-}
+@media screen and (min-width:1080px) and (max-width: 2160px){
+	html, body{
+		height: 100%;
+	}
 
-a {
-	cursor: pointer;
-}
-
-.sticky-wrapper {
-	
+	html body main{
+		height: 95%;
+	}
 }
