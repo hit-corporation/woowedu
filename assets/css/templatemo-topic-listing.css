@@ -1,4 +1,4 @@
-/*
+/*bs-info
 
 TemplateMo 590 topic listing
 
@@ -147,7 +147,7 @@ strong {
 }
 
 .section-overlay {
-  background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+  background-image: linear-gradient(15deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   position: absolute;
   top: 0;
   left: 0;
@@ -543,10 +543,12 @@ strong {
   padding: 30px;
   transition: all 0.3s ease;
   height: 100%;
+	background-color: #00B0FF;
 }
 
 .custom-block:hover {
-  background-color: var(--secondary-color);
+  /* background-color: var(--secondary-color); */
+	background-color: #00B0FF;
   transform: translateY(-3px);
 }
 
@@ -571,6 +573,10 @@ strong {
   height: 30px;
   line-height: 20px;
 }
+
+/* .custom-block.custom-block-overlay .section-overlay{
+	background-color: #00B0FF;
+} */
 
 .custom-block-overlay {
   height: 100%;
