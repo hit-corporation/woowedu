@@ -136,9 +136,12 @@
                                 <a class="nav-link" href="<?=base_url()?>ebook">Ebook</a>
                             </li>
     
+							<!-- JIKA USER LEVEL GURU OR MURID -->
+							<?php if($user_level == 3 || $user_level == 4) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="section_5">Tugas</a>
+                                <a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/tasks') ?>">Tugas</a>
                             </li>
+							<?php endif ?>
                             
                             <li class="nav-item">
                                 <a class="nav-link" href="<?=base_url()?>news">Pengumuman</a>
