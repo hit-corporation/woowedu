@@ -162,9 +162,9 @@ endif
 
                         <div class="d-none d-lg-block">
 							<!-- notif icon -->
-							<span class="me-2">
+							<span class="me-3">
 								<i class="bi-bell text-light fs-20"></i>
-								<span class="text-light rounded ">10</span>
+								<span class="text-light rounded text-white fs-12 bg-danger rounded-5 notif-number" style="padding: 3px;">10</span>
 							</span>
 
 							<!-- profile icon -->
