@@ -20,7 +20,7 @@ class Model_mapel extends CI_Model {
             $this->db->limit($limit, $offset);
 
         $this->db->select('a.*, b.subject_name')
-                 ->join('a.subject_id=b.subject_id');
+                 ->join('subject b', 'a.subject_id=b.subject_id');
         $get = $this->db->get('materi a');
 
         return $get->result_array() ?? [];
@@ -35,7 +35,7 @@ class Model_mapel extends CI_Model {
     public function num_all(array $filter = NULL): int {
         
         $this->db->select('a.*, b.subject_name')
-                 ->join('a.subject_id=b.subject_id');
+                 ->join('subject b', 'a.subject_id=b.subject_id');
         $get = $this->db->get('materi a');
 
         return $get->num_rows() ?? 0;

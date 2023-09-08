@@ -15,20 +15,20 @@ function add_js($javascript) {
 	$output = '';
 	if(!is_array($javascript)) return;
 	foreach($javascript as $js) {
-		if(!$js['is_inline_block']) {
+		if(!isset($js['is_inline_block'])) {
 			$output .= trim('<script src="'.html_escape($js['path']).'"');
-			if($js['async'])
+			if(isset($js['async']))
 				$output .= ' async';
-			if($js['defer'])
+			if(isset($js['defer']))
 				$output .= ' defer';
 			$output .= '></script>';
 			$output = trim($output).PHP_EOL;
 			unset($js);
 		} else {
 			$output .= '<script type="application/javascript"';
-			if($js['async'])
+			if(isset($js['async']))
 				$output .= ' async';
-			if($js['defer'])
+			if(isset($js['defer']))
 				$output .= ' defer';
 			$output .= '>'.PHP_EOL;
 			$output .= file_get_content($js['path']).PHP_EOL;	
