@@ -1,3 +1,8 @@
+<?php 
+if(!isset($_SESSION['userid'])): 
+    redirect('/');
+endif 
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -65,6 +70,8 @@
 			$student_id = ($student) ? $student['student_id'] : '';
 
             $name = NULL;
+
+            print_r($_SESSION);
             
             switch($user_level)
             {
