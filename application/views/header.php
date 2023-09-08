@@ -61,6 +61,9 @@
 			$imageLink 	= base_url('assets/images/users/').$user['photo'];
 			$user_level	= $user['user_level'];
 
+			$student = ($user_level == 4) ? $this->db->where('nis', $user['username'])->get('student')->row_array() : [];
+			$student_id = ($student) ? $student['student_id'] : '';
+
             $name = NULL;
             
             switch($user_level)
@@ -139,7 +142,7 @@
 							<!-- JIKA USER LEVEL GURU OR MURID -->
 							<?php if($user_level == 3 || $user_level == 4) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/tasks') ?>">Tugas</a>
+                                <a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/detail/').$student_id ?>">Tugas</a>
                             </li>
 							<?php endif ?>
                             

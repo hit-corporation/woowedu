@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 <section class="explore-section section-padding" id="section_2">
 	<div class="container">
 		<p class="mt-4"><a href="<?=base_url()?>student" class="text-secondary">Semua Siswa</a> > <span class="fw-bold">Detail Siswa</span></p>
@@ -79,15 +81,18 @@
 					
 				</div>
 				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
-					<table class="table-rounded">
+					<table class="table-rounded" id="tableTask" style="width: 100%;">
 						<thead>
 							<tr>
+								<th>Id</th>
+								<th>Kode</th>
 								<th>Nama Tugas</th>
 								<th>Ditugaskan</th>
 								<th>Batas waktu</th>
 								<th>Tanggal penyerahan</th>
 								<th>File</th>
 								<th>Notes</th>
+								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody id="tugas-body-content">
@@ -98,14 +103,16 @@
 					<div class="pagination"></div>
 				</div>	
 				<div class="tab-pane fade p-3" id="nav-ujian" role="tabpanel" aria-labelledby="nav-ujian-tab" tabindex="0">
-					<table class="table-rounded w-100">
+					<table class="table-rounded w-100" id="tableExam">
 						<thead>
 							<tr>
+								<th>Id</th>
 								<th>Nama Mapel</th>
 								<th>Jenis Tugas</th>
 								<th>Total Nilai</th>
 								<th>Batas Waktu</th>
 								<th>Tanggal Submit</th>
+								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody id="exam-body-content">
@@ -125,9 +132,12 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 <script>
 	var currentPage = 1;
 	var student_id 	= <?=$detail['student_id']?>;
+	var class_id 	= <?=$detail['class_id']?>;
 	let startDate 	= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
 	let endDate		= moment().startOf('day').format('YYYY-MM-DD');
 
@@ -171,110 +181,138 @@
 		});
 	}
 
-	// FUNGSI UNTUK ISI LIST DATA TUGAS
-	function getTask(page = 1, limit = 10, student_id){
-		$.ajax({
-			type: "GET",
-			url: BASE_URL+"student/get_task",
-			data: {
-				page: page,
-				limit: limit,
-				student_id: student_id
+	// INISIALISASI TABLE TUGAS
+	var tableTask = $('#tableTask').DataTable({
+			// destroy: true,
+			serverSide: true,
+			ajax: {
+				url: BASE_URL + 'student/get_task',
+				method: 'GET',
+				data: {
+					student_id: student_id
+				}
 			},
-			success: function (response) {
-				$('#tugas-body-content').html('');
-				$.each(response.data, function (key, value){
-					$('#tugas-body-content').append(`
-						<tr>
-							<td>${value.title}</td>
-							<td>${value.available_date}</td>
-							<td>${value.due_date}</td>
-							<td>${value.task_submit}</td>
-							<td><a href="${BASE_URL+`assets/files/student_task/`+value.task_file_answer}">${value.task_file_answer}</a></td>
-							<td>${value.note}</td>
-						</tr>
-					`);
-				});
-
-				$('.pagination').html('');
-				for(let i = 0; i < response.total_pages; i++){
-					if(currentPage == i+1){
-						$('.pagination').append(`
-							<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
-					}else{
-						$('.pagination').append(`
-							<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
+			select: {
+				style:	'multi',  
+				selector: 'td:first-child'
+			},
+			columns: [
+				{
+					data: 'task_id',
+					visible: false
+				},
+				{
+					data: 'code',
+				},
+				{
+					data: 'title',
+				},
+				{
+					data: 'available_date',
+					render(data, row, type, meta) {
+						return moment(data).format('DD MMM YYYY, HH:mm');
 					}
+				},
+				{
+					data: 'due_date',
+					render(data, row, type, meta){
+						return moment(data).format('DD MMM YYYY, HH:mm');
+					}
+				},
+				{
+					data: 'task_submit',
+					class: 'text-center',
+					render(data, row, type, meta){
+						return (data) ? moment(data).format('DD MMM YYYY, HH:mm') : `<span class="text-white bg-danger p-1 rounded">Belum Dikerjakan</span>`;
+					}
+				},
+				{
+					data: 'task_file_answer',
+					class: 'text-center',
+					render(data, row, type, meta){
+						return (data) ? `<a href="${BASE_URL+'assets/files/student_task/'+class_id+'/'+data}">${data}</a>` : `-`;
+					}
+				},
+				{
+					data: 'task_note',
+					class: 'text-center',
+					render(data, row, type, meta){
+						return (data) ? data.substring(0, 100) : `-`;
+					}
+				},
+				{
+					data: null,
+					class: 'text-center',
+					render(data, type, row, meta) {
+						let view = `<div class="btn-group btn-group-sm float-right">
+										<a href="${BASE_URL+'task/detail/'+row.task_id}" class="btn btn-success edit_subject rounded-5"><i class="bi bi-pencil-square text-white"></i></a>
+									</div>`;
+						let endDt = new Date(row.due_date);	
+						let now = new Date();
+						
+						if(endDt < now) view = ''; 
+						return view;
+					}
+				}
+			]
+		});
 
+	// INISIALISASI TABLE EXAM
+	var tableExam = $('#tableExam').DataTable({
+		serverSide: true,
+		ajax: {
+			url: BASE_URL + 'student/get_exam',
+			method: 'GET',
+			data: {
+				student_id: student_id
+			}
+		},
+		select: {
+			style: 'multi',
+			selector: 'td:first-child',
+		},
+		columns: [
+			{
+				data: 'exam_id',
+				visible: false
+			},
+			{
+				data: 'subject_name',
+			},
+			{
+				data: 'category_name',
+			},
+			{
+				data: 'exam_total_nilai',
+				class: 'text-center',
+				render(data, row, type, meta){
+					return (data) ? `<b>${data}</b>` : `-`;
+				}
+			},
+			{
+				data: 'end_date',
+				class: 'text-center',
+				render(data, row, type, meta){
+					return moment(data).format('DD MMM YYYY, HH:mm');
+				}
+			},
+			{
+				data: 'exam_submit',
+				class: 'text-center',
+				render(data, row, type, meta){
+					return (data) ? moment(data).format('DD MMM YYYY, HH:mm') : `<span class="text-white bg-danger p-1 rounded">Belum Dikerjakan</span>`;
+				}
+			},
+			{
+				data: null,
+				class: 'text-center',
+				render(data, type, row, meta) {
+					var view = `<div class="btn-group btn-group-sm float-right">
+									<button class="btn btn-success edit_subject rounded-5"><i class="bi bi-pencil-square text-white"></i></button>
+								</div>`;
+					return view;
 				}
 			}
-		});
-	}
-
-	// FUNGSI UNTUK ISI LIST DATA EXAM
-	function getExam(page = 1, limit = 10, student_id){
-		$.ajax({
-			type: "GET",
-			url: BASE_URL+"student/get_exam",
-			data: {
-				page: page,
-				limit: limit,
-				student_id: student_id
-			},
-			success: function (response) {
-				$('#exam-body-content').html('');
-				$.each(response.data, function (key, value){
-					$('#exam-body-content').append(`
-						<tr>
-							<td>${value.subject_name}</td>
-							<td>${value.category_name}</td>
-							<td>${value.exam_total_nilai}</td>
-							<td>${value.end_date}</td>
-							<td>${value.exam_submit}</td>
-						</tr>
-					`);
-				});
-
-				$('.pagination2').html('');
-				for(let i = 0; i < response.total_pages; i++){
-					if(currentPage == i+1){
-						$('.pagination2').append(`
-							<li class="page-item active"><a class="page-link" href="#" onclick="page2(${i+1}, event)">${i+1}</a></li>
-						`);
-					}else{
-						$('.pagination2').append(`
-							<li class="page-item"><a class="page-link" href="#" onclick="page2(${i+1}, event)">${i+1}</a></li>
-						`);
-					}
-
-				}
-			}
-		});
-	}
-
-	// JIKA nav-tugas-tab DI KLIK
-	$('#nav-tugas-tab').on('click', function(){
-		getTask(1, 10, student_id);
-	});
-
-	// JIKA PAGE NUMBER DI KLIK
-	function page(pageNumber, e){
-		e.preventDefault();
-		currentPage = pageNumber;
-		getTask(pageNumber, 10, student_id);
-	}
-
-	// JIKA PAGE NUMBER 2 DI KLIK
-	function page2(pageNumber, e){
-		e.preventDefault();
-		currentPage = pageNumber;
-		getExam(pageNumber, 10, student_id);
-	}
-
-	// JIKA nav-ujian-tab DI KLIK
-	$('#nav-ujian-tab').on('click', function(){
-		getExam(1, 10, student_id);
+		]
 	});
 </script>

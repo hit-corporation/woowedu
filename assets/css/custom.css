@@ -77,16 +77,46 @@
 	border-top: solid #a8ded8 1px;
 	padding: 10px;
 }
-.table-rounded th { background-color: #a8ded8; border-top: none; } 
+.table-rounded th { background-color: #59c2ff; border-top: none; } 
 .table-rounded td:first-child, .table-rounded th:first-child { border-left: none; } 
 a { cursor: pointer; } 
-
 @media screen and (min-width:1080px) and (max-width: 1080px) and (min-height: 2160px) and (min-height: 2160px){
-	html, body{
-		height: 100%;
-	}
-
-	html body main{
-		height: 95%;
-	}
+	html, body{ height: 100%; }
+	html body main{ height: 95%; }
+}
+.dataTables_length, .dataTables_filter{ display: none; }
+#tableTask_info, #tableExam_info { display: none; }
+.nav-item a.nav-link{
+	background-image: linear-gradient(
+		to right,
+		#ffffb3,
+		#fdff75 50%,
+		#FFF 50%
+	);
+	font-weight: bold;
+	background-size: 200% 100%;
+	background-position: -100%;
+	display: inline-block;
+	padding: 5px 0;
+	position: relative;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	transition: all 0.3s ease-in-out;
+}
+.nav-item a.nav-link::before{
+	content: '';
+	background: #ffffff;
+	display: block;
+	position: absolute;
+	bottom: -3px;
+	left: 0;
+	width: 0;
+	height: 3px;
+	transition: all 0.3s ease-in-out;
+}
+.nav-item a.nav-link:hover{
+	background-position: 0;
+}
+.nav-item a.nav-link:hover::before{
+	width: 100%;
 }
