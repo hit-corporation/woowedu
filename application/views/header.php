@@ -1,3 +1,8 @@
+<?php 
+if(!isset($_SESSION['userid'])): 
+    redirect('/');
+endif 
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -59,12 +64,14 @@
 			$student = ($user_level == 4) ? $this->db->where('nis', $user['username'])->get('student')->row_array() : [];
 			$student_id = ($student) ? $student['student_id'] : '';
 
-            $name = '';
+            $name = NULL;
+
+            print_r($_SESSION);
             
             switch($user_level)
             {
                 case 3:
-                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'];
+                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'] ?? '';
                     break;
                 case 4:
                     $name = $this->db->where('nis', $user['username'])->get('student')->row_array()['student_name'] ?? '';

@@ -12,6 +12,12 @@ class Task extends CI_Controller {
 		if (!isset($_SESSION['username'])) redirect('auth/login');
 	}
 
+	public function index() {
+		$this->load->view('header');
+		$this->load->view('task/index', $data);
+		$this->load->view('footer');
+	}
+
 	public function detail($id = ''){
 		if(!$id) redirect('dashboard');
 

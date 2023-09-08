@@ -30,7 +30,7 @@
 
 	<div class="row">
 		<!-- <div class="col"> -->
-			<?php for($i=0; $i<10; $i++):?>
+			<!--<?php for($i=0; $i<10; $i++):?>
 			<div class="col-lg-4 col-md-6">
 				<div class="card rounded border mb-4">
 					<div class="row">
@@ -46,8 +46,18 @@
 					</div>
 				</div>
 			</div>
-			<?php endfor?>
+			<?php endfor?> -->
 		<!-- </div> -->
+		<div class="row">
+			<div class="col-12"></div>
+		</div>
+
+		<div class="row"></div>
+		<?php 
+			if($datamodel != 'grid'):
+				$this->load->view('mapel/table_view', [], TRUE);
+			endif; 
+		?>
 	</div>
 
 

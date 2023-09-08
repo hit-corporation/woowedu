@@ -12,7 +12,7 @@
 	<div class="row mt-4">
 
         <div class="col-12 col-lg-3">
-            <img class="img-thumbnail" src="<?= html_escape(base_url('assets/images/ebooks/cover/'.$book['cover_img'])) ?>"/>
+            <img class="img-thumbnail" src="<?= html_escape($book['cover_img']) ?>"/>
         </div>
         <div class="col-12 col-lg-9">
             <div class="card" style="min-height: 60vh">
