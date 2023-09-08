@@ -47,13 +47,8 @@ endif
         ?>
 
     <style>
-        html {
-            min-height: 100%;
-        }
-
-        main {
-            min-height: 80vh;
-        }
+        html {  min-height: 100%; } 
+        main { min-height: 80vh; }
     </style>
 
     </head>
@@ -97,6 +92,11 @@ endif
                     </a>
 
                     <div class="d-lg-none ms-auto me-4">
+						<!-- notif icon -->
+						<span class="me-2">
+							<i class="bi-bell text-light fs-20"></i>
+						</span>
+
                         <a href="#top" class="navbar-icon bi-person smoothscroll person-sm"></a>
 						<div class="profile-container p-3 sm">
 							<div class="profile-image-menu">
@@ -159,6 +159,13 @@ endif
                         </ul>
 
                         <div class="d-none d-lg-block">
+							<!-- notif icon -->
+							<span class="me-2">
+								<i class="bi-bell text-light fs-20"></i>
+								<span class="text-light rounded ">10</span>
+							</span>
+
+							<!-- profile icon -->
                             <a href="#top" class="navbar-icon bi-person smoothscroll person-lg"></a>
 							<div class="profile-container p-3 lg">
 								<div class="profile-image-menu">
