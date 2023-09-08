@@ -61,8 +61,8 @@
 			$imageLink 	= base_url('assets/images/users/').$user['photo'];
 			$user_level	= $user['user_level'];
 
-			$student = ($user_level == 4) ? $this->db->where('nis', $user['username'])->get('student')->row_array() : '';
-			$student_id = $student['student_id'];
+			$student = ($user_level == 4) ? $this->db->where('nis', $user['username'])->get('student')->row_array() : [];
+			$student_id = ($student) ? $student['student_id'] : '';
 
             $name = '';
             
