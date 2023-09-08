@@ -65,8 +65,6 @@ endif
 			$student_id = ($student) ? $student['student_id'] : '';
 
             $name = NULL;
-
-            print_r($_SESSION);
             
             switch($user_level)
             {
@@ -139,7 +137,7 @@ endif
 
     
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url()?>mapel">Mapel</a>
+                                <a class="nav-link" href="<?=base_url()?>materi?data_model=table">Mapel</a>
                             </li>
 
                             <li class="nav-item">

@@ -55,7 +55,7 @@
 		<div class="row"></div>
 		<?php 
 			if($datamodel != 'grid'):
-				$this->load->view('mapel/table_view', [], TRUE);
+				$this->load->view('mapel/table_view');
 			endif; 
 		?>
 	</div>

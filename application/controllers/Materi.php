@@ -7,6 +7,7 @@ class Materi extends CI_Controller {
 		parent::__construct();
 
 		$this->load->model('model_mapel');
+		$this->load->helper('assets');
 	}
 
 	public function index()
@@ -15,9 +16,14 @@ class Materi extends CI_Controller {
 		if(!empty($this->input->get('data_model')) && in_array($this->input->get('data_model'), ['table', 'grid']))
 			$datamodel = $this->input->get('data_model');
 
-		$data = [
-			'datamodel' => $datamodel
-		];
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js', 'defer' => true];
+
+		if($datamodel == 'grid')
+			$data['page_js'][] = ['path' => 'assets/js/materi_grid.js', 'defer' => true];
+		else
+			$data['page_js'][] = ['path' => 'assets/js/materi_table.js', 'defer' => true];
+
+		$data['datamodel'] = $datamodel;
 
 		$this->load->view('header');
 		$this->load->view('mapel/index', $data);
@@ -45,6 +51,6 @@ class Materi extends CI_Controller {
 		];
 
 		header('Content-Type: application/json');
-		echo json_encode($json, JSON_HEX_TAG | JSON_HEXT_APOS | JSON_HEX_QUOT | JSON_HEX_QUOT);
+		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_QUOT);
 	}
 }
