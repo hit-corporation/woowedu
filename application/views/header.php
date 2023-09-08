@@ -61,12 +61,12 @@
 			$imageLink 	= base_url('assets/images/users/').$user['photo'];
 			$user_level	= $user['user_level'];
 
-            $name = '';
+            $name = NULL;
             
             switch($user_level)
             {
                 case 3:
-                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'];
+                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'] ?? '';
                     break;
                 case 4:
                     $name = $this->db->where('nis', $user['username'])->get('student')->row_array()['student_name'] ?? '';

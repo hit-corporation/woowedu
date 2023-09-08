@@ -1,4 +1,6 @@
 <?php 
+ini_set('memory_limit', '4000M');
+ini_set('max_execution_time', '-1');
 
 class IndoPustaka extends MY_Controller {
 
@@ -8,7 +10,8 @@ class IndoPustaka extends MY_Controller {
     public function __construct() {
         parent::__construct();
 
-        $this->load->library('curl');
+        $this->load->library(['curl', 'image_lib']);
+        $this->load->model('publisher_model');
 
         $this->username = "OGE3ZWVlZTgtNTVhNy0xMWVkLTk0ZWUtOGZlY2YzZmEwYjQ2";
         $this->password = "indopustakatesting";
@@ -32,13 +35,52 @@ class IndoPustaka extends MY_Controller {
             'max_redirs'      => 10,
             'follow_location' => true
         ];
-
+        
         $headers = [
             'Authorization: Basic '.base64_encode($this->username.':'.$this->password)
         ];
 
         $curl = $this->curl->setOption($options)->setHeader($headers)->request($url);
         return json_decode($curl, TRUE);
+    }
+
+    /**
+     * Donwload and export cover into files image
+     *
+     * @param string $uri
+     * @param string $title
+     * @return string
+     */
+    private function coverImage(string $uri, string $title): array {
+        $file = file_get_contents($uri);
+        $filename = md5($title);
+        $path = 'assets/images/ebooks/cover';
+        $source = FCPATH.'../'.$path.'/'.$filename.'.jpg';
+
+        if(file_exists($source))
+            unlink($source);
+
+        file_put_contents($source, $file);
+        // resize
+        $config['image_library'] = 'gd2';
+        $config['source_image'] = $source;
+        $config['create_thumb'] = TRUE;
+        $config['maintain_ratio'] = TRUE;
+        $config['width']         = 128 - 50;
+        $config['height']       = 165 - 50;
+
+        $this->image_lib->initialize($config);
+        if(!$this->image_lib->resize())
+        {
+            $resp = ['success' => false, 'message' => $this->image_lib->display_errors(), 'uri' => $file];
+            http_response_code(422);
+            echo json_encode($resp);
+            return [];
+        }
+
+        $this->image_lib->clear();
+
+        return ['uri' => $file, 'name' => $filename.'.jpg'];
     }
 
     /**
@@ -86,6 +128,36 @@ class IndoPustaka extends MY_Controller {
         echo json_encode(['success' => true, 'message' => 'Data berhasil di simpan !!!']);
     }
 
+    public function test() {
+        $request = $this->request('ebook');
+
+        foreach($request['data_ebook'] as $req)
+        {
+            // $data[] = [
+            //     'book_code'     => $req['id_buku'],
+            //     'title'         => $req['judul'],
+            //     'description'   => $req['sinopsis'],
+            //     'isbn'          => str_replace(' ', '' , $req['ISBN']),
+            //     'author'        => $req['penulis'],
+            //     'publish_year'  => $req['tahun_terbit'],
+            //     'category_id'   => $req['id_kategori'],
+            //     'total_pages'   => preg_replace('/[^\d]/i', NULL, $req['halaman']),
+            //     'qty'           => $req['stok_buku'],
+            //     'file_1'        => $req['pdf_url'],
+            //     'cover_img'     => base64_encode(file_get_contents($req['cover'])),
+            //     'publisher_id'  => $publisher[array_search(trim($req['penerbit']), array_column($publisher, 'publisher_name'))]['id']
+            // ];
+            
+            echo base64_encode(file_get_contents($req['cover']))."<br />";
+            @flush();
+            @ob_end_flush();
+        }
+
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
+    }
+
     /**
      * Get All ebooks
      *
@@ -119,28 +191,42 @@ class IndoPustaka extends MY_Controller {
             "stok_buku": "10",
             "stok_current": "10"
         */
+
+        // input publisher
+        $newPublishers = array_unique(array_map(fn ($p) => html_escape(trim($p['penerbit'])), $request['data_ebook']));
         
+        // start transaction for all
         $this->db->trans_start();
+        foreach($newPublishers as $publisher)
+        {
+            if($this->db->get_where('publishers', ['publisher_name' => $publisher])->num_rows() > 0) continue;
+            $this->db->insert('publishers', ['publisher_name' => $publisher]);
+        }
+
+        $publisher = $this->publisher_model->get_all();
+        // input ebook
         foreach($request['data_ebook'] as $req)
         {
             $data = [
                 'book_code'     => $req['id_buku'],
                 'title'         => $req['judul'],
                 'description'   => $req['sinopsis'],
-                'isbn'          => $req['ISBN'],
+                'isbn'          => str_replace(' ', '' , $req['ISBN']),
                 'author'        => $req['penulis'],
                 'publish_year'  => $req['tahun_terbit'],
                 'category_id'   => $req['id_kategori'],
-                'total_pages'   => (explode('+', $req['halaman']))[1],
+                'total_pages'   => preg_replace('/[^\d]/i', NULL, $req['halaman']),
                 'qty'           => $req['stok_buku'],
                 'file_1'        => $req['pdf_url'],
-                'cover_img'     => $req['cover']
+                'cover_img'     => $req['cover'],
+                'publisher_id'  => $publisher[array_search(trim($req['penerbit']), array_column($publisher, 'publisher_name'))]['id']
             ];
 
             if($this->db->get_where('ebooks', ['book_code' => $req['id_buku']])->num_rows() > 0)
                 $this->db->update('ebooks', $data, ['book_code' => $req['id_buku']]);
             else
                 $this->db->insert('ebooks', $data);
+                
         }
         $this->db->trans_complete();
 

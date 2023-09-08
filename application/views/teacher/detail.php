@@ -74,6 +74,11 @@
 					
 				</div>
 				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
+					<div class="row">
+						<div class="col-12">
+							<button class="btn btn-sm btn-primary">Tambah</button>
+						</div>
+					</div>
 					<table class="table-rounded w-100">
 						<thead>
 							<tr>
@@ -93,7 +98,7 @@
 					<div class="pagination"></div>
 				</div>	
 				<div class="tab-pane fade p-3" id="nav-ujian" role="tabpanel" aria-labelledby="nav-ujian-tab" tabindex="0">
-					<table class="table-rounded w-100">
+					<table class="table-rounded w-100" id="exam-body">
 						<thead>
 							<tr>
 								<th>Kode</th>
@@ -115,6 +120,8 @@
 		</div>
 	</div>
 </section>
+
+<?= $this->load->view('teacher/modal', [], TRUE) ?>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
