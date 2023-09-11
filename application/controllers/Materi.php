@@ -13,15 +13,19 @@ class Materi extends CI_Controller {
 	public function index()
 	{
 		$datamodel = 'table';
-		if(!empty($this->input->get('data_model')) && in_array($this->input->get('data_model'), ['table', 'grid']))
+		if(!empty($this->input->get('mode')) && in_array($this->input->get('mode'), ['table', 'grid']))
 			$datamodel = $this->input->get('data_model');
 
 		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js', 'defer' => true];
-
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js', 'defer' => true];
 		if($datamodel == 'grid')
 			$data['page_js'][] = ['path' => 'assets/js/materi_grid.js', 'defer' => true];
 		else
 			$data['page_js'][] = ['path' => 'assets/js/materi_table.js', 'defer' => true];
+
+		$data['add_css'] = [
+			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css'
+		];
 
 		$data['datamodel'] = $datamodel;
 
@@ -39,7 +43,7 @@ class Materi extends CI_Controller {
 		$draw	= $this->input->get('draw') ?? '';
 		$limit  = $this->input->get('length');
 		$offset = $this->input->get('start');
-		$count  = $this->db->count_all_results('subject');
+		$count  = $this->db->count_all_results('materi');
 		$filter = $this->input->get('columns');
 		$data   = $this->model_mapel->get_all($limit, $offset, $filter);
 

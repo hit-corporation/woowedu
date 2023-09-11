@@ -13,7 +13,7 @@ endif
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Topic Listing Bootstrap 5 Template</title>
+        <title>WoowEdu</title>
 
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,9 @@ endif
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-		<script>var BASE_URL = document.querySelector('base').href;</script>
+		<script>
+            var BASE_URL = document.querySelector('base').href;
+        </script>
 
         <?php if(!empty($add_css)): 
                 foreach($add_css as $css):
@@ -151,7 +153,7 @@ endif
 
     
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url()?>materi?data_model=table">Mapel</a>
+                                <a class="nav-link" href="<?=base_url()?>materi?mode=table">Mapel</a>
                             </li>
 
                             <li class="nav-item">

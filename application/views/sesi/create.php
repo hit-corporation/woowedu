@@ -1,0 +1,112 @@
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<section class="explore-section section-padding" id="section_2">
+	
+	<div class="container">
+
+		<div class="col-12 text-center">
+			<h4 class="mb-4">Buat Jadwal Sesi Baru</h4>
+		</div>
+		
+
+		<div class="col-12">
+			<form id="form-create-news" action="">
+	
+				<input type="hidden" id="id" name="id" value="<?=isset($data['sesi_id']) ? $data['sesi_id'] : '' ?>">
+	
+				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+					<label for="title" class="form-label">Judul</label>
+					<input type="text" class="form-control" id="title" name="title" value="<?=isset($data['sesi_title']) ? $data['sesi_title'] : ''?>">
+				</div>
+ 
+
+		<div class="row mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					<label for="title" class="form-label">Tanggal</label>
+					<input type="date"  class="form-control" id="tanggal" name="tanggal" value="<?=isset($data['sesi_date']) ? $data['sesi_date'] : ''?>">
+				</div> 
+					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					<label for="title" class="form-label">Jam Mulai</label>
+					<input type="time" class="form-control" id="jamstart" name="jamstart" value="<?=isset($data['sesi_jam_start']) ? $data['sesi_jam_start'] : ''?>">
+				</div> 
+				<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+				<label for="title" class="form-label">Jam Akhir</label>
+					<input type="time" class="form-control" id="jamend" name="jamend" value="<?=isset($data['sesi_jam_end']) ? $data['sesi_jam_end'] : ''?>">
+				</div> 						
+		</div>
+	
+			<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+				<label for="title" class="form-label">Catatan</label>
+				<textarea class="form-control" id="keterangan" name="keterangan"  >
+				<?=isset($data['sesi_note']) ? $data['sesi_note'] : ''?>
+				</textarea> 
+			</div>
+<!-- 
+ 			<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+				<label for="title" class="form-label">Lampiran</label>
+				<input type="file" class="form-control" id="lampiran" name="lampiran"  >
+			</div>
+ -->
+ 
+				<div class="mb-3">
+					<a class="btn btn-success" type="submit" name="save">Simpan</a>
+				</div>
+			</form>
+		</div>
+
+	</div>
+
+</section>
+
+<!-- Include the Quill library -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+	var quill = new Quill('#editor', {
+		theme: 'snow'
+	});
+
+	$('a[name="save"]').on('click', function(){
+		let title 	= $('#title').val(); 
+		let tanggal 	= $('#tanggal').val(); 
+		let jamstart 	= $('#jamstart').val(); 
+		let jamend 	= $('#jamend').val(); 
+		let keterangan 	= $('#keterangan').val(); 
+		let id 		= $('#id').val();
+
+		$.ajax({
+			type: "POST",
+			url: BASE_URL+"sesi/create",
+			data: {
+				title: title,
+				tanggal: tanggal,
+				jamstart: jamstart,
+				jamend: jamend,
+				keterangan: keterangan,
+				id: id
+			},
+			dataType: "JSON",
+			success: function (response) {
+				if(response.success == true){
+					Swal.fire({
+						icon: 'success',
+						title: '<h4 class="text-success"></h4>',
+						html: '<span class="text-success">${response.message}</span>',
+						timer: 5000
+					});
+					window.location.href = BASE_URL+'sesi';
+				}else{
+					Swal.fire({
+						icon: 'error',
+						title: '<h4 class="text-warning"></h4>',
+						html: '<span class="text-warning">${response.message}</span>',
+						timer: 5000
+					});
+					window.location.href = BASE_URL+'sesi';
+				}
+			}
+		});
+	});
+</script>

@@ -7,38 +7,102 @@ class Sesi extends CI_Controller {
   {
     parent::__construct();
 		$this->load->model('model_sesi');
+		if (!isset($_SESSION['username'])) redirect('auth/login');
 	}
 	
 	public function index()
 	{ 
-		$data['jsdata'] = $this->loaddata();
+	
+		$saturday = strtotime('saturday this week');
+		$sunday = strtotime('sunday this week');
+
+		//echo date("d-m-Y",$sunday);
+		//echo date("d-m-Y",$saturday);
+	
+		$data['jsdata'] = '';//$this->loaddata();
 		$this->load->view('header');
 		$this->load->view('sesi/index',$data);
 		$this->load->view('footer'); 
 	}
+
+	public function delete()
+	{
+		$post = $this->input->post();
+		$delete = $this->db->where('sesi_id', $post['id'])->delete('sesi');
+
+		$res = ($delete) ?  ['success'=>true, 'message'=>'Data berhasil dihapus!'] : ['success'=>false, 'message'=>'Data gagal dihapus!'];
+		header('Content-Type: application/json');
+		echo json_encode($res);		
+	}
 	
+	public function sesidetail($id)
+	{
+		$data = $this->db->where('sesi_id', $id)->get('sesi')->row_array();
+		$html = '<div class="container border rounded-4 bg-clear p-3 mb-3 news-item">
+							<div class="d-flex justify-content-between">
+								<h6 class="mb-2">'.$data['sesi_title'].'</h6>
+							</div>
+							<div class="d-flex justify-content-between"> 
+								<p style="font-size: 14px;">'.$data['sesi_date'].'</p> 
+								<p style="font-size: 14px;">'.$data['sesi_jam_start'].' - '.$data['sesi_jam_end'].'</p>
+							</div>							
+							<p style="font-size: 14px;">'.$data['sesi_note'].'</p>
+							<div class="container d-flex justify-content-end">
+							<a href="sesi/create/'.$id.'" class="btn btn-clear border d-inline me-1 rounded-5"><i class="bi bi-pencil-square"></i></a>
+							<a class="btn btn-clear border d-inline rounded-5" onclick="deleteSesi('.$id.')"><i class="bi bi-trash3-fill"></i></a>
+							</div>
+						</div>';
+		echo $html;
+	}
+		
+ 
 	public function loaddata()
 	{
-		$params['sdate']='2023-08-21';
-		$params['edate']='2023-08-23';
-		$params['teacher_id'] = '92508';
+		$params['sdate']=$_GET['start'];
+		$params['edate']=$_GET['end'];
+		$params['teacher_id'] = $this->session->userdata['teacher_id'];
 		$customerdata = $this->model_sesi->datasesi($params);
 		foreach($customerdata->result() as $data) {
-			$tanggal =  $data->sesi_date;			   
-			
-/*				
-sesi_id
-sesi_title
-sesi_date
-sesi_jam_start
-sesi_jam_end
-teacher_id
-{start: days[5] + " 18:00", end: days[5] + " 21:00", resourceId: 2, title: "asdsadsad", color: "#FF0000"},
-*/
-			$list[] = array('resourceId'=>$data->sesi_id,'title'=>$data->sesi_title,'start'=>$data->sesi_date.' '.$data->sesi_jam_start,'end'=>$data->sesi_date.' '.$data->sesi_jam_end  );
+			$tanggal =  $data->sesi_date;	 
+			$list[] = array('id'=>$data->sesi_id,'title'=>$data->sesi_title,'start'=>$data->sesi_date.'T'.$data->sesi_jam_start,'end'=>$data->sesi_date.'T'.$data->sesi_jam_end  );
 		}	
 		if($list == null){$list[] = array(0);}
-		return json_encode($list);			
+		echo json_encode($list);			
+		exit;
 		
-	}	
+	}
+
+
+
+	public function create($id = ''){
+		// $this->session->userdata['teacher_id'];
+		$post = $this->input->post();
+		$data = [];
+
+ 
+				
+		if( isset($post['title'])){
+			$teacher_id =  $this->session->userdata['teacher_id'];
+			$data_save = ['sesi_title'=>$post['title'], 'sesi_date'=>$post['tanggal'], 'sesi_jam_start'=>$post['jamstart'], 'sesi_jam_end'=>$post['jamend'], 'teacher_id' =>$teacher_id,'sesi_note'=>trim($post['keterangan'])];
+
+			if($post['id'] == ''){
+				$save = $this->db->insert('sesi', $data_save);
+				$res = ($save) ?  ['success'=>true, 'message'=>'Data berhasil disimpan!'] : ['success'=>false, 'message'=>'Data gagal disimpan!'];
+			}else{
+				$save = $this->db->where('sesi_id', $post['id'])->update('sesi', $data_save);
+				$res =  ($save) ? ['success'=>true, 'message'=>'Data berhasil diupdate!'] :  ['success'=>false, 'message'=>'Data gagal diupdate!'];
+			}
+
+			header('Content-Type: application/json');
+			echo json_encode($res); die;
+		}
+
+		if($id != '') $data = $this->db->where('sesi_id', $id)->get('sesi')->row_array();
+
+		$this->load->view('header');
+		$this->load->view('sesi/create', ['data'=>$data]);
+		$this->load->view('footer');
+	}
+
+	
 }

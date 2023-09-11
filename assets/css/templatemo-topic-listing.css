@@ -1165,3 +1165,16 @@ blockquote {
   }
 }
 
+/*---------------------------------------
+  BACKGROUND              
+-----------------------------------------*/
+
+.bg-purple {
+  background-color: var(--bs-purple);
+  color: var(--bs-white);
+}
+
+.bg-orange {
+  background-color: var(--bs-orange);
+  color: var(--bs-white);
+}
