@@ -93,9 +93,23 @@ endif
 
                     <div class="d-lg-none ms-auto me-4">
 						<!-- notif icon -->
-						<span class="me-2">
+						<span class="me-3 notif-group">
 							<i class="bi-bell text-light fs-20"></i>
+							<span class="text-light rounded text-white fs-12 bg-danger rounded-5 notif-number" style="padding: 3px;">0</span>
 						</span>
+
+						<!-- Notif Content -->
+						<div class="notif-content-container">
+							<div class="notif-header">
+								<h6>Notifikasi</h6>
+							</div>
+							<hr>
+							<div class="notif-content">
+								<div class="notif-list">
+									<p>isi 1</p>
+								</div>
+							</div>
+						</div>
 
                         <a href="#top" class="navbar-icon bi-person smoothscroll person-sm"></a>
 						<div class="profile-container p-3 sm">
@@ -160,10 +174,23 @@ endif
 
                         <div class="d-none d-lg-block">
 							<!-- notif icon -->
-							<span class="me-3">
+							<span class="me-3 notif-group">
 								<i class="bi-bell text-light fs-20"></i>
-								<span class="text-light rounded text-white fs-12 bg-danger rounded-5 notif-number" style="padding: 3px;">10</span>
+								<span class="text-light rounded text-white fs-12 bg-danger rounded-5 notif-number" style="padding: 3px;">0</span>
 							</span>
+
+							<!-- Notif Content -->
+							<div class="notif-content-container">
+								<div class="notif-header">
+									<h6>Notifikasi</h6>
+								</div>
+								<hr>
+								<div class="notif-content">
+									<div class="notif-list">
+										<p>isi 1</p>
+									</div>
+								</div>
+							</div>
 
 							<!-- profile icon -->
                             <a href="#top" class="navbar-icon bi-person smoothscroll person-lg"></a>
