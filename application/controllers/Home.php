@@ -13,6 +13,8 @@ class Home extends CI_Controller {
 		$this->load->library('session');
 
 		if (!isset($_SESSION['username'])) redirect('auth/login');
+
+		$this->sync_notif();
 	}
 
 	public function index()
@@ -85,5 +87,65 @@ class Home extends CI_Controller {
 		$this->load->view('header');
 		$this->load->view('home/index', $data);
 		$this->load->view('footer');
+	}
+
+	public function sync_notif(){
+		$session = $this->session->userdata();
+
+		// CARI DATA TUGAS JIKA TIDAK ADA DI TABEL NOTIF MAKA LAKUKAN INSERT
+		$tasks = $this->db->where('DATE(available_date) >=', date("Y-m-d", strtotime("-1 months")))->get('task')->result_array();
+		foreach ($tasks as $task) {
+			$notif = $this->db->where('type', 'TASK')->where('task_id', $task['task_id'])->where('user_id', $session['userid'])->get('notif')->row_array();
+			if(!$notif){
+				$data = [
+					'type' 		=> 'TASK',
+					'title' 	=> $task['note'],
+					'seen' 		=> false,
+					'user_id' 	=> $session['userid'],
+					'created_at' => $task['available_date'],
+					'link'		=> 'task/detail'.$task['task_id'],
+					'task_id'	=> $task['task_id']
+				];
+				$this->db->insert('notif', $data);
+			}
+		}
+
+		// CARI DATA NEWS JIKA TIDAK ADA DI TABEL NOTIF MAKA LAKUKAN INSERT
+		$beritas = $this->db->where('DATE(tanggal) >=', date("Y-m-d", strtotime("-1 months")))->get('news')->result_array();
+		foreach ($beritas as $news) {
+			$notif = $this->db->where('type', 'NEWS')->where('news_id', $news['id'])->where('user_id', $session['userid'])->get('notif')->row_array();
+			if(!$notif){
+				$data = [
+					'type' 		=> 'NEWS',
+					'title' 	=> $news['judul'],
+					'seen' 		=> false,
+					'user_id' 	=> $session['userid'],
+					'created_at' => $news['tanggal'],
+					'link'		=> 'news/detail'.$news['id'],
+					'news_id'	=> $news['id']
+				];
+				$this->db->insert('notif', $data);
+			}
+		} 
+	}
+
+	public function notif(){
+		$user_id = $this->session->userdata('userid'); 
+		$notif = $this->db->where('user_id', $user_id)->where('seen', false)->get('notif')->num_rows();
+
+		$response = [ 'success' => true, 'total' => $notif ];
+
+		header('Content-Type: application/json');
+		echo json_encode($response, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+	}
+
+	public function notif_data(){
+		$user_id = $this->session->userdata('userid'); 
+		$notif = $this->db->where('user_id', $user_id)->limit('100')->get('notif')->result_array();
+
+		$response = [ 'success' => true, 'data' => $notif ];
+
+		header('Content-Type: application/json');
+		echo json_encode($response, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 	}
 }
