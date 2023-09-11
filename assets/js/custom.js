@@ -75,5 +75,62 @@
 				profile.removeClass('d-none')
 			}
 		});
+
+		// KETIKA NOTIF ICON DI KLIK
+		$('.notif-group').on('click', function(){
+			let notif = $('.notif-content-container');
+			if(notif.hasClass('d-block')){
+				notif.addClass('d-none');
+				notif.removeClass('d-block');
+			}else{
+				notif.addClass('d-block');
+				notif.removeClass('d-none')
+			}
+
+			// JALANKAN AJAX UNTUK AMBIL DATA NOTIF
+			$.ajax({
+				type: "GET",
+				url: BASE_URL+"home/notif_data",
+				dataType: "JSON",
+				success: function (response) {
+					if(response.success == true){
+						$('.notif-content').html('');
+						$.each(response.data, function (i, val) {
+							const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember"];
+							let date = new Date(val.created_at);
+							$('.notif-content').append(`<div class="notif-list">
+																						<div class="row">
+																							<div class="col-2">
+																								<i class="${(val.type == 'TASK') ? 'bi bi-list-task' : 'bi bi-newspaper'}"></i>
+																							</div>
+																							<div class="col-10">
+																								<span>${val.title.substring(0, 100).replace(/(<([^>]+)>)/ig, '')}</span>
+																								<br>
+																								<span class="fs-14 notif-date">${date.getDate()+` `+monthNames[date.getMonth()]+` `+date.getFullYear()+` `+date.getHours()+`:`+date.getMinutes()}</span>
+																								<span class="${(val.seen == false) ? `dotted-notif` :  ``}"></span>
+																							</div>
+																						</div>
+																					</div>`);
+						});
+					}
+				}
+			});
+
+		});
+
+		// CHANGE BADGE TOTAL TOTIF
+		$.ajax({
+			type: "GET",
+			url: BASE_URL+"home/notif",
+			dataType: "JSON",
+			success: function (response) {
+				if(response.success == true){
+					$('.notif-number').html(response.total);
+				}
+			}
+		});
+
+		
+
   
   })(window.jQuery);
