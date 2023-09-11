@@ -115,9 +115,9 @@ a { cursor: pointer; }
 	height: 3px;
 	transition: all 0.3s ease-in-out;
 }
-.nav-item a.nav-link:hover{
-	background-position: 0;
-}
-.nav-item a.nav-link:hover::before{
-	width: 100%;
+.nav-item a.nav-link:hover{ background-position: 0; }
+.nav-item a.nav-link:hover::before{ width: 100%; }
+.notif-number{ 
+	position: absolute;
+	margin-left: -8px;
 }
