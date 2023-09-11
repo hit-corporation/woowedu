@@ -22,6 +22,7 @@
 	-webkit-backdrop-filter: blur(5px);
 	border: 1px solid rgba(255, 255, 255, 0.1);
 } 
+.fs-10{ font-size: 10px; }
 .fs-12{ font-size: 12px; }
 .fs-14{ font-size: 14px; }
 .fs-16{ font-size: 16px; }
@@ -68,11 +69,7 @@
     padding: 2px;
 }
 .data-by-date input{ border-radius: 10px; border: 1px solid #bdc1b8; }
-.table-rounded{
-	border-collapse: separate;
-	border: solid #a8ded8 1px;
-	border-radius: 10px;
-}
+.table-rounded{ border-collapse: separate; border: solid #a8ded8 1px; border-radius: 10px; }
 .table-rounded td, .table-rounded th {
 	border-left: solid #a8ded8 1px;
 	border-top: solid #a8ded8 1px;
@@ -84,6 +81,12 @@ a { cursor: pointer; }
 @media screen and (min-width:1080px) and (max-width: 1080px) and (min-height: 2160px) and (min-height: 2160px){
 	html, body{ height: 100%; }
 	html body main{ height: 95%; }
+}
+@media screen and (min-width:990px) and (max-width: 1200px){
+	#navbarNav .d-lg-block{
+		position: absolute;
+		right: 24px;
+	}
 }
 .dataTables_length, .dataTables_filter{ display: none; }
 #tableTask_info, #tableExam_info { display: none; }
@@ -117,7 +120,47 @@ a { cursor: pointer; }
 }
 .nav-item a.nav-link:hover{ background-position: 0; }
 .nav-item a.nav-link:hover::before{ width: 100%; }
-.notif-number{ 
+.notif-number{  position: absolute; margin-left: -8px; }
+.notif-group{ cursor: pointer; }
+.notif-content-container{
+	display: none;
+	background-color: white;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
 	position: absolute;
-	margin-left: -8px;
+	right: 50px;
+	max-height: 500px;
+    min-height: 400px;
+    min-width: 25rem;
+    overflow-y: auto;
+ }
+ .notif-content-container::-webkit-scrollbar{ width: 5px; }
+ .notif-content-container::-webkit-scrollbar-track{ background: #f1f1f1; }
+ .notif-content-container::-webkit-scrollbar-thumb{ background: #888; }
+ .notif-content-container::-webkit-scrollbar-thumb:hover{ background: #aaa; }
+ @media screen and(min-width: 1200) and (max-width: 1400px) {
+	.notif-content-container{
+		right: 200px;
+	}
+ }
+.notif-header{ margin-top: 5px; }
+.notif-list{
+	padding: 10px;
+	background-color: #ebf6fb;
+	border-radius: 7px;
+	margin-bottom: 3px;
+	cursor: pointer;
+}
+.notif-date{
+	color: #8d8d8d;
+}
+.dotted-notif{
+	background-color: green;
+	border-radius: 50%;
+	height: 10px;
+	width: 10px;
+	display: inline-block;
+	position: absolute;
+	right: 30px;
 }
