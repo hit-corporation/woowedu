@@ -1,3 +1,8 @@
+<?php 
+if(!isset($_SESSION['userid'])): 
+    redirect('/');
+endif 
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -8,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Topic Listing Bootstrap 5 Template</title>
+        <title>WoowEdu</title>
 
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +35,9 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-		<script>var BASE_URL = document.querySelector('base').href;</script>
+		<script>
+            var BASE_URL = document.querySelector('base').href;
+        </script>
 
         <?php if(!empty($add_css)): 
                 foreach($add_css as $css):
@@ -42,13 +49,8 @@
         ?>
 
     <style>
-        html {
-            min-height: 100%;
-        }
-
-        main {
-            min-height: 80vh;
-        }
+        html {  min-height: 100%; } 
+        main { min-height: 80vh; }
     </style>
 
     </head>
@@ -64,12 +66,12 @@
 			$student = ($user_level == 4) ? $this->db->where('nis', $user['username'])->get('student')->row_array() : [];
 			$student_id = ($student) ? $student['student_id'] : '';
 
-            $name = '';
+            $name = NULL;
             
             switch($user_level)
             {
                 case 3:
-                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'];
+                    $name = $this->db->where('nik', $user['username'])->get('teacher')->row_array()['teacher_name'] ?? '';
                     break;
                 case 4:
                     $name = $this->db->where('nis', $user['username'])->get('student')->row_array()['student_name'] ?? '';
@@ -92,6 +94,11 @@
                     </a>
 
                     <div class="d-lg-none ms-auto me-4">
+						<!-- notif icon -->
+						<span class="me-2">
+							<i class="bi-bell text-light fs-20"></i>
+						</span>
+
                         <a href="#top" class="navbar-icon bi-person smoothscroll person-sm"></a>
 						<div class="profile-container p-3 sm">
 							<div class="profile-image-menu">
@@ -132,7 +139,7 @@
 
     
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url()?>mapel">Mapel</a>
+                                <a class="nav-link" href="<?=base_url()?>materi?mode=table">Mapel</a>
                             </li>
 
                             <li class="nav-item">
@@ -154,6 +161,13 @@
                         </ul>
 
                         <div class="d-none d-lg-block">
+							<!-- notif icon -->
+							<span class="me-3">
+								<i class="bi-bell text-light fs-20"></i>
+								<span class="text-light rounded text-white fs-12 bg-danger rounded-5 notif-number" style="padding: 3px;">10</span>
+							</span>
+
+							<!-- profile icon -->
                             <a href="#top" class="navbar-icon bi-person smoothscroll person-lg"></a>
 							<div class="profile-container p-3 lg">
 								<div class="profile-image-menu">

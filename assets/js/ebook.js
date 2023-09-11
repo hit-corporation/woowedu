@@ -223,7 +223,7 @@ const getBooks = async (page, count) => {
                 >
                     <img width="${imgWidth}" 
                          height="${imgHeight}" 
-                         src="${ img }"
+                         src="${ e.cover_img }"
                          class="ms-2 my-2" 
                          onerror="this.src = 'assets/images/ebooks/cover/default.png';"/>
                     <div class="card-body flex-grow-1">

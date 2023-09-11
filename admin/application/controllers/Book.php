@@ -146,10 +146,10 @@ class Book extends MY_Controller
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 
-			$filename = $this->upload->data('file_name');
+			$filename = $this->upload->data('full_path');
 			// resize
 			$config['image_library'] = 'gd2';
-			$config['source_image'] = $this->upload->data('full_path');
+			$config['source_image'] = FCPATH.'../'.$this->upload->data('full_path');
 			$config['create_thumb'] = TRUE;
 			$config['maintain_ratio'] = TRUE;
 			$config['width']         = 128 - 50;

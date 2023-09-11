@@ -20,6 +20,6 @@
         <script src="<?=base_url('assets/js/jquery.sticky.js')?>"></script>
         <!-- <script src="<?=base_url('assets/js/click-scroll.js')?>"></script> -->
         <script src="<?=base_url('assets/js/custom.js')?>"></script>
-
+        <?= !empty($page_js) ? add_js($page_js) : trim('') ?>
     </body>
 </html>

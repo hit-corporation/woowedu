@@ -532,3 +532,12 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+/**
+ *  ADDITIONAL CONFIG
+ * 
+ */
+
+$config['admin_url'] =  ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+$config['admin_url'] .= '://'. parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST); 
