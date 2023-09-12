@@ -98,19 +98,19 @@
 						$.each(response.data, function (i, val) {
 							const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember"];
 							let date = new Date(val.created_at);
-							$('.notif-content').append(`<div class="notif-list">
-																						<div class="row">
-																							<div class="col-2">
-																								<i class="${(val.type == 'TASK') ? 'bi bi-list-task' : 'bi bi-newspaper'}"></i>
-																							</div>
-																							<div class="col-10">
-																								<span>${val.title.substring(0, 100).replace(/(<([^>]+)>)/ig, '')}</span>
-																								<br>
-																								<span class="fs-14 notif-date">${date.getDate()+` `+monthNames[date.getMonth()]+` `+date.getFullYear()+` `+date.getHours()+`:`+date.getMinutes()}</span>
-																								<span class="${(val.seen == false) ? `dotted-notif` :  ``}"></span>
-																							</div>
-																						</div>
-																					</div>`);
+							$('.notif-content').append(`<div class="notif-list" onclick="notifList(${val.notif_id}, '${val.link}')">
+										<div class="row">
+											<div class="col-2">
+												<i class="${(val.type == 'TASK') ? 'bi bi-list-task' : 'bi bi-newspaper'}"></i>
+											</div>
+											<div class="col-10">
+												<span>${val.title.substring(0, 100).replace(/(<([^>]+)>)/ig, '')}</span>
+												<br>
+												<span class="fs-14 notif-date">${date.getDate()+` `+monthNames[date.getMonth()]+` `+date.getFullYear()+` `+date.getHours()+`:`+date.getMinutes()}</span>
+												<span class="${(val.seen == false) ? `dotted-notif` :  ``}"></span>
+											</div>
+										</div>
+									</div>`);
 						});
 					}
 				}
@@ -131,6 +131,22 @@
 		});
 
 		
-
   
   })(window.jQuery);
+
+	// notif-list DI KLIK
+	function notifList(id, link){
+		$.ajax({
+			type: "GET",
+			url: BASE_URL+"home/notif_update",
+			data: {
+				notif_id: id
+			},
+			dataType: "JSON",
+			success: function (response) {
+				if(response.success == true){
+					window.location.href = BASE_URL+link;
+				}
+			}
+		});
+	}
