@@ -113,20 +113,20 @@ class Materi extends MY_Controller {
 
 
         $data = [
-            'tema_title'             => $tema_title,  
-            'sub_tema_title'             => $sub_tema_title,  
-						'no_urut'             => $no_urut, 
+            'tema_title'        => $tema_title,  
+            'sub_tema_title'    => $sub_tema_title,  
+			'no_urut'           => $no_urut, 
             'title'             => $title,  
             'subject_id'        => $subject, 
             'available_date'    => $ava_date, 
             'materi_file'       => $_n_subject_name.'-'.$_n_title.'.'.$ext,
             'note'              => $description
         ];
-				if(!empty($parent)) $data['parent_id']=$parent;
-				if(!empty($require)) $data['materi_require']=$require; 
+        if(!empty($parent)) $data['parent_id']=$parent;
+        if(!empty($require)) $data['materi_require']=$require; 
+
         if(!$this->db->insert('materi', $data))
         {
-
 			http_response_code(422);
 			$msg = ['err_status' => 'error', 'message' => 'bb'.$this->lang->line('woow_form_error')];
 			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);

@@ -6,11 +6,6 @@
 			<ul class="metismenu list-unstyled" id="side-menu">
 				<li class="menu-title">Menu</li>
 					<?=$this->acl_menu->menu($_SESSION['user_level'])?> 
-					
-
- 
-				
-				
  					
 			</ul>
 		</div>
