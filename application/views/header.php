@@ -28,21 +28,22 @@ endif
         <link href="<?=base_url('assets/css/custom.css')?>" rel="stylesheet">
 
         <link href="<?=base_url('assets/css/templatemo-topic-listing.css')?>" rel="stylesheet">
+
 		
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 		<script>
             var BASE_URL = document.querySelector('base').href;
+            var ADMIN_URL = '<?=html_escape($this->config->item('admin_url'))?>';
         </script>
 
         <?php if(!empty($add_css)): 
                 foreach($add_css as $css):
         ?>
-        <link rel="stylesheet" href="<?=html_escape(base_url($css))?>" />
+        <link rel="stylesheet" href="<?=html_escape($css)?>" />
         <?php
                 endforeach; 
             endif; 

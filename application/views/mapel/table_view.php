@@ -1,5 +1,5 @@
-<table id="tbl-materi" class="table table-sm table-striped">
-    <thead class="bg-info">
+<table id="tbl-materi" class="table table-sm table-striped w-100">
+    <thead class="bg-design text-white">
         <tr>
             <th>ID Materi</th>   
             <th>ID Mapel</th>   

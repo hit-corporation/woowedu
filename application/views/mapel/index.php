@@ -48,8 +48,13 @@
 			</div>
 			<?php endfor?> -->
 		<!-- </div> -->
-		<div class="row">
-			<div class="col-12"></div>
+		<div class="row mb-2">
+			<div class="col-md-8 col-lg-10"></div>
+			<div class="col-md-4 col-lg-2 d-flex flex-nowrap justify-content-end">
+				<button type="button" class="btn btn-sm btn-success text-white shadow-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-add">
+					<i class="bi bi-plus font-size-12"></i> Tambah
+				</button>
+			</div>
 		</div>
 
 		<div class="row"></div>
@@ -72,9 +77,8 @@
     <div class="modal-content border-0">
       <div class="modal-header bg-success">
         <h5 class="modal-title text-capitalize text-light text-shadow">Tambah Materi</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="false">&times;</span>
-        </button>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
       </div>
       <div class="modal-body">
         <form name="form-add" id="form-add" class="d-flex flex-column"  >
@@ -112,7 +116,7 @@
                             <label class="m-0">Mata Pelajaran <span class="text-danger"><strong>*</strong></span></label>
                         </div>
                         <div class="col-8 mb-3">
-                            <select type="text" class="form-control form-control-sm col-11" name="a_materi_subject" data-live-search="true"></select>
+                            <select class="form-select form-select-sm col-11" name="a_materi_subject" data-live-search="true"></select>
                             <button type="button" id="reset-subject" class="btn btn-sm btn-primary"><i class="fas fa-undo"></i></button>
                             <input type="hidden" name="a_materi_subject_text">
                         </div> 
@@ -174,9 +178,9 @@
 <!-- end modal add-->
 
 <script>
-	$('#basic-usage').select2({
-		theme: "bootstrap-5",
-		width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-		placeholder: $( this ).data( 'placeholder' ),
-	});
+	// $('#basic-usage').select2({
+	// 	theme: "bootstrap-5",
+	// 	width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+	// 	placeholder: $( this ).data( 'placeholder' ),
+	// });
 </script>
