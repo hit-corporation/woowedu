@@ -89,7 +89,7 @@ class Home extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	public function sync_notif(){
+	private function cari_task_notif(){
 		$session = $this->session->userdata();
 
 		// CARI DATA TUGAS JIKA TIDAK ADA DI TABEL NOTIF MAKA LAKUKAN INSERT
@@ -103,12 +103,16 @@ class Home extends CI_Controller {
 					'seen' 		=> false,
 					'user_id' 	=> $session['userid'],
 					'created_at' => $task['available_date'],
-					'link'		=> 'task/detail'.$task['task_id'],
+					'link'		=> 'task/detail/'.$task['task_id'],
 					'task_id'	=> $task['task_id']
 				];
 				$this->db->insert('notif', $data);
 			}
 		}
+	}
+
+	private function cari_news_notif(){
+		$session = $this->session->userdata();
 
 		// CARI DATA NEWS JIKA TIDAK ADA DI TABEL NOTIF MAKA LAKUKAN INSERT
 		$beritas = $this->db->where('DATE(tanggal) >=', date("Y-m-d", strtotime("-1 months")))->get('news')->result_array();
@@ -121,12 +125,25 @@ class Home extends CI_Controller {
 					'seen' 		=> false,
 					'user_id' 	=> $session['userid'],
 					'created_at' => $news['tanggal'],
-					'link'		=> 'news/detail'.$news['id'],
+					'link'		=> 'news/detail/'.$news['id'],
 					'news_id'	=> $news['id']
 				];
 				$this->db->insert('notif', $data);
 			}
 		} 
+	}
+
+	public function sync_notif(){
+		$session = $this->session->userdata();
+
+		if($session['user_level'] == 4 || $session['user_level'] == 5){
+			$this->cari_task_notif();
+			$this->cari_news_notif();
+		}
+
+		if($session['user_level'] == 3 || $session['user_level'] == 6){
+			$this->cari_news_notif();
+		}
 	}
 
 	public function notif(){
@@ -141,9 +158,26 @@ class Home extends CI_Controller {
 
 	public function notif_data(){
 		$user_id = $this->session->userdata('userid'); 
-		$notif = $this->db->where('user_id', $user_id)->limit('100')->get('notif')->result_array();
+		$notif = $this->db->where('user_id', $user_id)->limit('100')->order_by('created_at', 'DESC')->get('notif')->result_array();
 
 		$response = [ 'success' => true, 'data' => $notif ];
+
+		header('Content-Type: application/json');
+		echo json_encode($response, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+	}
+
+	public function notif_update(){
+		$get = $this->input->get();
+		$notif_id = $get['notif_id'];
+
+		$update = $this->db->where('notif_id', $notif_id)->update('notif', ['seen'=> true]);
+
+		if($update){
+			$response = [ 'success' => true, 'data' => 'data berhasil diupdate'];
+		}else{
+			$response = [ 'success' => false, 'data' => 'data gagal diupdate'];
+		}
+
 
 		header('Content-Type: application/json');
 		echo json_encode($response, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
