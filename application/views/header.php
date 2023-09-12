@@ -106,11 +106,7 @@ endif
 								<h6>Notifikasi</h6>
 							</div>
 							<hr>
-							<div class="notif-content">
-								<div class="notif-list">
-									<p>isi 1</p>
-								</div>
-							</div>
+							<div class="notif-content"></div>
 						</div>
 
                         <a href="#top" class="navbar-icon bi-person smoothscroll person-sm"></a>
@@ -187,11 +183,7 @@ endif
 									<h6>Notifikasi</h6>
 								</div>
 								<hr>
-								<div class="notif-content">
-									<div class="notif-list">
-										<p>isi 1</p>
-									</div>
-								</div>
+								<div class="notif-content"></div>
 							</div>
 
 							<!-- profile icon -->
