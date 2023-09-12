@@ -16,20 +16,24 @@ class Materi extends CI_Controller {
 		if(!empty($this->input->get('mode')) && in_array($this->input->get('mode'), ['table', 'grid']))
 			$datamodel = $this->input->get('data_model');
 
-		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js', 'defer' => true];
-		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js', 'defer' => true];
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'];
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js'];
+		$data['page_js'][] = ['path' => 'assets/libs/sweetalert2/sweetalert2.min.js'];
 		if($datamodel == 'grid')
 			$data['page_js'][] = ['path' => 'assets/js/materi_grid.js', 'defer' => true];
 		else
 			$data['page_js'][] = ['path' => 'assets/js/materi_table.js', 'defer' => true];
 
-		$data['add_css'] = [
-			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css'
+		$header['add_css'] = [
+			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css',
+			'assets/libs/sweetalert2/sweetalert2.min.css',
+			'assets/css/materi.css'
+
 		];
 
 		$data['datamodel'] = $datamodel;
 
-		$this->load->view('header');
+		$this->load->view('header', $header);
 		$this->load->view('mapel/index', $data);
 		$this->load->view('footer');
 	}

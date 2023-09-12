@@ -540,4 +540,4 @@ $config['proxy_ips'] = '';
  */
 
 $config['admin_url'] =  ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-$config['admin_url'] .= '://'. parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST); 
+$config['admin_url'] .= '://'.$_SERVER['HTTP_HOST'].'/admin'; 
