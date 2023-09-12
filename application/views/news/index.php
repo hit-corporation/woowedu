@@ -113,11 +113,11 @@
 				for(let i = 0; i < response.total_pages; i++){
 					if(currentPage == i+1){
 						$('.pagination').append(`
-							<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, this)">${i+1}</a></li>
+							<li class="page-item active"><a class="page-link" onclick="page(${i+1}, this)">${i+1}</a></li>
 						`);
 					}else{
 						$('.pagination').append(`
-							<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, this)">${i+1}</a></li>
+							<li class="page-item"><a class="page-link" onclick="page(${i+1}, this)">${i+1}</a></li>
 						`);
 					}
 
