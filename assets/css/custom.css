@@ -164,3 +164,14 @@ a { cursor: pointer; }
 	position: absolute;
 	right: 30px;
 }
+.dataTables_paginate.paging_simple_numbers{ margin-top: 10px; }
+.dataTables_paginate.paging_simple_numbers span a.paginate_button.current{ 
+	background-color: rgb(80, 165, 241);
+	border-radius: 10px;
+	border-color: rgb(206, 223, 255);
+}
+.dataTables_paginate.paging_simple_numbers span a.paginate_button:hover{
+	background-color: rgb(80, 165, 241);
+	border-radius: 10px;
+	border-color: rgb(206, 223, 255);
+}
