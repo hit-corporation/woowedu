@@ -1,8 +1,14 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
+<?php 
+	$user_level = $this->session->userdata('user_level');
+?>
+
 <section class="explore-section section-padding" id="section_2">
 	<div class="container">
+		<?php if($user_level == 3 || $user_level == 6): ?>
 		<p class="mt-4"><a href="<?=base_url()?>student" class="text-secondary">Semua Siswa</a> > <span class="fw-bold">Detail Siswa</span></p>
+		<?php endif ?>
 	</div>
 
 	<div class="container">
