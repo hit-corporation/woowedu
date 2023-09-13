@@ -1,53 +1,48 @@
 <section class="explore-section section-padding" id="section_2">
 	<div class="container">
-		<h6>Detail Tugas</h6>
-		<br>
-		<h5><?=$task['subject_name']?></h5>
-		<br>
-		<div class="row border rounded p-3">
-			<div class="col">Nama Guru: <?=$task['teacher_name']?></div>
-			<div class="col">
-				<div class="row">
-					<div class="col">Dibuat: <?=date('d M Y H:i', strtotime($task['available_date']))?></div>
-					<div class="col">Batas Pengumpulan: <span class="bg-danger rounded text-white"><?=date('d M Y H:i', strtotime($task['due_date']))?></span></div>
+		
+		<div class="card">
+			<h6 class="card-header"><?=$task['subject_name']. ' - '. $task['code']?></h6>
+			<div class="card-body">
+				<div class="col">Nama Guru: <?=$task['teacher_name']?></div>
+				<div class="col">
+					<div class="row">
+						<div class="col">Dibuat: <?=date('d M Y H:i', strtotime($task['available_date']))?></div>
+						<div class="col">Batas Pengumpulan: <span class="bg-danger rounded text-white"><?=date('d M Y H:i', strtotime($task['due_date']))?></span></div>
+					</div>
+				</div>
+
+				<br><br>
+				<p class="mt-4">Catatan:</p>
+				<p><?=$task['note']?></p>
+
+				<br><br>
+				<p>File Soal Tugas:</p>
+
+				<div class="container">
+				<?php 
+					if(!empty($task['task_file'])){
+
+						function contains($array, $string) {
+							return count(array_intersect($array, explode(".", $string)));
+						}
+					
+						$string = $task['task_file'];
+						$array = array('mp4', 'ogv', 'webm');
+						$i = contains($array, $string);
+						echo ($i) ? '<video width="500" height="500" controls src="'.base_url('assets/files/teacher_task/').$task['task_file'].'"></video>' : '<a href="'.base_url('assets/files/teacher_task/').$task['task_file'].'">Download File</a><br><embed width="191" height="207" name="plugin" src="'.base_url('assets/files/teacher_task/').$task['task_file'].'" type="application/pdf">';
+					
+					}else{
+						echo 'Tidak Ada File Materi Tugas';
+					}
+				?>
 				</div>
 			</div>
-
-
-
-			<br><br>
-			<p class="mt-4">Catatan:</p>
-			<p><?=$task['note']?></p>
-
-			<br><br>
-			<p>File Soal Tugas:</p>
-
-			<div class="container">
-			<?php 
-				if(!empty($task['task_file'])){
-
-					function contains($array, $string) {
-						return count(array_intersect($array, explode(".", $string)));
-					}
-				
-					$string = $task['task_file'];
-					$array = array('mp4', 'ogv', 'webm');
-					$i = contains($array, $string);
-					echo ($i) ? '<video width="500" height="500" controls src="'.base_url('assets/files/teacher_task/').$task['task_file'].'"></video>' : '<a href="'.base_url('assets/files/teacher_task/').$task['task_file'].'">Download File</a><br><embed width="191" height="207" name="plugin" src="'.base_url('assets/files/teacher_task/').$task['task_file'].'" type="application/pdf">';
-				
-				}else{
-					echo 'Tidak Ada File Materi Tugas';
-				}
-			?>
-			</div>
-
 		</div>
 
-
-		<div class="row border rounded mt-3 p-4">
-			<div class="container">
-				<p>Jawaban Tugas: </p>
-
+		<div class="card mt-2">
+			<h5 class="card-header">Jawaban Tugas</h5>
+			<div class="card-body">
 				<?php if(!empty($task_student)) : ?>
 					<a href="<?=base_url('assets/files/student_task/').$task['class_id'].'/'.$task_student['task_file']?>">Download File</a>
 					<br>
