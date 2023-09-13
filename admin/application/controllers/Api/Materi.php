@@ -188,12 +188,13 @@ class Materi extends MY_Controller {
 
         // UPLOAD FILE
         // cek if request has upload
-        if(!empty($_FILES['a_materi_video']['name']))
+        $file = NULL;
+        if(!empty(trim($_FILES['a_materi_video']['name'])))
         {
             $dir = '../assets/files/materi/'; 
         
             // set name for the videofile
-            $filename = $dir.DIRECTORY_SEPARATOR.str_replace(' ', '_', strtolower($subject_name)).'-'.str_replace(' ', '_', strtolower($title));
+            $filename = $dir.DIRECTORY_SEPARATOR.str_replace([' ', ':'], '_', strtolower($subject_name)).'-'.str_replace([' ', ':'], '_', strtolower($title));
             // get the extension
             $ext = pathinfo(basename($video_name), PATHINFO_EXTENSION);
             // cek if file exists, if true then delete file
@@ -209,18 +210,21 @@ class Materi extends MY_Controller {
                 return;
             }
 
-            $data['materi_file'] = basename($filename.'.'.$ext);
+            $file = basename($filename.'.'.$ext);
         }
 
         $data = [
-            'tema_title'             => $tema_title,  
-            'sub_tema_title'             => $sub_tema_title,  
-						'no_urut'             => $no_urut, 
-						'title'             => $title, 
+            'tema_title'        => $tema_title,  
+            'sub_tema_title'    => $sub_tema_title,  
+			'no_urut'           => $no_urut, 
+		    'title'             => $title, 
             'subject_id'        => $subject,
             'available_date'    => date('Y-m-d'),
             'note'              => $description
         ];
+
+        if(!empty($file))
+            $data['materi_file'] = $file;
 
 			//	if(!empty($parent)) $data['parent_id']=$parent;
 			//	if(!empty($require)) $data['materi_require']=$require;
@@ -234,7 +238,7 @@ class Materi extends MY_Controller {
         }
 
         http_response_code(200);
-		$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_form_success')];
+		$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_form_success'), 'ext' => $data];
 		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 		exit;
     }
