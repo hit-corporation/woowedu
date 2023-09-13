@@ -91,7 +91,7 @@
 												<div class="custom-block-overlay-text d-flex">
 													<div>
 														<h5 class="text-white mb-2"><?=$val['judul']?></h5>
-														<span><?=date('d M Y H:i', strtotime($val['tanggal']))?></span>
+														<span class="date-news-card"><?=date('d M Y H:i', strtotime($val['tanggal']))?></span>
 														<p class="text-white"><?=substr(strip_tags($val['isi']), 0, 100) . ' ...'?></p>
 														
 														
