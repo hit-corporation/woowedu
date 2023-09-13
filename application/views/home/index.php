@@ -120,10 +120,10 @@
 										<a href="<?=base_url('task/detail/').$value['task_id']?>">
 											<div class="d-flex">
 												<div>
-													<h5 class="mb-2"><?=$value['subject_name']?></h5>
+													<p class="mb-2 task-card-title"><?=$value['subject_name']?></p>
 													<p class="fs-12">Guru: <?=$value['teacher_name']?></p>
-													<p><?=$value['note']?></p>
-													<span class="text-white fs-14 mt-4 bg-warning d-inline rounded p-1 mt-3 d-inline-block">batas akhir: <?= date('d M Y H:i', strtotime($value['due_date'])) ?></span>
+													<p class="task-card-content"><?=$value['note']?></p>
+													<span class="task-card-date">batas akhir: <?= date('d M Y H:i', strtotime($value['due_date'])) ?></span>
 												</div>
 											</div>
 										</a>
