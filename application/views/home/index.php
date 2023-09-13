@@ -90,9 +90,9 @@
 											<a href="<?=base_url('news/detail/').$val['id']?>">
 												<div class="custom-block-overlay-text d-flex">
 													<div>
-														<h5 class="text-white mb-2"><?=$val['judul']?></h5>
+														<h5 class="text-white mb-2 title-news-card"><?=$val['judul']?></h5>
 														<span class="date-news-card"><?=date('d M Y H:i', strtotime($val['tanggal']))?></span>
-														<p class="text-white"><?=substr(strip_tags($val['isi']), 0, 100) . ' ...'?></p>
+														<p class="text-white content-news-card"><?=substr(strip_tags($val['isi']), 0, 100) . ' ...'?></p>
 														
 														
 													</div>
