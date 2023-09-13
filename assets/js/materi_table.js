@@ -127,7 +127,7 @@ const btnUpdateClick = e => {
  * @returns {*}
  */
 const inputFileHandler = e => {
-    if(!e.files)
+    if(!e.files && !e.files[0])
         throw new Error("No File Uploaded");
 
     const reader = new FileReader();
@@ -195,15 +195,86 @@ const showData = e => {
     let judul = document.querySelector('#judul'),
         tema = document.querySelector('#tema'),
         subTema = document.querySelector('#sub-tema'),
+        note = document.querySelector('#note'),
+        fileLink = document.querySelector('#file-link'),
         item = table.row(e.target.parentNode.closest('tr')).data();
 
     tema.innerText = item.tema_title.replace(' : ', '. ');
     subTema.innerText = item.sub_tema_title.replace(' : ', '. ');
     judul.innerText = item.title.replace(' : ', ': ');
-
+    note.innerHTML = item.note;
+    fileLink.href = new URL(`${BASE_URL}/assets/files/materi/` + item.materi_file).href;
+   
     $('#modal-show').modal('show');
 }
 
+/*
+============================
+        DELETE
+============================
+*/
+
+function erase(data, isBulk) {
+    return $.ajax({
+        url: ADMIN_URL + '/api/materi/delete',
+        type: 'DELETE',
+        data: JSON.stringify({data: data, isBulk: isBulk}),
+        contentType: 'application/json',
+        beforeSend(xhr, obj) {
+            Swal.fire({
+                html: 	'<div class="d-flex flex-column align-items-center">'
+                + '<span class="spinner-border text-primary"></span>'
+                + '<h3 class="mt-2">Loading...</h3>'
+                + '<div>',
+                showConfirmButton: false,
+                width: '10rem'
+            });
+        },
+        success(resp) {
+            Swal.fire({
+                type: resp.err_status,
+                title:`<h5 class="text-${resp.err_status} text-uppercase">${resp.err_status}</h5>`,
+                html: resp.message
+            });
+            //csrfToken.content = resp.token;
+        },
+        error(err) {
+            let response = JSON.parse(err.responseText);
+            Swal.fire({
+                type: response.err_status,
+                title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
+                html: response.message
+            });
+            //if(response.hasOwnProperty('token'))
+            //	csrfToken.setAttribute('content', response.token);
+        },
+        complete() {
+            table.ajax.reload();
+        }
+    });
+}
+
+
+ // DELETE ONE
+$('#tbl-materi tbody').on('click', '.btn.delete_materi', e => {
+    var row = table.row($(e.target).parents('tr')).data();
+    Swal.fire({
+        title: "Anda Yakin ?",
+        text: "Data yang dihapus tidak dapat dikembalikan",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn btn-success mt-2",
+        cancelButtonColor: "#f46a6a",
+        confirmButtonText: "Ya, Hapus Data",
+        cancelButtonText: "Tidak, Batalkan Hapus",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }).then(t => {
+        if(t.value) {
+            erase(row.materi_id, 0);
+        }
+    })
+});
 
 (async ($) => {
 

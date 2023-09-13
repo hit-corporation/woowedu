@@ -172,10 +172,15 @@
             <div class="modal-body">
                 <h6 id="sub-tema" class="fs-5"></h6>
                 <strong><span id="judul" class="fs-16"></span></strong>
+                <p id="note" class="fs-14"></p>
+                <div class="w-100 d-flex flex-nowrap justify-content-end align-items-center mt-3">
+                    <a class="btn btn-success text-white" id="file-link">
+                        <i class="bi bi-download"></i> Unduh File
+                    </a>
+                </div>
+                
             </div>
-            <div class="modal-footer">
-
-            </div>
+            
         </div>
     </div>
 </div>
