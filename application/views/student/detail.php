@@ -230,7 +230,7 @@
 					data: 'task_file_answer',
 					class: 'text-center',
 					render(data, row, type, meta){
-						return (data) ? `<a href="${BASE_URL+'assets/files/student_task/'+class_id+'/'+data}">${data}</a>` : `-`;
+						return (data) ? `<a href="${BASE_URL+'assets/files/student_task/'+class_id+'/'+data}"><i class="bi bi-file-text-fill fs-20"></i></a>` : `-`;
 					}
 				},
 				{
