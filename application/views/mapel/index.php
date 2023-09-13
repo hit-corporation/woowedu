@@ -51,7 +51,7 @@
 		<div class="row mb-2">
 			<div class="col-md-8 col-lg-10"></div>
 			<div class="col-md-4 col-lg-2 d-flex flex-nowrap justify-content-end">
-				<button type="button" class="btn btn-sm btn-success text-white shadow-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-add">
+				<button type="button" class="btn btn-sm btn-success text-white shadow-sm rounded-pill" id="btn-add" data-bs-toggle="modal" data-bs-target="#modal-add">
 					<i class="bi bi-plus font-size-12"></i> Tambah
 				</button>
 			</div>
@@ -159,8 +159,27 @@
     </div>
   </div>
 </section>
-
 <!-- end modal add-->
+
+<!-- Modal Show -->
+<div class="modal fade" id="modal-show" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-purple">
+                <h5 class="modal-title text-white" id="tema"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 id="sub-tema" class="fs-5"></h6>
+                <strong><span id="judul" class="fs-16"></span></strong>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Show -->
 
 <script>
 	// $('#basic-usage').select2({

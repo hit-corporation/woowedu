@@ -46,8 +46,8 @@ const table = $('#tbl-materi').DataTable({
                 var view = '<div class="btn-group btn-group-sm float-right">'+
                                 '<button class="btn bg-purple text-white view_materi"><i class="bi bi-eye font-size-12"></i></button>' +
                                 '<button class="btn bg-orange text-white upload_soal"><i class="bi bi-upload font-size-12"></i></button>' +
-                                '<button class="btn btn-success edit_subject"><i class="bi bi-pen text-white font-size-12"></i></button>' +
-                                '<button class="btn btn-sm btn-danger delete_subject"><i class="bi bi-trash-fill text-white font-size-12"></i></button>' +
+                                '<button class="btn btn-success edit_materi"><i class="bi bi-pen text-white font-size-12"></i></button>' +
+                                '<button class="btn btn-sm btn-danger delete_materi"><i class="bi bi-trash-fill text-white font-size-12"></i></button>' +
                             '</div>';
                 return view;
             },
@@ -78,6 +78,46 @@ const getSubject = async () => {
     }
 }
 
+const resetForm = () => {
+    $('select[name="a_materi_subject"]').val(null).trigger('change');
+    form.reset();
+}
+
+/**
+ * Button Add Click Handler
+ * @date 9/13/2023 - 10:02:26 AM
+ *
+ * @param {*} e
+ */
+const btnAddClick = e => {
+    isUpdate = 0;
+    resetForm();
+}
+
+
+/**
+ * Button Update Click Handler
+ * @date 9/13/2023 - 9:59:51 AM
+ *
+ * @param {HTMLButtonElement} 
+ */
+const btnUpdateClick = e => {
+    isUpdate = 1;
+    const count = table.row(e.target.parentNode.closest('tr')).count(),
+          item = table.row(e.target.parentNode.closest('tr')).data();
+
+    form['a_id'].value = item.materi_id;
+    form['a_materi_tema_title'].value = item.tema_title; 
+    form['a_materi_sub_tema_title'].value = item.sub_tema_title; 
+    form['a_materi_title'].value = item.title; 
+    form['a_materi_no_urut'].value = item.no_urut; 
+    form['a_materi_subject_text'].value = item.subject_name;
+    form['a_materi_note'].value = item.note;
+    $('select[name="a_materi_subject"]').val(item.subject_id).trigger('change');
+    //document.getElementById("preview").src = item.materi_file;
+
+    $('#modal-add').modal('show');
+}
 
 /**
  * Input File Handler
@@ -91,14 +131,9 @@ const inputFileHandler = e => {
         throw new Error("No File Uploaded");
 
     const reader = new FileReader();
-
-    console.log(e);
-
     reader.onload = e => embedFile.src = e.target.result;
-    //reader.readAsDataURL(e.files[0]);
+    reader.readAsDataURL(e.files[0]);
 }
-
-
 
 /**
  * submit form
@@ -110,15 +145,15 @@ const inputFileHandler = e => {
  */
 const submitMateri = async e => {
     e.preventDefault();
+    
     try
     {
-        const formData = Object.fromEntries(new FormData(e.srcElement).entries());
-        const body = new URLSearchParams(formData).toString();
+        let url = isUpdate == 1 ? new URL(`${ADMIN_URL}/api/materi/edit`) : new URL(`${ADMIN_URL}/api/materi/save`);
+        const formData = new FormData(e.srcElement);
 
-        const f = await fetch(`${ADMIN_URL}/api/materi/save`, {
+        const f = await fetch(url.href, {
             method: 'POST',
-            
-            body: body
+            body: formData
         });
 
         const resp = await f.json();
@@ -150,7 +185,29 @@ const submitMateri = async e => {
 }
 
 
+/**
+ * View Data
+ * @date 9/13/2023 - 1:53:24 PM
+ *
+ * @param {HTMLButtonElement} e
+ */
+const showData = e => {
+    let judul = document.querySelector('#judul'),
+        tema = document.querySelector('#tema'),
+        subTema = document.querySelector('#sub-tema'),
+        item = table.row(e.target.parentNode.closest('tr')).data();
+
+    tema.innerText = item.tema_title.replace(' : ', '. ');
+    subTema.innerText = item.sub_tema_title.replace(' : ', '. ');
+    judul.innerText = item.title.replace(' : ', ': ');
+
+    $('#modal-show').modal('show');
+}
+
+
 (async ($) => {
+
+    const subjects = [...(await getSubject()).data].map(x => ({ id: x.id_mapel, text: x.nama_mapel }));
 
     $('#tbl-materi > tbody').on('click', '.btn.view_materi', e => {
         isUpdate = 1;
@@ -158,7 +215,9 @@ const submitMateri = async e => {
 
     $('select[name="a_materi_subject"]').select2({
         theme: "bootstrap-5",
-        data: [...(await getSubject()).data].map(x => ({ id: x.id_mapel, text: x.nama_mapel }))
+        data: subjects,
+        placeholder: 'Pilih Mapel',
+        allowClear: true
     });
     
     // Submit
@@ -168,8 +227,13 @@ const submitMateri = async e => {
         form.dispatchEvent(evt);
     });
 
-
     // Input File
     document.querySelector('#videoFile').addEventListener('change', inputFileHandler);
+    // Button Add
+    document.getElementById('btn-add').addEventListener('click', e => btnAddClick(e));
+    // Update Click
+    $('#tbl-materi > tbody').on('click', '.btn.edit_materi', e => btnUpdateClick(e));
+    $('#tbl-materi > tbody').on('click', '.btn.view_materi', e => showData(e));
+    //
 })(jQuery);
 

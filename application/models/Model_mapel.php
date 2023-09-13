@@ -20,7 +20,8 @@ class Model_mapel extends CI_Model {
             $this->db->limit($limit, $offset);
 
         $this->db->select('a.*, b.subject_name')
-                 ->join('subject b', 'a.subject_id=b.subject_id');
+                 ->join('subject b', 'a.subject_id=b.subject_id')
+                 ->order_by('a.materi_id', 'DESC');
         $get = $this->db->get('materi a');
 
         return $get->result_array() ?? [];
