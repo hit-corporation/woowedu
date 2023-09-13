@@ -1,5 +1,6 @@
 'use strict';
 const form = document.forms['form-add'];
+const embedFile = document.querySelector('#embed-file');
 let isUpdate = 0;
 
 
@@ -78,6 +79,26 @@ const getSubject = async () => {
 }
 
 
+/**
+ * Input File Handler
+ * @date 9/12/2023 - 4:33:04 PM
+ *
+ * @async
+ * @returns {*}
+ */
+const inputFileHandler = e => {
+    if(!e.files)
+        throw new Error("No File Uploaded");
+
+    const reader = new FileReader();
+
+    console.log(e);
+
+    reader.onload = e => embedFile.src = e.target.result;
+    //reader.readAsDataURL(e.files[0]);
+}
+
+
 
 /**
  * submit form
@@ -96,9 +117,7 @@ const submitMateri = async e => {
 
         const f = await fetch(`${ADMIN_URL}/api/materi/save`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
+            
             body: body
         });
 
@@ -142,10 +161,15 @@ const submitMateri = async e => {
         data: [...(await getSubject()).data].map(x => ({ id: x.id_mapel, text: x.nama_mapel }))
     });
     
+    // Submit
     form.addEventListener('submit', async e => await submitMateri(e));
     document.querySelector('#save-subject').addEventListener('click', e => {
         const evt = new Event("submit");
         form.dispatchEvent(evt);
     });
 
+
+    // Input File
+    document.querySelector('#videoFile').addEventListener('change', inputFileHandler);
 })(jQuery);
+
