@@ -133,16 +133,43 @@ class Home extends CI_Controller {
 		} 
 	}
 
+	private function cari_sesi_notif(){
+		$session = $this->session->userdata();
+
+		// CARI DATA SESI JIKA TIDAK ADA DI TABEL NOTIF MAKA LAKUKAN INSERT
+		$sesies = $this->db->where('DATE(sesi_date) >=', date("Y-m-d", strtotime("-1 months")))->get('sesi')->result_array();
+		foreach ($sesies as $sesi) {
+			$notif = $this->db->where('type', 'SESI')->where('sesi_id', $sesi['sesi_id'])->where('user_id', $session['userid'])->get('notif')->row_array();
+			if(!$notif){
+				$data = [
+					'type' 		=> 'SESI',
+					'title' 	=> $sesi['sesi_title'],
+					'seen' 		=> false,
+					'user_id' 	=> $session['userid'],
+					'created_at' => $sesi['sesi_date'].' '.$sesi['sesi_jam_start'],
+					'link'		=> 'sesi/detail/'.$sesi['sesi_id'],
+					'sesi_id'	=> $sesi['sesi_id']
+				];
+				$this->db->insert('notif', $data);
+			}
+		} 
+	}
+
 	public function sync_notif(){
 		$session = $this->session->userdata();
 
 		if($session['user_level'] == 4 || $session['user_level'] == 5){
 			$this->cari_task_notif();
 			$this->cari_news_notif();
+			$this->cari_sesi_notif();
 		}
 
 		if($session['user_level'] == 3 || $session['user_level'] == 6){
 			$this->cari_news_notif();
+		}
+
+		if($session['user_level'] == 3){
+			$this->cari_sesi_notif();
 		}
 	}
 

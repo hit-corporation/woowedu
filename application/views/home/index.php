@@ -90,9 +90,9 @@
 											<a href="<?=base_url('news/detail/').$val['id']?>">
 												<div class="custom-block-overlay-text d-flex">
 													<div>
-														<h5 class="text-white mb-2"><?=$val['judul']?></h5>
-														<span><?=date('d M Y H:i', strtotime($val['tanggal']))?></span>
-														<p class="text-white"><?=substr(strip_tags($val['isi']), 0, 100) . ' ...'?></p>
+														<h5 class="text-white mb-2 title-news-card"><?=$val['judul']?></h5>
+														<span class="date-news-card"><?=date('d M Y H:i', strtotime($val['tanggal']))?></span>
+														<p class="text-white content-news-card"><?=substr(strip_tags($val['isi']), 0, 100) . ' ...'?></p>
 														
 														
 													</div>
@@ -120,10 +120,10 @@
 										<a href="<?=base_url('task/detail/').$value['task_id']?>">
 											<div class="d-flex">
 												<div>
-													<h5 class="mb-2"><?=$value['subject_name']?></h5>
+													<p class="mb-2 task-card-title"><?=$value['subject_name']?></p>
 													<p class="fs-12">Guru: <?=$value['teacher_name']?></p>
-													<p><?=$value['note']?></p>
-													<span class="text-white fs-14 mt-4 bg-warning d-inline rounded p-1 mt-3 d-inline-block">batas akhir: <?= date('d M Y H:i', strtotime($value['due_date'])) ?></span>
+													<p class="task-card-content"><?=$value['note']?></p>
+													<span class="task-card-date">batas akhir: <?= date('d M Y H:i', strtotime($value['due_date'])) ?></span>
 												</div>
 											</div>
 										</a>
