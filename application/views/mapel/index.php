@@ -90,7 +90,7 @@
                             <label class="m-0">Tema <span class="text-danger"><strong>*</strong></span></label>
                         </div>
                         <div class="col-8 mb-3">
-													  <input type="text" class="form-control form-control-sm" name="a_materi_tema_title" />
+							<input type="text" class="form-control form-control-sm" name="a_materi_tema_title" />
                         </div>			
 
 
@@ -98,7 +98,7 @@
                             <label class="m-0">Sub Tema <span class="text-danger"><strong>*</strong></span></label>
                         </div>
                         <div class="col-8 mb-3">
-													  <input type="text" class="form-control form-control-sm" name="a_materi_sub_tema_title" />
+							<input type="text" class="form-control form-control-sm" name="a_materi_sub_tema_title" />
                         </div>											
                         <div class="col-3">
                             <label class="m-0">Judul <span class="text-danger"><strong>*</strong></span></label>
@@ -117,19 +117,8 @@
                         </div>
                         <div class="col-8 mb-3">
                             <select class="form-select form-select-sm col-11" name="a_materi_subject" data-live-search="true"></select>
-                            <button type="button" id="reset-subject" class="btn btn-sm btn-primary"><i class="fas fa-undo"></i></button>
                             <input type="hidden" name="a_materi_subject_text">
                         </div> 
-
-	
-												
-												<!--
-                        <div class="col-3">
-                            <label class="m-0">Tanggal Di Buka <span class="text-danger"><strong>*</strong></span></label>
-                        </div>
-                        <div class="col-8 mb-3">
-                            <input type="text" class="form-control form-control-sm" name="a_materi_date" />
-                        </div>-->
 												
                         <div class="col-3">
                             <label>Deskripsi </label>
@@ -146,9 +135,9 @@
                             <div class="d-flex flex-column">
                                 <video id="preview" class="w-100" height="265" controls></video>
                                 <h6 class="mt-1">Preview</h6>
-                                <div class="custom-file mt-2">
-                                    <input type="file" class="custom-file-input" id="videoFile" name="a_materi_video">
-                                    <label class="custom-file-label overflow-hidden" id="video-label" for="videoFile" data-browse="Unggah Video">Pilih Video</label>
+                                <div class="input-group input-group-sm mt-2">
+                                    <input type="file" class="form-control form-control-sm" id="videoFile" name="a_materi_video">
+                                    <label class="form-label overflow-hidden" id="video-label" for="videoFile" data-browse="Unggah Video"></label>
                                 </div>
                             </div>
                         </div>
