@@ -120,22 +120,18 @@
                             <input type="hidden" name="a_materi_subject_text">
                         </div> 
 												
-                        <div class="col-3">
-                            <label>Deskripsi </label>
-                        </div>
-                        <div class="col-8 mb-3">
-                            <textarea class="form-control form-control-sm w-100 h-100" rows="12" name="a_materi_note"></textarea>
-                        </div>
                     </div>
                 </div>
                 <div class="col">
-                    <h4 class="mb-4 text-underline">UPLOAD VIDEO</h4>
                     <div class="row">
                         <div class="col-12">
+                            <label>Deskripsi </label>
+                            <textarea class="form-control form-control-sm w-100 h-100" rows="5" name="a_materi_note"></textarea>
+                        </div>
+                        <div class="col-12 pt-4">
                             <div class="d-flex flex-column">
-                                <video id="preview" class="w-100" height="265" controls></video>
-                                <h6 class="mt-1">Preview</h6>
-                                <div class="input-group input-group-sm mt-2">
+                                <label class="mb-0">File</label>
+                                <div class="input-group input-group-sm">
                                     <input type="file" class="form-control form-control-sm" id="videoFile" name="a_materi_video">
                                     <label class="form-label overflow-hidden" id="video-label" for="videoFile" data-browse="Unggah Video"></label>
                                 </div>
