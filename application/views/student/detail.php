@@ -244,14 +244,17 @@
 					data: null,
 					class: 'text-center',
 					render(data, type, row, meta) {
-						let view = `<div class="btn-group btn-group-sm float-right">
-										<a href="${BASE_URL+'task/detail/'+row.task_id}" class="btn btn-success edit_subject rounded-5"><i class="bi bi-pencil-square text-white"></i></a>
-									</div>`;
+						let btnEdit = `<a href="${BASE_URL+'task/detail/'+row.task_id}" class="btn btn-success edit_subject rounded-5"><i class="bi bi-pencil-square text-white"></i></a>`;
+						let btnView = `<a href="${BASE_URL+'task/detail/'+row.task_id}" class="btn btn-primary view_subject rounded-5"><i class="bi bi-eye text-white"></i></a>`;
+						
 						let endDt = new Date(row.due_date);	
 						let now = new Date();
 						
-						if(endDt < now) view = ''; 
-						return view;
+						let container = `<div class="btn-group btn-group-sm float-right">
+										${(endDt < now) ? '' : btnEdit}
+										${(row.task_submit) ? btnView : ''}
+									</div>`;
+						return container;
 					}
 				}
 			]
