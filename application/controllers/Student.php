@@ -78,7 +78,9 @@ class Student extends CI_Controller {
 		$post 				= $this->input->post();
 		$class_id 			= $this->db->where('student_id', $post['student_id'])->get('student')->row_array()['class_id'];
 		$data['total_exam']	= $this->model_student->get_total_exam($class_id, $post['start'], $post['end']);
-		$data['average_exam_score'] = $this->model_student->average_exam_score($post['student_id'], $post['start'], $post['end'])['exam_total_nilai'];
+
+		$examRataRata = $this->model_student->average_exam_score($post['student_id'], $post['start'], $post['end'])['exam_total_nilai'];
+		$data['average_exam_score'] = ($examRataRata) ? $examRataRata : 0;
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
