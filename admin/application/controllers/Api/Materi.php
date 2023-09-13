@@ -40,25 +40,25 @@ class Materi extends MY_Controller {
 
     public function save() {
         
-        $tema_title        = trim($this->input->post('a_materi_tema_title', TRUE));
-        $sub_tema_title        = trim($this->input->post('a_materi_sub_tema_title', TRUE));
-        $no_urut        = trim($this->input->post('a_materi_no_urut', TRUE));
-        $title        = trim($this->input->post('a_materi_title', TRUE));
-        $subject      = trim($this->input->post('a_materi_subject', TRUE));
-        $parent      = trim($this->input->post('a_materi_parent', TRUE));
-        $require      = trim($this->input->post('a_materi_require', TRUE));
+        $tema_title         = trim($this->input->post('a_materi_tema_title', TRUE));
+        $sub_tema_title     = trim($this->input->post('a_materi_sub_tema_title', TRUE));
+        $no_urut            = trim($this->input->post('a_materi_no_urut', TRUE));
+        $title              = trim($this->input->post('a_materi_title', TRUE));
+        $subject            = trim($this->input->post('a_materi_subject', TRUE));
+        //$parent             = trim($this->input->post('a_materi_parent', TRUE));
+        //$require            = trim($this->input->post('a_materi_require', TRUE));
        // $teacher      = trim($this->input->post('a_materi_teacher', TRUE));
-        $ava_date     = date('Y-m-d');//trim($this->input->post('a_materi_date', TRUE));
-        $description  = trim($this->input->post('a_materi_note', TRUE));
-        $subject_name = trim($this->input->post('a_materi_subject_text', TRUE));
+        $ava_date           = date('Y-m-d');//trim($this->input->post('a_materi_date', TRUE));
+        $description        = trim($this->input->post('a_materi_note', TRUE));
+        $subject_name       = trim($this->input->post('a_materi_subject_text', TRUE));
         // video
-        $video_name   = $_FILES['a_materi_video']['name'];
-        $video_size   = $_FILES['a_materi_video']['size']; 
+        $video_name         = $_FILES['a_materi_video']['name'];
+        $video_size         = $_FILES['a_materi_video']['size']; 
  
         header('Content-Type: application/json');
 
     //    if(empty($title) || empty($subject) || empty($teacher) || empty($ava_date) || empty($video_name)) 
-        if(empty($title) || empty($subject) || empty($video_name)) 
+        if(empty($title) || empty($subject) || empty($no_urut) || empty($tema_title) || empty($sub_tema_title)) 
         {
             http_response_code(422);
             $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_is_required')];
@@ -86,7 +86,7 @@ class Materi extends MY_Controller {
 
         // UPLOAD FILE
        // $dir = 'assets/files/upload/videos';
-       $dir = '../web/uploads/materi/'; 
+       $dir = '../assets/files/materi/'; 
           // $dir ='uploads/materi/';  
 
         // cek if dir is exists, if not then make the directory and set permission to be accessible
@@ -106,7 +106,7 @@ class Materi extends MY_Controller {
         if(!$move) 
         {
             http_response_code(422);
-			$msg = ['err_status' => 'error', 'message' => 'aa'.$this->lang->line('woow_form_error')];
+			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_form_error')];
 			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 			return;
         }
@@ -122,13 +122,13 @@ class Materi extends MY_Controller {
             'materi_file'       => $_n_subject_name.'-'.$_n_title.'.'.$ext,
             'note'              => $description
         ];
-        if(!empty($parent)) $data['parent_id']=$parent;
-        if(!empty($require)) $data['materi_require']=$require; 
+        //if(!empty($parent)) $data['parent_id']=$parent;
+        //if(!empty($require)) $data['materi_require']=$require; 
 
         if(!$this->db->insert('materi', $data))
         {
 			http_response_code(422);
-			$msg = ['err_status' => 'error', 'message' => 'bb'.$this->lang->line('woow_form_error')];
+			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_form_error')];
 			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 			return;
         }
@@ -147,8 +147,8 @@ class Materi extends MY_Controller {
         $no_urut        = trim($this->input->post('a_materi_no_urut', TRUE));			
         $title        = trim($this->input->post('a_materi_title', TRUE));
         $subject      = trim($this->input->post('a_materi_subject', TRUE));
-        $parent      = trim($this->input->post('a_materi_parent', TRUE));
-        $require      = trim($this->input->post('a_materi_require', TRUE));
+        //$parent      = trim($this->input->post('a_materi_parent', TRUE));
+        //$require      = trim($this->input->post('a_materi_require', TRUE));
         //$teacher      = trim($this->input->post('a_materi_teacher', TRUE));
         $ava_date     = trim($this->input->post('a_materi_date', TRUE));
         $description  = trim($this->input->post('a_materi_note', TRUE));
@@ -190,7 +190,7 @@ class Materi extends MY_Controller {
         // cek if request has upload
         if(!empty($_FILES['a_materi_video']['name']))
         {
-              $dir = '../web/uploads/materi/'; 
+            $dir = '../assets/files/materi/'; 
         
             // set name for the videofile
             $filename = $dir.DIRECTORY_SEPARATOR.str_replace(' ', '_', strtolower($subject_name)).'-'.str_replace(' ', '_', strtolower($title));
