@@ -57,8 +57,10 @@
 					<p>Catatan:</p>
 					<p><?=$task_student['task_note']?></p>
 				<?php endif ?>
-
-				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Kumpulkan Tugas</button>
+				
+				<?php if(strtotime($task['due_date']) >= time()): ?>
+					<button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Kumpulkan Tugas</button>
+				<?php endif ?>
 			</div>
 		</div>
 		

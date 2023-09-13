@@ -13,6 +13,7 @@ class Task extends CI_Controller {
 	}
 
 	public function index() {
+		$data = [];
 		$this->load->view('header');
 		$this->load->view('task/index', $data);
 		$this->load->view('footer');
