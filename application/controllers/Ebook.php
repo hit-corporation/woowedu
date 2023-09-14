@@ -57,7 +57,7 @@ class Ebook extends CI_Controller {
 		$limit  = $this->input->get('count');
 		$page 	= $this->input->get('page');
 		$total	= $this->db->count_all_results('ebooks');
-		$offset = $page == 1 ? $page * $limit : ($page - 1) * ($limit + 1); 
+		$offset = ($page - 1) * ($limit + 1); 
 		
 		$data = $this->model_ebook->list($limit, $offset);
 
