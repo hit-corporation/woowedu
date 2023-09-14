@@ -208,6 +208,7 @@ class IndoPustaka extends MY_Controller {
         foreach($request['data_ebook'] as $req)
         {
             $data = [
+                'from_api'      => 1,
                 'book_code'     => $req['id_buku'],
                 'title'         => $req['judul'],
                 'description'   => $req['sinopsis'],

@@ -119,9 +119,12 @@ class Ebook extends CI_Controller {
 
 		// $book = $this->db->get_where('ebooks', ['id' => $id])->row_array();
 		// $url = base_url('ebook/detail/'.$book['book_code']);
+		$book = $this->model_ebook->get($id);
 
 		if($this->db->insert('read_log', $insert))
-			$url = base_url('ebook/read_book?id=' . $id);
+		{
+			$url = $book['from_api '] === 0 ? base_url('ebook/read_book?id=' . $id) : $book['file_1']; 
+		}
 		
 		redirect($url);
 	}

@@ -21,11 +21,10 @@ class Book_model extends CI_Model {
 	{
 		$this->db->distinct();
 		$this->db->select('a.id, a.title, a.book_code, a.cover_img, a.author, a.isbn, a.publish_year, a.description, a.qty, a.category_id, a.publisher_id, a.author, 
-							s.rack_no, b.category_name, c.publisher_name, TO_CHAR(a.created_at, \'YYYY-MM-DD\') as created_at', FALSE)
-				 ->from('books a')
-				 ->join('categories b', 'a.category_id=b.id')
+						   a.from_api, b.category_name, c.publisher_name, TO_CHAR(a.created_at, \'YYYY-MM-DD\') as created_at', FALSE)
+				 ->from('ebooks a')
+				 ->join('categories b', 'a.category_id=b.category_code')
 				 ->join('publishers c', 'a.publisher_id=c.id')
-				 ->join('stocks s', 'a.id=s.book_id', 'left	')
 				 ->where('a.deleted_at IS NULL');
 
 		if(!empty($filter[1]['search']['value']))
@@ -51,15 +50,15 @@ class Book_model extends CI_Model {
 	 */
 	public function count_all(?array $filter=NULL): int 
 	{
-		$this->db->join('categories', 'books.category_id=categories.id')
-				 ->join('publishers', 'books.publisher_id=publishers.id')
-				 ->where('books.deleted_at IS NULL');
+		$this->db->join('categories', 'ebooks.category_id=categories.category_code')
+				 ->join('publishers', 'ebooks.publisher_id=publishers.id')
+				 ->where('ebooks.deleted_at IS NULL');
 
 		if(!empty($filters))
 		{
 
 		}
-		$query = $this->db->get('books');
+		$query = $this->db->get('ebooks');
 		return $query->num_rows();
 	}
 
@@ -71,9 +70,9 @@ class Book_model extends CI_Model {
 	 */
 	public function get_one($id): ?array
 	{
-		$this->db->join('categories', 'books.category_id=categories.id');
-		$this->db->join('publishers', 'books.publisher_id=publishers.id');
-		return $this->db->get_where('books', ['books.id' => $id, 'books.deleted_at' => NULL])->row_array();
+		$this->db->join('categories', 'ebooks.category_id=categories.category_code');
+		$this->db->join('publishers', 'ebooks.publisher_id=publishers.id');
+		return $this->db->get_where('ebooks', ['ebooks.id' => $id, 'ebooks.deleted_at' => NULL])->row_array();
 	}
 
 	/**
@@ -86,7 +85,7 @@ class Book_model extends CI_Model {
 	{
 		$this->db->select('b.*');
 		$this->db->from('transaction_book tb');
-		$this->db->join('books b', 'tb.book_id=b.id');
+		$this->db->join('ebooks b', 'tb.book_id=b.id');
 		$this->db->where('tb.actual_return IS NULL');
 		return $this->db->get()->result_array();
 	}
@@ -101,7 +100,7 @@ class Book_model extends CI_Model {
 	{
 		$this->db->select('b.*');
 		$this->db->from('transaction_book tb');
-		$this->db->join('books b', 'tb.book_id=b.id');
+		$this->db->join('ebooks b', 'tb.book_id=b.id');
 		$this->db->where('tb.actual_return IS NULL');
 		$this->db->where('tb.return_date < NOW()');
 		return $this->db->get()->result_array();
@@ -117,7 +116,7 @@ class Book_model extends CI_Model {
 	{
 		$this->db->select('b.*, COUNT(tb.book_id) as total');
 		$this->db->from('transaction_book tb');
-		$this->db->join('books b', 'tb.book_id=b.id');
+		$this->db->join('ebooks b', 'tb.book_id=b.id');
 		$this->db->group_by('b.id');
 		$this->db->order_by('total', 'DESC');
 		$this->db->limit(5);
@@ -190,13 +189,13 @@ class Book_model extends CI_Model {
 		$this->db->distinct();
 		$this->db->select('a.id, a.title, a.cover_img, a.author, a.isbn, a.publish_year, a.description, a.qty, a.category_id, a.publisher_id, a.author, 
 							s.rack_no, b.category_name, c.publisher_name, TO_CHAR(a.created_at, \'YYYY-MM-DD\') as created_at, tb2.qty_dipinjam', FALSE)
-				 ->from('books a')
-				 ->join('categories b', 'a.category_id=b.id')
+				 ->from('ebooks a')
+				 ->join('categories b', 'a.category_id=b.category_code')
 				 ->join('publishers c', 'a.publisher_id=c.id')
 				 ->join('stocks s', 'a.id=s.book_id', 'left	')
 				 ->join('(select tb.book_id, count(tb.book_id) as qty_dipinjam  
 				 from transaction_book tb
-				 left join books b on(tb.book_id = b.id)
+				 left join ebooks b on(tb.book_id = b.id)
 				 where actual_return is null
 				 group by tb.book_id) as tb2', 'a.id = tb2.book_id', 'left')
 				 ->where('a.deleted_at IS NULL');
@@ -236,8 +235,8 @@ class Book_model extends CI_Model {
 	 */
 	public function count_all_book(): int{
 		$this->db->select('b.*, c.category_name, p.publisher_name');
-		$this->db->from('books b');
-		$this->db->join('categories c', 'b.category_id=c.id');
+		$this->db->from('ebooks b');
+		$this->db->join('categories c', 'b.category_id=c.category_code');
 		$this->db->join('publishers p', 'b.publisher_id=p.id');
 		$this->db->join('stocks s', 'b.id=s.book_id', 'left');
 

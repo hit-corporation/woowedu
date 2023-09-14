@@ -1,3 +1,16 @@
+<?php 
+$url = parse_url(base_url());
+$base =  $url['scheme'].'://'.$url['host'].':'.$url['port'];
+?>
+
+<style>
+    .table td, .table th {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 120px;
+        overflow: hidden;
+    }
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -47,7 +60,7 @@
 					</div>
 
 					<div class="table-responsive">
-						<table id="table-main" class="table table-sm">
+						<table id="table-main" class="table table-sm w-100">
 							<thead class="bg-primary text-white">
 								<tr>
 									<th>ID</th>
@@ -62,7 +75,6 @@
 									<th>ISBN</th>
 									<th>Stok</th>
 									<th>Tanggal Input</th>
-									<th>No Rak</th>
 									<th>Operation</th>
 								</tr>
 							</thead>
@@ -190,6 +202,15 @@
                             <?php endif ?>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-4 col-form-label">Berkas PDF</label>
+                            <div class="col-8">
+                                <span class="custom-file">
+                                    <input type="file" class="custom-file-input" name="input-file1" id="input-file1">
+                                    <label class="custom-file-label" for="input-file1" aria-describedby="input-file1">Pilih File</label>
+                                </span>
+                            </div>
+                        </div>
                         <input type="text" name="book-id" class="d-none">
                     </div>
                     <div class="col-12 col-lg-4">
@@ -197,12 +218,15 @@
                         <div class="shadow p-1">
                             <input type="text" name="book-img_name" class="d-none">
                             <label for="book-image" aria-describedby="book-image" class="m-0 p-0">
-                                <img id="img-cover" class="img-fluid d-block mx-auto" src="<?=html_escape(base_url('assets/img/Placeholder_book.svg'))?>" height="265" width="228">
+                                <img id="img-cover" class="img-fluid d-block mx-auto" src="<?=html_escape($base.'/assets/images/ebooks/cover/default.png')?>" height="265" width="228">
                             </label>
                             <input type="file" class="d-none" name="book-image" id="book-image" 
                                 accept="image/png, image/jpeg, image/jpg, image/gif">
                         </div>
+
+                        
                     </div>
+                    
                 </fieldset>
                 <fieldset class="row justify-content-end mt-4 border-top pt-3 px-2">
                     <button type="reset" class="btn btn-sm btn-secondary"><i class="fas fa-sync"></i> Ulangi</button>

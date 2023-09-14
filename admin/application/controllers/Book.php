@@ -26,7 +26,8 @@ class Book extends MY_Controller
 	{
 		$data['page_css'] = [
 			'assets/node_modules/@selectize/selectize/dist/css/selectize.bootstrap4.css',
-			'assets/node_modules/jstree/dist/themes/default/style.min.css'
+			'assets/node_modules/jstree/dist/themes/default/style.min.css',
+			'assets/new/css/fpersonno.css'
 		];
 
 		$data['page_js'] = [
@@ -77,7 +78,7 @@ class Book extends MY_Controller
 		$response = [
 			'draw' => $draw,
 			'data' => $data,
-			'recordsTotal' => $this->db->count_all_results('books'),
+			'recordsTotal' => $this->db->count_all_results('ebooks'),
 			'recordsFiltered' => $this->book_model->count_all($filters)
 		];
 

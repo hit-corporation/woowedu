@@ -6,6 +6,7 @@ const form = document.forms['form-input'],
 display = document.querySelector('#ul-display'),
 imgCover = document.getElementById('img-cover');
 const BASE_URL = document.querySelector('base').href;
+const url = new URL(BASE_URL);
 
 // get all Categories
 const getCategories = async () => {
@@ -129,7 +130,7 @@ const getBooks = async () => {
 			serverSide: true,
 			processing: true,
 			ajax: {
-				url: BASE_URL + 'admin/book/get_all_paginated'
+				url: BASE_URL + 'book/get_all_paginated'
 			},
 			columns: [
 				{
@@ -141,9 +142,19 @@ const getBooks = async () => {
 					className: 'dt-nowrap align-middle',
 					width: '8%',
 					render: (data, type, row, _meta) => {
-						if(data)
-							return '<img src="'+BASE_URL+'assets/img/books/'+data+'" height="'+(165 - 50)+'" width="'+(128 - 50)+'">';
-						return  '<img src="'+BASE_URL+'assets/img/Placeholder_book.svg" height="'+(165 - 50)+'" width="'+(128 - 50)+'">';;
+
+                        const url = new URL(BASE_URL);
+                        let img = '<img src="'+url.origin+'/assets/images/ebooks/cover/default.png" height="'+(165 - 50)+'" width="'+(128 - 50)+'">';
+
+                        if(data)
+                        {
+                            if(row.from_api)
+                                img = '<img src="'+data+'" height="'+(165 - 50)+'" width="'+(128 - 50)+'">';
+                            else
+                                img = '<img src="'+url.origin+'/assets/img/books/'+data+'" height="'+(165 - 50)+'" width="'+(128 - 50)+'">';
+                        }
+						
+                        return img;
 					}
 				},
 				{
@@ -196,9 +207,9 @@ const getBooks = async () => {
 					render(data, type, row, _meta)
 					{
 						const btn = '<span class="d-flex flex-nowrap">' +
-									'<button role="button" class="btn-circle btn-info rounded-circle border-0 show_data"><i class="fas fa-eye"></i></button>' + 
-									'<button role="button" class="btn-circle btn-success rounded-circle border-0 edit_data"><i class="fas fa-edit"></i></button>' + 
-									`<a role="button" class="btn-circle btn-danger rounded-circle border-0 delete_data"><i class="fas fa-trash"></i></a>` + 
+									'<button role="button" class="btn btn-sm btn-info rounded-circle border-0 show_data"><i class="fas fa-eye"></i></button>' + 
+									'<button role="button" class="btn btn-sm btn-success rounded-circle border-0 edit_data"><i class="fas fa-edit"></i></button>' + 
+									`<a role="button" class="btn btn-sm btn-danger rounded-circle border-0 delete_data"><i class="fas fa-trash text-white"></i></a>` + 
 									'</span>';
 	
 						return btn;
@@ -211,15 +222,22 @@ const getBooks = async () => {
     $('#table-main tbody').on('click', 'button.show_data', e => {
         var row = table.row(e.target.parentNode.closest('tr')).data();
         var sets = document.querySelectorAll('[data-item]');
+       
 
         for(var set of sets)
         {
             if(set.dataset.item === 'cover_img')
             {
                 if(row[set.dataset.item])
-                    set.src = BASE_URL + 'assets/img/books/' + row[set.dataset.item];
+                {
+                    if(row.from_api)
+                       set.src = row[set.dataset.item];
+                    else
+                        set.src = url.origin + '/assets/images/ebooks/cover/' + row[set.dataset.item];
+                }
+                    
                 else
-                    set.src = BASE_URL + 'assets/img/Placeholder_book.svg'
+                    set.src = url.origin  + '/assets/images/ebooks/cover/default.png';
             }
 
             set.innerText = row[set.dataset.item];
@@ -270,8 +288,17 @@ const getBooks = async () => {
         form['book-img_name'].value = row.cover_img;
 
         // imagge
+        const url = new URL(BASE_URL);
+        let img = url.origin + '/assets/images/ebooks/cover/default.png';
+
         if(row.cover_img)
-          imgCover.src =  BASE_URL + 'assets/img/books/' + row.cover_img;
+        {
+            if(row.from_api == 1)
+                img = row.cover_img;
+            else
+                img = url.origin + '/assets/images/ebooks/cover/' + data;
+        }
+        imgCover.src = img;
 
         // tree
         $('#category-tree').jstree(true).select_node(form["book-category"].value);
@@ -297,7 +324,7 @@ const getBooks = async () => {
         }
 
         $('#category-tree').jstree(true).refresh();
-        imgCover.src = BASE_URL + 'assets/img/Placeholder_book.svg';
+        imgCover.src = url.origin + '/assets/images/ebooks/cover/default.png';;
         selectize.clear();
         form['book-year'].value = thisYear;
         
