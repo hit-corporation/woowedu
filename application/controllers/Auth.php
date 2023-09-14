@@ -66,8 +66,7 @@ class auth extends CI_Controller
             $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_login_password_mismatch')];
             echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
             return;
-		}
-
+		} 
 		$this->session->set_userdata(
 			array(
 				'status_login' => 'y',
@@ -80,6 +79,12 @@ class auth extends CI_Controller
 				'logged_in' => true
 			)
 		);
+		if($dt->user_level==3){
+			$getTeacher = $this->db->get_where('teacher', ['nik' =>$username]);
+			$dteacher = $getTeacher->row();
+			$teacher_id = $dteacher->teacher_id;
+			$this->session->set_userdata(array('teacher_id'=>$teacher_id));
+		}
 
 		http_response_code(200);
         $msg = ['err_status' => 'success', 'message' => 'Login Success','ulevel'=>$dt->user_level];
