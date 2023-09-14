@@ -159,9 +159,12 @@ endif
     
 							<!-- JIKA USER LEVEL GURU OR MURID -->
 							<?php if($user_level == 3 || $user_level == 4) : ?>
-                            <li class="nav-item">
+                          <!--  <li class="nav-item">
                                 <a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/detail/').$student_id ?>">Tugas</a>
-                            </li>
+                            </li>-->
+									<li class="nav-item">
+											<a class="nav-link" href="<?=base_url('task')?>">Tugas</a>
+									</li>														
 							<?php endif ?>
                             
                             <li class="nav-item">

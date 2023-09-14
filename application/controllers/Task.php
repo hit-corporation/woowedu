@@ -13,10 +13,42 @@ class Task extends CI_Controller {
 	}
 
 	public function index() {
-		$data = [];
+ 
+		$data = []; 
 		$this->load->view('header');
 		$this->load->view('task/index', $data);
 		$this->load->view('footer');
+	}
+	
+	public function getlist()
+	{
+		$username 	= $this->session->userdata('username');
+		$user_level 				= $this->session->userdata('user_level');
+		$teacher_id 				= $this->session->userdata('teacher_id');
+		$page 		= isset($_GET['page']) ? (int)$_GET['page'] : 1;
+		$limit 		= isset($_GET['limit']) ? (int)$_GET['limit'] : 3;
+		$title		= $_GET['title'];
+		$startDate	= $_GET['startDate'];
+		$endDate	= $_GET['endDate'];
+
+		$page = ($page - 1) * $limit;
+
+		$data['user_level'] 	= $user_level;
+		
+		if($user_level == 3 ){
+			$data['task'] 			= $this->model_task->get_teacher_task($limit, $page, $title, $startDate, $endDate);
+			$data['total_records'] 	= $this->model_task->get_teacher_total_task($title, $startDate, $endDate);			
+		}elseif($user_level == 4 ){	
+			$data['task'] 			= $this->model_task->get_student_task($limit, $page, $title, $startDate, $endDate);
+			$data['total_records'] 	= $this->model_task->get_student_total_task($title, $startDate, $endDate);		
+		}
+		
+
+		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);		
 	}
 
 	public function detail($id = ''){
