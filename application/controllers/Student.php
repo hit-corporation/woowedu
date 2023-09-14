@@ -189,4 +189,45 @@ class Student extends CI_Controller {
 
 	}
 
+	public function get_history_book(){
+		$get = $this->input->get();
+		$student 	= $this->db->where('student_id', $get['student_id'])->get('student')->row_array();
+		$user 		= $this->db->where('username', $student['nis'])->get('users')->row_array();
+
+		$page 		= isset($get['start']) ? (int)$get['start'] : 1;
+		$limit 		= isset($get['length']) ? (int)$get['length'] : 3;
+
+		$filter['user_id'] = $user['userid'];
+
+		$books = $this->model_student->get_history_book($limit, $page, $filter);
+		// foreach ($books as $key => $val) {
+		// 	$ebook = $this->db->where('id', $val['book_id'])->get('ebooks')->row_array();
+		// 	$books[$key]['book_code'] = $ebook['book_code']; 
+		// 	$books[$key]['title'] = $ebook['title']; 
+		// 	$books[$key]['cover_img'] = $ebook['cover_img']; 
+		// 	$books[$key]['author'] = $ebook['author']; 
+		// 	$books[$key]['publish_year'] = $ebook['publish_year']; 
+		// 	$books[$key]['description'] = $ebook['description']; 
+		// }
+
+		$data['data'] 				= $books;
+		$data['draw'] 				= $get['draw'];
+		$data['recordsTotal'] 		= $this->model_student->get_history_book_total($filter);
+		$data['recordsFiltered'] 	= $data['recordsTotal'];
+		$data['total_pages'] 		= ceil($data['recordsTotal'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function book_detail(){
+		$get = $this->input->get();
+		$data = $this->db->where('ebooks.id', $get['book_id'])
+					->join('publishers', 'publishers.id = ebooks.publisher_id')
+					->get('ebooks')->row_array();
+		$res = ['success'=>true, 'data'=>$data];
+		header('Content-Type: application/json');
+		echo json_encode($res);
+	}
 }

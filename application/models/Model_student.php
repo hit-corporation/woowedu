@@ -116,4 +116,23 @@ class Model_student extends CI_Model {
 		$this->db->from('student s');
 		return $this->db->get()->result_array();
 	}
+
+	public function get_history_book($limit = null, $page = null, $filter){
+		$this->db->select('book_id, max(start_time), book_code, title, cover_img, author, publish_year, description');
+		$this->db->from('read_log');
+		$this->db->join('ebooks', 'ebooks.id = read_log.book_id');
+		$this->db->where('member_id', $filter['user_id']);
+		$this->db->group_by('book_id, book_code, title, cover_img, author, publish_year, description');
+		$this->db->limit($limit, $page);
+		return $this->db->get()->result_array();
+	}
+
+	public function get_history_book_total($filter){
+		$this->db->select('book_id, max(start_time), book_code, title, cover_img, author, publish_year, description');
+		$this->db->from('read_log');
+		$this->db->join('ebooks', 'ebooks.id = read_log.book_id');
+		$this->db->where('member_id', $filter['user_id']);
+		$this->db->group_by('book_id, book_code, title, cover_img, author, publish_year, description');
+		return $this->db->get()->num_rows();
+	}
 }

@@ -77,15 +77,12 @@
 			<h6 class="text-center mt-4">Laporan Kinerja Siswa</h6>
 			<nav>
 				<div class="nav nav-tabs" id="nav-tab" role="tablist">
-					<!-- <button class="nav-link active" id="nav-ebook-tab" data-bs-toggle="tab" data-bs-target="#nav-ebook" type="button" role="tab" aria-controls="nav-ebook" aria-selected="true">Ebook</button> -->
 					<button class="nav-link active" id="nav-tugas-tab" data-bs-toggle="tab" data-bs-target="#nav-tugas" type="button" role="tab" aria-controls="nav-tugas" aria-selected="false">Tugas</button>
 					<button class="nav-link" id="nav-ujian-tab" data-bs-toggle="tab" data-bs-target="#nav-ujian" type="button" role="tab" aria-controls="nav-ujian" aria-selected="false">Ujian</button>
+					<button class="nav-link" id="nav-ebook-tab" data-bs-toggle="tab" data-bs-target="#nav-ebook" type="button" role="tab" aria-controls="nav-ebook" aria-selected="true">Ebook</button>
 				</div>
 			</nav>
 			<div class="tab-content mb-4" id="nav-tabContent" style="overflow-x: auto;">
-				<!-- <div class="tab-pane fade show active" id="nav-ebook" role="tabpanel" aria-labelledby="nav-ebook-tab" tabindex="0">
-					
-				</div> -->
 				<div class="tab-pane fade show active p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
 					<table class="table-rounded" id="tableTask" style="width: 100%;">
 						<thead>
@@ -101,13 +98,10 @@
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody id="tugas-body-content">
-
-						</tbody>
+						<tbody></tbody>
 					</table>
+				</div>
 
-					<div class="pagination"></div>
-				</div>	
 				<div class="tab-pane fade p-3" id="nav-ujian" role="tabpanel" aria-labelledby="nav-ujian-tab" tabindex="0">
 					<table class="table-rounded w-100" id="tableExam">
 						<thead>
@@ -121,17 +115,103 @@
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody id="exam-body-content">
-
-						</tbody>
+						<tbody></tbody>
 					</table>
+				</div>
 
-					<div class="pagination pagination2"></div>
+				<div class="tab-pane fade" id="nav-ebook" role="tabpanel" aria-labelledby="nav-ebook-tab" tabindex="0">
+					<div class="container px-5">
+						<table class="table-rounded w-100" id="tableBookHistory">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Cover</th>
+									<th>Terakhir dibaca</th>
+									<th>Kode Buku</th>
+									<th>Title</th>
+									<th>Pengarang</th>
+									<th>Tahun</th>
+									<th>Deskripsi</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
+
+<!-- MODAL VIEW BOOK -->
+<div id="modal-show" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">DETAIL BUKU</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-lg-3">
+                        <img data-item="cover_img" class="img-fluid" src="" alt="">
+                    </div>
+                    <aside class="col-12 col-lg-9">
+                        <h3 class="mb-4 text-dark" data-item="title"></h3>
+                        <dl class="row">
+                            <dt class="col-4 text-primary">
+                                Kode Buku
+                            </dt>
+							<dd class="col-8 mb-1">
+                                :&nbsp;<span data-item="book_code"></span>
+                            </dd>
+                            <dt class="col-4 text-primary">
+                                Penulis
+                            </dt>
+                             <dd class="col-8 mb-1">
+                                :&nbsp;<span data-item="author"></span>
+                            </dd>
+                            <dt class="col-4 text-primary">
+                                Penerbit
+                            </dt>
+                             <dd class="col-8 mb-1">
+                                :&nbsp;<span data-item="publisher_name"></span>
+                            </dd>
+                            <dt class="col-4 text-primary">
+                                Tahun Terbit
+                            </dt>
+                             <dd class="col-8 mb-1">
+                                :&nbsp;<span data-item="publish_year"></span>
+                            </dd>
+                            <dt class="col-4 text-primary">
+                                ISBN
+                            </dt>
+                             <dd class="col-8 mb-1">
+                                :&nbsp;<span data-item="isbn"></span>
+                            </dd>
+							<dt class="col-4">
+                                
+                            </dt>
+                             <dd class="col-8 mb-1 mt-3">
+                                <a href="" class="read-link btn btn-primary d-inline text-white">Baca</a>
+                            </dd>
+
+							
+                        </dl>
+                        
+                    </aside>
+                    <span class="col-12">
+                        <hr class="my-3" />
+                        <h6 class="font-weight-bold text-primary">Deskripsi</h6>
+                        <p data-item="description" class="text-justify font-weight-light text-dark fs-14"></p>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
 <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> -->
@@ -327,4 +407,93 @@
 			}
 		]
 	});
+	// INISIALISASI TABLE HISTORY BOOK
+	var tableBookHistory = $('#tableBookHistory').DataTable({
+		serverSide: true,
+		ajax:{
+			url: BASE_URL + 'student/get_history_book',
+			method: 'GET',
+			data: {
+				student_id: student_id
+			}
+		},
+		select: {
+			style: 'multi',
+			selector: 'td:first-child'
+		},
+		columns: [
+			{
+				data: 'book_id',
+				visible: false
+			},
+			{
+				data: 'cover_img',
+				class: 'text-center',
+				render(data, type, row, meta){
+					return `<img src="${data}" alt="" width="100">`;
+				}
+			},
+			{
+				data: 'max',
+				render(data, type, row, meta){
+					let tanggal = moment(data).format('DD MMM YYYY HH:mm');
+					return tanggal;
+				}
+			},
+			{
+				data: 'book_code'
+			},
+			{
+				data: 'title'
+			},
+			{
+				data: 'author'
+			},
+			{
+				data: 'publish_year'
+			},
+			{
+				data: 'description',
+				render(data, type, row, meta){
+					return data.substring(0,100)+' ...';
+				}
+			},
+			{
+				data: null,
+				class: 'text-center',
+				render(data, type, row, meta) {
+					var view = `<div class="btn-group btn-group-sm float-right">
+									<button class="btn btn-success edit_subject rounded-5" onclick="showModalBook(${row.book_id})"><i class="bi bi-eye text-white"></i></button>
+								</div>`;
+					return view;
+				}
+			}
+		]
+	});
+
+	function showModalBook(book_id){
+		$.ajax({
+			type: "GET",
+			url: BASE_URL+"student/book_detail",
+			data: {
+				book_id: book_id
+			},
+			dataType: "JSON",
+			success: function (response) {
+				if(response.success == true){
+					let data = response.data;
+					$('#modal-show').modal('show');
+					$('[data-item="cover_img"]')[0].src = data.cover_img;
+					$('[data-item="book_code"]')[0].innerHTML = data.book_code;
+					$('[data-item="author"]')[0].innerHTML = data.author;
+					$('[data-item="publisher_name"]')[0].innerHTML = data.publisher_name;
+					$('[data-item="publish_year"]')[0].innerHTML = data.publish_year;
+					$('[data-item="isbn"]')[0].innerHTML = data.isbn;
+					$('[data-item="description"]')[0].innerHTML = data.description;
+					$('.read-link')[0].href = BASE_URL+'ebook/open_book?id='+book_id;
+				}
+
+			}
+		});
+	}
 </script>

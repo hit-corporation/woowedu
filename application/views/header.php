@@ -157,13 +157,13 @@ endif
                                 <a class="nav-link" href="<?=base_url()?>ebook">Ebook</a>
                             </li>
     
-							<!-- JIKA USER LEVEL GURU OR MURID -->
-							<?php if($user_level == 3 || $user_level == 4) : ?>
-                          <!--  <li class="nav-item">
-                                <a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/detail/').$student_id ?>">Tugas</a>
-                            </li>-->
+							<!-- JIKA USER LEVEL GURU OR MURID OR WALI MURID -->
+							<?php if($user_level == 3 || $user_level == 4 || $user_level == 5) : ?>
 									<li class="nav-item">
-											<a class="nav-link" href="<?=base_url('task')?>">Tugas</a>
+										<a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/detail/').$student_id ?>">MEMBER AREA</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="<?=base_url('task')?>">Tugas</a>
 									</li>														
 							<?php endif ?>
                             
