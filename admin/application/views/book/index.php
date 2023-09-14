@@ -1,3 +1,11 @@
+<style>
+    .table td, .table th {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 120px;
+        overflow: hidden;
+    }
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -47,7 +55,7 @@
 					</div>
 
 					<div class="table-responsive">
-						<table id="table-main" class="table table-sm">
+						<table id="table-main" class="table table-sm w-100">
 							<thead class="bg-primary text-white">
 								<tr>
 									<th>ID</th>
@@ -62,7 +70,6 @@
 									<th>ISBN</th>
 									<th>Stok</th>
 									<th>Tanggal Input</th>
-									<th>No Rak</th>
 									<th>Operation</th>
 								</tr>
 							</thead>
