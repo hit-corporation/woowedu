@@ -221,15 +221,22 @@ const getBooks = async () => {
     $('#table-main tbody').on('click', 'button.show_data', e => {
         var row = table.row(e.target.parentNode.closest('tr')).data();
         var sets = document.querySelectorAll('[data-item]');
+        const url = new URL(BASE_URL);
 
         for(var set of sets)
         {
             if(set.dataset.item === 'cover_img')
             {
                 if(row[set.dataset.item])
-                    set.src = BASE_URL + 'assets/img/books/' + row[set.dataset.item];
+                {
+                    if(row.from_api)
+                       set.src = row[set.dataset.item];
+                    else
+                        set.src = url.origin + '/assets/images/ebooks/cover/' + row[set.dataset.item];
+                }
+                    
                 else
-                    set.src = BASE_URL + 'assets/img/Placeholder_book.svg'
+                    set.src = url.origin  + '/assets/images/ebooks/cover/default.png';
             }
 
             set.innerText = row[set.dataset.item];
@@ -288,7 +295,7 @@ const getBooks = async () => {
             if(row.from_api == 1)
                 img = row.cover_img;
             else
-                img = url.origin + '/assets/img/books/' + data;
+                img = url.origin + '/assets/images/ebooks/cover/' + data;
         }
         imgCover.src = img;
 
