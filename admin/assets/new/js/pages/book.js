@@ -6,6 +6,7 @@ const form = document.forms['form-input'],
 display = document.querySelector('#ul-display'),
 imgCover = document.getElementById('img-cover');
 const BASE_URL = document.querySelector('base').href;
+const url = new URL(BASE_URL);
 
 // get all Categories
 const getCategories = async () => {
@@ -221,7 +222,7 @@ const getBooks = async () => {
     $('#table-main tbody').on('click', 'button.show_data', e => {
         var row = table.row(e.target.parentNode.closest('tr')).data();
         var sets = document.querySelectorAll('[data-item]');
-        const url = new URL(BASE_URL);
+       
 
         for(var set of sets)
         {
@@ -323,7 +324,7 @@ const getBooks = async () => {
         }
 
         $('#category-tree').jstree(true).refresh();
-        imgCover.src = BASE_URL + 'assets/img/Placeholder_book.svg';
+        imgCover.src = url.origin + '/assets/images/ebooks/cover/default.png';;
         selectize.clear();
         form['book-year'].value = thisYear;
         
