@@ -55,6 +55,10 @@
 				
 				<?php if(strtotime($task['due_date']) >= time()): ?>
 					<button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Kumpulkan Tugas</button>
+				<?php else : ?>
+					<div class="alert alert-warning" role="alert">
+						Batas pengumpulan tugas telah berakhir!
+					</div>
 				<?php endif ?>
 			</div>
 		</div>
