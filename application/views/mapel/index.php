@@ -4,10 +4,8 @@
 
 	<form class="row mb-3" name="frm-filter">
 		<div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-			<select class="form-select" name="select-class" aria-label="Pilih Kelas">
-				<option  value="1" selected>Kelas 1</option>
-				<option value="2">Kelas 2</option>
-				<option value="3">Kelas 3</option>
+			<select class="form-select" name="select-kelas" id="select-kelas" aria-label="Pilih Kelas">
+				
 			</select>
 		</div>
 

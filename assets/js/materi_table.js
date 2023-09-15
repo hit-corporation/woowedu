@@ -284,36 +284,47 @@ $('#tbl-materi tbody').on('click', '.btn.delete_materi', e => {
  * ************************************
  */
 
-const mapel = async () => {
+const filter = async e => {
+    e.preventDefault();
+    
     try 
     {
-        const url   = new URL(`${ADMIN_URL}/api/subject/getAll`);
-        const f     = await fetch(url.href);
-        const j     = await f.json();
-
-        return j.data;
+       if($('#select-mapel').val())
+            table.columns(0).search($('#select-mapel').val()).draw();
+        
     } 
-    catch (error) 
+    catch (err) 
     {
-        console.error(error);
+        
     }
 }
 
 (async ($) => {
 
     const materi = [...(await getSubject()).data].map(x => ({ id: x.id_mapel, text: x.nama_mapel }));
+    const kelas = [...(await getSubject()).data].map(x => ({ id: x.id_kelas, text: x.nama_kelas }));
 
     $('#tbl-materi > tbody').on('click', '.btn.view_materi', e => {
         isUpdate = 1;
     });
 
+    // Materi
     $('select[name="a_materi_subject"]').select2({
         theme: "bootstrap-5",
         data: materi,
         placeholder: 'Pilih Mapel',
         allowClear: true
     });
-    
+
+    // Kelas
+    $('#select-kelas').select2({
+        theme: "bootstrap-5",
+        data: kelas,
+        placeholder: 'Pilih Kelas',
+        allowClear: true
+    });
+    $('#select-kelas').val(null).trigger('change');
+
     // Submit
     form.addEventListener('submit', async e => await submitMateri(e));
     document.querySelector('#save-subject').addEventListener('click', e => {
@@ -339,5 +350,7 @@ const mapel = async () => {
     });
 
     $('#select-mapel').val(null).trigger('change');
+
+    frmFilter.addEventListener('submit', async e => await filter(e));
 })(jQuery);
 
