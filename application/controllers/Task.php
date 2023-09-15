@@ -170,7 +170,7 @@ class Task extends CI_Controller {
 			redirect(base_url('task'));
 		}
 	}
-	
+	 
 	
 	public function create($id = ''){
 		$post = $this->input->post();
