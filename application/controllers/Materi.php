@@ -20,13 +20,14 @@ class Materi extends CI_Controller {
 		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js'];
 		$data['page_js'][] = ['path' => 'assets/libs/sweetalert2/sweetalert2.min.js'];
 		if($datamodel == 'grid')
-			$data['page_js'][] = ['path' => 'assets/js/materi_grid.js', 'defer' => true];
+			$data['page_js'][] = ['path' => 'assets/js/materi_grid.js', 'defer' => true, 'type' => 'module'];
 		else
 			$data['page_js'][] = ['path' => 'assets/js/materi_table.js', 'defer' => true];
 
 		$header['add_css'] = [
 			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css',
 			'assets/libs/sweetalert2/sweetalert2.min.css',
+			'assets/node_modules/pagination-system/dist/pagination-system.min.css',
 			'assets/css/materi.css'
 
 		];

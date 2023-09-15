@@ -21,6 +21,8 @@ function add_js($javascript) {
 				$output .= ' async';
 			if(isset($js['defer']))
 				$output .= ' defer';
+			if(isset($js['type']))
+				$output .= ' type="'.$js['type'].'"';
 			$output .= '></script>';
 			$output = trim($output).PHP_EOL;
 			unset($js);
