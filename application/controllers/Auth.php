@@ -79,12 +79,23 @@ class auth extends CI_Controller
 				'logged_in' => true
 			)
 		);
-		if($dt->user_level==3){
+		if($dt->user_level==3){ //guru
 			$getTeacher = $this->db->get_where('teacher', ['nik' =>$username]);
 			$dteacher = $getTeacher->row();
 			$teacher_id = $dteacher->teacher_id;
 			$this->session->set_userdata(array('teacher_id'=>$teacher_id));
 		}
+		if($dt->user_level==4){  //siswa
+			$this->db->select('k.class_id,k.class_level_id');
+			$this->db->from('kelas k');
+			$this->db->join('student s', 's.class_id=k.class_id');
+			$this->db->where('nis', $username);
+			$dstudent = $this->db->get()->row();
+			$class_id = $dstudent->class_id;
+			$class_level_id = $dstudent->class_level_id;
+			$this->session->set_userdata(array('class_id'=>$class_id));
+			$this->session->set_userdata(array('class_level_id'=>$class_level_id));
+		}		
 
 		http_response_code(200);
         $msg = ['err_status' => 'success', 'message' => 'Login Success','ulevel'=>$dt->user_level];

@@ -2,16 +2,23 @@
 	
 <div class="container">
 
-	<h4>Pengumuman</h4>
+	<h4>Tugas</h4>
 
 	<!-- section search -->
 	<div class="row mt-4">
 
 		<div class="col-lg-4 col-md-12 col-sm-12">
 			<div class="mb-3 row">
-				<label for="judul" class="col-sm-2 col-form-label">Judul</label>
+				<label for="select-mapel" class="col-sm-2 col-form-label">Mata Pelajaran</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="judul" name="judul">
+ 
+ 
+					<select class="form-select" name="select-mapel" id="select-mapel" aria-label="Pilih Matapelajaran">
+						<option  value="" >==Pilih==</option>
+						<?php foreach($mapelop as $key => $val) : ?>
+							<option  value="<?=$val['subject_id']?>" ><?=$val['subject_name']?></option>
+						<?php endforeach ?>
+					</select>					
 				</div>
 			</div>
 		</div>
@@ -45,7 +52,7 @@
 	<div class="row mt-4">
 		<div class="container d-flex justify-content-end p-0">
 			<a href="<?=base_url()?>task/create" class="btn btn-success">
-				+ Buat Pengumuman
+				+ Buat Tugas
 			</a>
 		</div>
 	</div>
@@ -78,7 +85,7 @@
 
 	// create function load data
 	function load_data(page = 1, limit = 10){
-		let title = $('#judul').val();
+		let mapel = $('#select-mapel').val();
 		let startDate = $('#start-date').val();
 		let endDate = $('#end-date').val();
 
@@ -88,7 +95,7 @@
 			data: {
 				page: page,
 				limit: limit,
-				title: title,
+				mapel: mapel,
 				startDate: startDate,
 				endDate: endDate
 			},
