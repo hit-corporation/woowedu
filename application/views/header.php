@@ -128,7 +128,7 @@ endif
                     </button>
     
                     <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                        <ul class="navbar-nav ms-lg-5 me-lg-auto" id="ulNavbarNav">
                             <li class="nav-item">
                                 <a class="nav-link" href="<?=base_url()?>">Home</a>
                             </li>
