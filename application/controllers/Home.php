@@ -94,6 +94,38 @@ class Home extends CI_Controller {
 
 		// CARI DATA TUGAS JIKA TIDAK ADA DI TABEL NOTIF MAKA LAKUKAN INSERT
 		$tasks = $this->db->where('DATE(available_date) >=', date("Y-m-d", strtotime("-1 months")))->get('task')->result_array();
+		
+		############################## INI DI GUNAKAN JIKA MENGGUNAKAN CONTENT JSON ##############################
+		
+		// $notifs = $this->db->where('type', 'TASK')->where('user_id', $session['userid'])->get('notif')->result_array();
+		// looping array notif untuk mendapatkan data task_id
+		// $taskIds = [];
+		// foreach ($notifs as $key => $notif) {
+		// 	$content = json_decode($notif['content']);
+		// 	if($content){
+		// 		$taskIds[] = $content->task_id;
+		// 	}
+		// }
+
+		// foreach($tasks as $key => $task){
+		// 	$search = array_search($task['task_id'], $taskIds);
+		// 	if(!is_numeric($search)){
+		// 		$data = [
+		// 				'type' 		=> 'TASK',
+		// 				'title' 	=> $task['note'],
+		// 				'seen' 		=> false,
+		// 				'user_id' 	=> $session['userid'],
+		// 				'created_at' => $task['available_date'],
+		// 				'link'		=> 'task/detail/'.$task['task_id'],
+		// 				'task_id'	=> $task['task_id']
+		// 			];
+		// 			$this->db->insert('notif', $data);
+		// 	}
+		// }
+		
+		// die;
+
+		
 		foreach ($tasks as $task) {
 			$notif = $this->db->where('type', 'TASK')->where('task_id', $task['task_id'])->where('user_id', $session['userid'])->get('notif')->row_array();
 			if(!$notif){
