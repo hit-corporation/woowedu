@@ -1,5 +1,6 @@
 'use strict';
 const form = document.forms['form-add'];
+const frmFilter = document.forms['frm-filter']
 const embedFile = document.querySelector('#embed-file');
 let isUpdate = 0;
 
@@ -276,9 +277,31 @@ $('#tbl-materi tbody').on('click', '.btn.delete_materi', e => {
     })
 });
 
+
+/**
+ * ************************************
+ *          SEARCH / FILTER
+ * ************************************
+ */
+
+const mapel = async () => {
+    try 
+    {
+        const url   = new URL(`${ADMIN_URL}/api/subject/getAll`);
+        const f     = await fetch(url.href);
+        const j     = await f.json();
+
+        return j.data;
+    } 
+    catch (error) 
+    {
+        console.error(error);
+    }
+}
+
 (async ($) => {
 
-    const subjects = [...(await getSubject()).data].map(x => ({ id: x.id_mapel, text: x.nama_mapel }));
+    const materi = [...(await getSubject()).data].map(x => ({ id: x.id_mapel, text: x.nama_mapel }));
 
     $('#tbl-materi > tbody').on('click', '.btn.view_materi', e => {
         isUpdate = 1;
@@ -286,7 +309,7 @@ $('#tbl-materi tbody').on('click', '.btn.delete_materi', e => {
 
     $('select[name="a_materi_subject"]').select2({
         theme: "bootstrap-5",
-        data: subjects,
+        data: materi,
         placeholder: 'Pilih Mapel',
         allowClear: true
     });
@@ -306,5 +329,15 @@ $('#tbl-materi tbody').on('click', '.btn.delete_materi', e => {
     $('#tbl-materi > tbody').on('click', '.btn.edit_materi', e => btnUpdateClick(e));
     $('#tbl-materi > tbody').on('click', '.btn.view_materi', e => showData(e));
     //
+
+    // Filter
+    $('#select-mapel').select2({
+        theme: "bootstrap-5",
+        data: materi,
+        placeholder: 'Pilih Mapel',
+        allowClear: true
+    });
+
+    $('#select-mapel').val(null).trigger('change');
 })(jQuery);
 
