@@ -16,6 +16,9 @@ class Model_mapel extends CI_Model {
      */
     public function get_all(int $limit = NULL, int $offset = NULL, array $filter = NULL): array {
 
+        if(!empty($filter[0]['search']['value']))
+            $this->db->where('a.subject_id', $filter[0]['search']['value']);
+
         if(!empty($limit) && !is_null($offset))
             $this->db->limit($limit, $offset);
 

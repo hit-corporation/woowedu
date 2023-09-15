@@ -2,31 +2,28 @@
 	
 <div class="container">
 
-	<div class="row ">
-		<div class="col-lg-6 col-md-6 col-sm-12 mb-2">
-			<select class="form-select" name="select-class" aria-label="Pilih Kelas">
-				<option  value="1" selected>Kelas 1</option>
-				<option value="2">Kelas 2</option>
-				<option value="3">Kelas 3</option>
+	<form class="row mb-3" name="frm-filter">
+		<div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+			<select class="form-select" name="select-kelas" id="select-kelas" aria-label="Pilih Kelas">
+				
 			</select>
 		</div>
 
 		
-		<div class="col-lg-6 col-md-6 col-sm-12 mb-5">
-			<div class="input-group mb-3">
-				<select class="form-select" name="select-mapel" id="basic-usage" aria-label="Pilih Matapelajaran">
-					<option  value="1" selected>Kelas VI Matematika (Kumer)</option>
-					<option  value="2" selected>Kelas VI Bahasa Indonesia (Kumer)</option>
-					<option  value="3" selected>Kelas VI IPA (Kumer)</option>
-					<option  value="4" selected>Kelas VI IPS (Kumer)</option>
-					<option  value="5" selected>Kelas VI Bahasa Inggris (Kumer)</option>
-					<option  value="5" selected>Kelas VI Bahasa Inggris (Kumer)</option>
-				</select>
-				
-				<button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-			</div>
+		<div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+            <select class="form-select" name="select-mapel" id="select-mapel" aria-label="Pilih Matapelajaran">
+                
+            </select>
 		</div>
-	</div>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+            <div class="btn-group">
+                <button class="btn btn-primary" type="submit" ><i class="bi bi-search text-white"></i></button>
+                <button class="btn btn-danger" type="reset" ><i class="bi bi-x-circle text-white"></i></button>
+            </div>
+            
+        </div>
+       
+    </form>
 
 	<div class="row">
 		<!-- <div class="col"> -->
