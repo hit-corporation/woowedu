@@ -81,6 +81,7 @@
 						<input type="hidden" name="task_id" value="<?=$task['task_id']?>">
 						<input type="hidden" name="class_id" value="<?=$task['class_id']?>">
 						<input class="form-control" type="file" name="formFile" id="formFile">
+						<span class="text-danger">* </span><span class="fs-12">ukuran file maksimal 30 MB</span>
 					</div>
 					<div class="form-floating">
 						<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="task_note"></textarea>
