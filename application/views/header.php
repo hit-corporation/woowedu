@@ -150,7 +150,7 @@ endif
 
     
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url()?>materi?mode=table">Mapel</a>
+                                <a class="nav-link" href="<?=base_url()?>materi?mode=table">Materi</a>
                             </li>
 
                             <li class="nav-item">
