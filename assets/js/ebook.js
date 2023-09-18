@@ -212,11 +212,11 @@ const getBooks = async (page, count) => {
         dataRenderFn: item => item.data.map(e => { 
             const imgWidth = 78 * 1.5;
             const imgHeight = 105 * 1.5;
-            const url = new URL('/ebook/detail/' + e.id, BASE_URL);
+            const url = window.location.href + '/detail/' + e.id;
             const img = (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
     
             return `<div class="col-4 p-2">
-                <a class="card ebook-card flex-row flex-nowrap justify-content-around border-0 shadow-sm" href="${ url.href }"
+                <a class="card ebook-card flex-row flex-nowrap justify-content-around border-0 shadow-sm" href="${ url }"
                     onmouseover="this.classList.remove('shadow-sm'); this.classList.add('shadow')"
                     onmouseout="this.classList.remove('shadow'); this.classList.add('shadow-sm')"
                     style="height: 223px"
