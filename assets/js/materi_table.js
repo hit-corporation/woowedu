@@ -68,7 +68,7 @@ const table = $('#tbl-materi').DataTable({
 const getSubject = async () => {
     try
     {
-        const url = new URL(`${ADMIN_URL}/api/subject/getAll`);
+        const url = new URL(`${BASE_URL}admin/api/subject/getAll`);
         const f = await fetch(url.href);
 
         return await f.json();
