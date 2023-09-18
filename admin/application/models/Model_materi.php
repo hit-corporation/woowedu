@@ -37,7 +37,7 @@ class Model_materi extends CI_Model {
         if(!empty($_GET['order'][0]['column']))
 					$query .= " ORDER BY ".$columns[$_GET['order'][0]['column']]." ".$_GET['order'][0]['dir'];
         else
-            $query .= " ORDER BY id DESC";
+            $query .= " ORDER BY materi_id DESC";
 				
         if(!empty($limit) && !is_null($offset))
             $query .= " LIMIT {$limit} OFFSET {$offset}"; 
