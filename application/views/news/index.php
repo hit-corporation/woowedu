@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="col-lg-2 col-md-2 col-sm-2 d-flex justify-content-end">
-					<button class="btn btn-clear border shadow-sm" id="search">Cari</button>
+					<button class="btn btn-primary border shadow-sm" id="search"><i class="bi bi-search text-white"></i></button>
 				</div>
 			</div>
 		</div>
