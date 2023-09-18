@@ -165,7 +165,7 @@ class Subject extends MY_Controller {
         $filename2 = $dir2.DIRECTORY_SEPARATOR.str_replace(' ', '_', strtolower($name));  
         $ext1 = pathinfo(basename($thumbnail_name), PATHINFO_EXTENSION); 
         $ext2 = pathinfo(basename($poster_name), PATHINFO_EXTENSION); 
-        $move1 = move_uploaded_file($_FILES['thumb-file']['tmp_name'], FCPATH.$filename.'.'.$ext1);
+        $move1 = move_uploaded_file($_FILES['thumb-file']['tmp_name'], FCPATH.$filename1.'.'.$ext1);
         $move2 = move_uploaded_file($_FILES['detail-file']['tmp_name'], FCPATH.$filename2.'.'.$ext2);
 				
         $data = [
