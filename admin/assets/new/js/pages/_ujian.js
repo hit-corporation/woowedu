@@ -315,16 +315,16 @@ const base_url = document.querySelector('base').href,
       * ======================================
       */
 
-      $('#search-button').on('click', e => {
-        if(s_code.value !== '' || s_code.value !== null)
-            table.columns(2).search(s_code.value).draw(); 
-    });
+        $('#search-button').on('click', e => {
+            if(s_code.value !== '' || s_code.value !== null)
+                table.columns(2).search(s_code.value).draw(); 
+        });
 
-    $('#reset-search').on('click', e => {
-        var form = document.forms['form-search'];
-        form.reset();
-        table.columns(2).search(s_code.value).draw(); 
-    });   
+        $('#reset-search').on('click', e => {
+            var form = document.forms['form-search'];
+            form.reset();
+            table.columns(2).search(s_code.value).draw(); 
+        });   
 
     /**
      * ==================================================================

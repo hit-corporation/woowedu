@@ -125,56 +125,56 @@ const base_url = document.querySelector('base').href,
 		});		
 
 		frmAdd.addEventListener('submit', e => {
-					e.preventDefault();
-					let fdata = new FormData(); 
-					let ajaxurl ;
-					if(isUpdate)
-						 ajaxurl = 'api/subject/edit';
-					else
-						 ajaxurl = 'api/subject/save';
-					fdata.append('a_subject_code', subject_code.value); 
-					fdata.append('a_subject_name', subject_name.value); 
-					fdata.append('a_subject_class', subject_class.value); 
-					fdata.append('thumb-file', thumbnailFile); 
-					fdata.append('detail-file', detailFile); 
-					$.ajax({
-							url: base_url + '' + ajaxurl,
-							type: 'POST',
-							data: fdata,
-							contentType: false,
-							processData: false,
-							xhr() {
-									var myXhr = $.ajaxSettings.xhr();
-									if (myXhr.upload) {
-								
-									}
-									return myXhr;
-							},
-							success(reslv) {
-								Swal.fire({
-									type: 'success',
-									title:`<h5 class="text-success text-uppercase">Berhasil</h5>`,
-									html: 'Data berhasil diimport'
-								});							
-								let progress = Math.ceil(reslv.prog / reslv.total * 100);
-								console.log(progress);
-							},
-							error(err) {
-									let response = JSON.parse(err.responseText);
-									Swal.fire({
-										type: response.err_status,
-										title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
-										html: response.message
-									});
-							},
-							complete() {				
-									table.ajax.reload();
-									$('#modal-add').modal('hide');
-							}
-					}); 
-					
-			});	
- 
+            e.preventDefault();
+            let fdata = new FormData(); 
+            let ajaxurl ;
+            if(isUpdate)
+                    ajaxurl = 'api/subject/edit';
+            else
+                    ajaxurl = 'api/subject/save';
+            fdata.append('a_subject_code', subject_code.value); 
+            fdata.append('a_subject_name', subject_name.value); 
+            fdata.append('a_subject_class', subject_class.value); 
+            fdata.append('thumb-file', thumbnailFile); 
+            fdata.append('detail-file', detailFile); 
+            $.ajax({
+                    url: base_url + '' + ajaxurl,
+                    type: 'POST',
+                    data: fdata,
+                    contentType: false,
+                    processData: false,
+                    xhr() {
+                            var myXhr = $.ajaxSettings.xhr();
+                            if (myXhr.upload) {
+                        
+                            }
+                            return myXhr;
+                    },
+                    success(reslv) {
+                        Swal.fire({
+                            type: 'success',
+                            title:`<h5 class="text-success text-uppercase">Berhasil</h5>`,
+                            html: 'Data berhasil diimport'
+                        });							
+                        let progress = Math.ceil(reslv.prog / reslv.total * 100);
+                        console.log(progress);
+                    },
+                    error(err) {
+                            let response = JSON.parse(err.responseText);
+                            Swal.fire({
+                                type: response.err_status,
+                                title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
+                                html: response.message
+                            });
+                    },
+                    complete() {				
+                            table.ajax.reload();
+                            $('#modal-add').modal('hide');
+                    }
+            }); 
+            
+    });	
+
 
 
      /**

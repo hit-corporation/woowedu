@@ -8,7 +8,7 @@ class Subject extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
-        check_Loggin();
+        //check_Loggin();
         $this->load->model(['model_common', 'model_subject']); 
 		$this->load->helper('url');
 		$this->load->helper('slug');
