@@ -44,4 +44,8 @@ class Model_mapel extends CI_Model {
 
         return $get->num_rows() ?? 0;
     }
+
+    public function getSubjects() {
+        
+    }
 }

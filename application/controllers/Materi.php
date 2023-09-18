@@ -62,4 +62,28 @@ class Materi extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_QUOT);
 	}
+
+	/**
+	 * list f subjects
+	 *
+	 * @return void
+	 */
+	public function getAll(): void {
+        $draw = $this->input->post('draw', TRUE);
+        $limit = $this->input->post('length', TRUE);
+        $offset = $this->input->post('start', TRUE);
+        $filters = $this->input->post('columns');
+
+        $data = $this->model_subject->getAll($filters, $limit, $offset);
+        
+        $resp = [
+            'draw' => $draw,
+            'data' => $data,
+            'recordsTotal' => $this->db->count_all_results('subject'),
+            'recordsFiltered' => $this->model_subject->countAll($filters)
+        ];
+
+        echo json_encode($resp, JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);
+    }
+
 }
