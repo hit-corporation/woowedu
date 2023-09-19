@@ -46,10 +46,12 @@ class Model_student extends CI_Model {
 	public function get_task($limit = null, $page = null, $student_id){
 		$class_id = $this->get_class($student_id);
 
-		$this->db->select('t.*, m.title');
+		$this->db->select('t.*, m.title, s.subject_name, g.teacher_name, t.score');
 		$this->db->from('task t');
 		$this->db->join('materi m', 'm.materi_id = t.materi_id');
-		$this->db->where('class_id', $class_id);
+		$this->db->join('subject s', 's.subject_id = m.subject_id');
+		$this->db->join('teacher g', 'g.teacher_id = t.teacher_id');
+		$this->db->where('t.class_id', $class_id);
 		$this->db->order_by('available_date', 'desc');
 		$this->db->limit($limit, $page);
 		return $this->db->get()->result_array();
