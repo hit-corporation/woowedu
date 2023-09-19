@@ -89,12 +89,15 @@
 							<tr>
 								<th>Id</th>
 								<th>Kode</th>
+								<th>Mata Pelajaran</th>
 								<th>Nama Tugas</th>
+								<th>Guru</th>
 								<th>Ditugaskan</th>
 								<th>Batas waktu</th>
 								<th>Tanggal penyerahan</th>
 								<th>File</th>
 								<th>Notes</th>
+								<th>Nilai</th>
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -294,7 +297,13 @@
 					data: 'code',
 				},
 				{
+					data: 'subject_name',
+				},
+				{
 					data: 'title',
+				},
+				{
+					data: 'teacher_name',
 				},
 				{
 					data: 'available_date',
@@ -327,6 +336,13 @@
 					class: 'text-center',
 					render(data, row, type, meta){
 						return (data) ? data.substring(0, 100) : `-`;
+					}
+				},
+				{
+					data: 'score',
+					class: 'text-center',
+					render(data, row, type, meta){
+						return `<b>${(data) ? data : '-'}</b>`;
 					}
 				},
 				{
