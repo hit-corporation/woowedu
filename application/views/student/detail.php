@@ -112,6 +112,7 @@
 								<th>Id</th>
 								<th>Nama Mapel</th>
 								<th>Jenis Tugas</th>
+								<th>Guru</th>
 								<th>Total Nilai</th>
 								<th>Batas Waktu</th>
 								<th>Tanggal Submit</th>
@@ -389,6 +390,9 @@
 			},
 			{
 				data: 'category_name',
+			},
+			{
+				data: 'teacher_name',
 			},
 			{
 				data: 'exam_total_nilai',
