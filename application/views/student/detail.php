@@ -133,6 +133,7 @@
 									<th>Terakhir dibaca</th>
 									<th>Kode Buku</th>
 									<th>Title</th>
+									<th>Kategori</th>
 									<th>Pengarang</th>
 									<th>Tahun</th>
 									<th>Deskripsi</th>
@@ -465,6 +466,9 @@
 			},
 			{
 				data: 'title'
+			},
+			{
+				data: 'category_name'
 			},
 			{
 				data: 'author'
