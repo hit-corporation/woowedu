@@ -283,7 +283,7 @@
 			// otherwise they'd all just say "list"
 			views: {
 				listDay: { buttonText: 'list day' },
-				listWeek: { buttonText: 'list week' }
+				listWeek: { buttonText: 'list week' },
 			},
 
 			initialView: 'listWeek',
@@ -297,13 +297,17 @@
 						$('#script-warning').show();
 					}
 				},
+			eventDidMount: function(info) {
+					let title = info.el.children[2].innerText;
+					info.el.children[2].innerHTML = (`<p class="fs-14">${title}</p><p class="text-success fw-bold fs-14">Guru: ${info.event._def.extendedProps.teacher}</p>`);
+				},
 			eventClick: function(info) {
-				var eventObj = info.event;
-				$('#sesi_content').load('<?php echo base_url(); ?>sesi/sesidetail/'+eventObj.id);
-			},
+					var eventObj = info.event;
+					$('#sesi_content').load('<?php echo base_url(); ?>sesi/sesidetail/'+eventObj.id);
+				},
 			loading: function(bool) {
-				$('#loading').toggle(bool);
-			}
+					$('#loading').toggle(bool);
+				}
 		});
 
 		calendar.render();
@@ -329,7 +333,6 @@
 
 	// INISIALISASI TABLE TUGAS
 	var tableTask = $('#tableTask').DataTable({
-			// destroy: true,
 			serverSide: true,
 			ajax: {
 				url: BASE_URL + 'student/get_task',
