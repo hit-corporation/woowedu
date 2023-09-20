@@ -299,7 +299,11 @@
 				},
 			eventDidMount: function(info) {
 					let title = info.el.children[2].innerText;
-					info.el.children[2].innerHTML = (`<p class="fs-14">${title}</p><p class="text-success fw-bold fs-14">Guru: ${info.event._def.extendedProps.teacher}</p>`);
+					let teacher = info.event._def.extendedProps.teacher;
+					let subject_name = info.event._def.extendedProps.subject_name;
+					info.el.children[2].innerHTML = (`<p class="fs-14">${title}</p>
+						<p class="text-success fw-bold fs-14">Guru: ${teacher}</p>
+						<span>Mata Pelajaran: <span style="background-color: #3989d9; color: white; padding-left: 5px; padding-right: 5px; border-radius: 10px; box-shadow: 3px 3px 5px lightblue;">${subject_name}</span></span>`);
 				},
 			eventClick: function(info) {
 					var eventObj = info.event;
