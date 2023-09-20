@@ -250,11 +250,12 @@ class Student extends CI_Controller {
 		foreach($sesi->result() as $data) {
 			$tanggal =  $data->sesi_date;	 
 			$list[] = [
-				'id' =>		$data->sesi_id,
-				'title' =>	$data->sesi_title,
-				'teacher' =>$data->teacher_name,
-				'start' =>	$data->sesi_date.'T'.$data->sesi_jam_start,
-				'end' =>	$data->sesi_date.'T'.$data->sesi_jam_end  
+				'id' 			=> $data->sesi_id,
+				'title' 		=> $data->sesi_title,
+				'teacher' 		=> $data->teacher_name,
+				'subject_name'	=> $data->subject_name,
+				'start' 		=> $data->sesi_date.'T'.$data->sesi_jam_start,
+				'end' 			=> $data->sesi_date.'T'.$data->sesi_jam_end  
 			];
 		}	
 		if($list == null) $list[] = array(0);
