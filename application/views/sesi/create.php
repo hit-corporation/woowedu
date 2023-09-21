@@ -1,6 +1,11 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+<?php 
+	$user_level = $this->session->userdata('user_level');
+	$user_level = ($user_level == 3) ? true : false;
+?>
+
 <section class="explore-section section-padding" id="section_2">
 	<div class="container">
 
@@ -15,24 +20,24 @@
 	
 				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 					<label for="title" class="form-label">Judul</label>
-					<input type="text" class="form-control" id="title" name="title" value="<?=isset($data['sesi_title']) ? $data['sesi_title'] : ''?>">
+					<input type="text" class="form-control" id="title" name="title" value="<?=isset($data['sesi_title']) ? $data['sesi_title'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
 				</div>
  
 
 				<div class="row mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label for="title" class="form-label">Tanggal</label>
-						<input type="date"  class="form-control" id="tanggal" name="tanggal" value="<?=isset($data['sesi_date']) ? $data['sesi_date'] : ''?>">
+						<input type="date"  class="form-control" id="tanggal" name="tanggal" value="<?=isset($data['sesi_date']) ? $data['sesi_date'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
 					</div>
 
 					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label for="title" class="form-label">Jam Mulai</label>
-						<input type="time" class="form-control" id="jamstart" name="jamstart" value="<?=isset($data['sesi_jam_start']) ? $data['sesi_jam_start'] : ''?>">
+						<input type="time" class="form-control" id="jamstart" name="jamstart" value="<?=isset($data['sesi_jam_start']) ? $data['sesi_jam_start'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
 					</div> 
 
 					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label for="title" class="form-label">Jam Akhir</label>
-						<input type="time" class="form-control" id="jamend" name="jamend" value="<?=isset($data['sesi_jam_end']) ? $data['sesi_jam_end'] : ''?>">
+						<input type="time" class="form-control" id="jamend" name="jamend" value="<?=isset($data['sesi_jam_end']) ? $data['sesi_jam_end'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
 					</div> 						
 				</div>
 
@@ -55,7 +60,9 @@
 				</div> -->
 
 				<div class="mb-3">
-					<a class="btn btn-success" type="submit" name="save">Simpan</a>
+					<?php if($user_level) : ?>
+						<a class="btn btn-success" type="submit" name="save">Simpan</a>
+					<?php endif ?>
 				</div>
 			</form>
 		</div>
@@ -119,7 +126,12 @@
 		});
 	});
 
-	// COMBO BOX MATERI 
+	// COMBO BOX MATERI
+	let user_level = <?=$this->session->userdata('user_level')?>;
+	if(user_level != 3){
+		$('select[name="materi"]').select2({disabled: true});
+	}
+
 	$('select[name="materi"]').select2({
         theme: "bootstrap-5",
         data: materi,
