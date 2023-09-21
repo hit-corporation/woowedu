@@ -3,6 +3,8 @@ import PaginationSystem from '../node_modules/pagination-system/dist/pagination-
 
 const grid = document.querySelector('#grid');
 const paginationContainer = document.querySelector('.pagination');
+const $ = jQuery;
+const frmSearch = document.forms['frm-search'];
 
 /**
  * @descsription add new grid for a book for list
@@ -200,7 +202,52 @@ const getBooks = async (page, count) => {
 //     await viewBookList(currentPage, limit);
 // }
 
-(async () => {
+const getCategory = async () => {
+    try {
+        const adminUri = ADMIN_URL + 'kategori/get_all';
+        const f = await fetch(adminUri);
+
+        return await f.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const searchBooks = async e => {
+    try 
+    {
+        const adminUri = new URL(ADMIN_URL + 'kategori/get_all');
+        const entries = new FormData(e).entries();
+        const obj = Object.fromEntries(entries);
+
+        const f = await fetch(adminUri.href, {
+            method: 'GET',
+            headers: {
+                'Content-Type':'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(obj).toString()
+        });
+
+        const ent = await f.json();
+        
+    } 
+    catch (err) 
+    {
+        console.log(err);
+    }
+}
+
+
+(/**
+ * 
+
+ * @date 9/21/2023 - 9:55:55 AM
+ *
+ * @async
+ * @param {*} $
+ * @returns {*}
+ */
+async ($) => {
     
     const pageOption = {
         url: new URL("ebook/list", BASE_URL).href,
@@ -238,4 +285,23 @@ const getBooks = async (page, count) => {
     }
     
     new PaginationSystem(pageOption);
-})();
+
+    /**
+     * *********************************************
+     *                SEARCHING
+     * *********************************************
+     */
+
+    const kategori = [...await getCategory()].map(x => ({ id: x.id, text: x.category_name }));
+
+    $('select[name="filter[category]"]').select2({
+        theme: "bootstrap-5",
+        data: kategori,
+        placeholder: 'Pilih Kategori',
+        allowClear: false
+    });
+
+    $('select[name="filter[category]"]').val(null).trigger('change');
+
+    frmSearch.addEventListener('submit', async e => await searchBooks(e));
+})(jQuery);

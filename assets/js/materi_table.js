@@ -299,7 +299,7 @@ const filter = async e => {
     }
 }
 
-(async ($) => {
+(async ($, table) => {
 
     const materi = [...(await getSubject()).data].map(x => ({ id: x.id_mapel, text: x.nama_mapel }));
     const kelas = [...(await getSubject()).data].map(x => ({ id: x.id_kelas, text: x.nama_kelas }));
@@ -347,10 +347,15 @@ const filter = async e => {
         data: materi,
         placeholder: 'Pilih Mapel',
         allowClear: true
+    })
+    .on('select2:clear', e => {
+        table.columns(0).search('').draw();
     });
 
     $('#select-mapel').val(null).trigger('change');
 
     frmFilter.addEventListener('submit', async e => await filter(e));
-})(jQuery);
+
+    
+})(jQuery, table);
 
