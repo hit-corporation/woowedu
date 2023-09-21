@@ -101,32 +101,8 @@ const getCategory = async () => {
     }
 }
 
-const searchBooks = async e => {
-    e.preventDefault();
-    try 
-    {
-        const adminUri = new URL(ADMIN_URL + 'kategori/get_all');
-        const entries = new FormData(e.target).entries();
-        const obj = Object.fromEntries(entries);
 
-        const f = await fetch(adminUri.href, {
-            method: 'GET',
-            headers: {
-                'Content-Type':'application/x-www-form-urlencoded'
-            }
-        });
-
-        const ent = await f.json();
-        console.log(ent);
-    } 
-    catch (err) 
-    {
-        console.log(err);
-    }
-}
-
-
-(/**
+/**
  * 
 
  * @date 9/21/2023 - 9:55:55 AM
@@ -135,7 +111,7 @@ const searchBooks = async e => {
  * @param {*} $
  * @returns {*}
  */
-async ($) => {
+(async ($) => {
     
     const pageOption = {
         url: new URL("ebook/list", BASE_URL).href,
@@ -172,7 +148,7 @@ async ($) => {
         pagingContainer: paginationContainer
     }
     
-    new PaginationSystem(pageOption);
+    const paging = new PaginationSystem(pageOption);
 
     /**
      * *********************************************
@@ -180,7 +156,7 @@ async ($) => {
      * *********************************************
      */
 
-    const kategori = [...await getCategory()].map(x => ({ id: x.id, text: x.category_name }));
+    const kategori = [...await getCategory()].map(x => ({ id: x.category_code, text: x.category_name }));
 
     $('select[name="filter[category]"]').select2({
         theme: "bootstrap-5",
@@ -191,7 +167,21 @@ async ($) => {
 
     $('select[name="filter[category]"]').val(null).trigger('change');
 
-    frmSearch.addEventListener('submit', async e => await searchBooks(e));
+    frmSearch.addEventListener('submit', async e => {
+        e.preventDefault();
+
+        const entries = new FormData(e.target).entries();
+        const obj = Object.fromEntries(entries);
+
+        await paging.filterData(obj);
+    });
+
+    frmSearch.addEventListener('reset', async e => {
+        frmSearch.reset();
+        $('select[name="filter[category]"]').val(null).trigger('change');
+        await paging.restoreData();
+    });
+
 })(jQuery);
 
 
