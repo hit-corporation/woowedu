@@ -21,6 +21,38 @@ class Model_ebook extends CI_Model {
                         a.category_id::text=b.category_code AND
                         a.publisher_id=c.id";
         
+        if(!empty($filter['title']))
+        {
+            $query .= " AND LOWER(a.title) LIKE ?";
+            $param[] = '%'.strtolower(trim($filter['title'])).'%';
+        }
+
+        if(!empty($filter['category']))
+        {
+            $query .= " AND b.category_code=?";
+            $param[] = $filter['category'];
+        }
+            
+
+        if(!empty($limit) && !is_null($offset))
+            $query .= " LIMIT {$limit} OFFSET {$offset}";
+
+        $get = $this->db->query($query, $param);
+        return $get->result_array() ?? [];
+    }
+
+    /**
+     * Count All List 
+     *
+     * @return void
+     */
+    public function count_list(array $filter = NULL): int {
+        $param = [];
+        $query = "SELECT a.*, b.category_name FROM ebooks a, categories b, publishers c 
+                  WHERE 
+                        a.category_id::text=b.category_code AND
+                        a.publisher_id=c.id";
+        
         if(!empty($param['title']))
         {
             $query .= " AND a.title LIKE ?";
@@ -32,13 +64,9 @@ class Model_ebook extends CI_Model {
             $query .= " AND a.category_id=?";
             $param[] = $filter['category'];
         }
-            
-
-        if(!empty($limit) && !is_null($offset))
-            $query .= " LIMIT {$limit} OFFSET {$offset}";
 
         $get = $this->db->query($query, $param);
-        return $get->result_array() ?? [];
+        return $get->num_rows() ?? 0;
     }
 
     /**
