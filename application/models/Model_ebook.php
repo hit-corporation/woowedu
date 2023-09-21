@@ -15,16 +15,29 @@ class Model_ebook extends CI_Model {
      * @return array
      */
     public function list(int $limit = NULL, int $offset = NULL, array $filter = NULL): array {
-
+        $param = [];
         $query = "SELECT a.*, b.category_name FROM ebooks a, categories b, publishers c 
                   WHERE 
                         a.category_id::text=b.category_code AND
                         a.publisher_id=c.id";
+        
+        if(!empty($param['title']))
+        {
+            $query .= " AND a.title LIKE ?";
+            $param[] = '%'.$filter['title'].'%';
+        }
+
+        if(!empty($filter['category']))
+        {
+            $query .= " AND a.category_id=?";
+            $param[] = $filter['category'];
+        }
+            
 
         if(!empty($limit) && !is_null($offset))
             $query .= " LIMIT {$limit} OFFSET {$offset}";
 
-        $get = $this->db->query($query);
+        $get = $this->db->query($query, $param);
         return $get->result_array() ?? [];
     }
 
