@@ -90,7 +90,15 @@ class Sesi extends CI_Controller {
 				
 		if( isset($post['title'])){
 			$teacher_id =  $this->session->userdata['teacher_id'];
-			$data_save = ['sesi_title'=>$post['title'], 'sesi_date'=>$post['tanggal'], 'sesi_jam_start'=>$post['jamstart'], 'sesi_jam_end'=>$post['jamend'], 'teacher_id' =>$teacher_id,'sesi_note'=>trim($post['keterangan'])];
+			$data_save = [
+				'sesi_title'	=> $post['title'], 
+				'sesi_date'		=> $post['tanggal'], 
+				'sesi_jam_start'=> $post['jamstart'], 
+				'sesi_jam_end'	=> $post['jamend'],
+				'materi_id'		=> $post['materi_id'],
+				'teacher_id' 	=> $teacher_id,
+				'sesi_note'		=> trim($post['keterangan'])
+			];
 
 			if($post['id'] == ''){
 				$save = $this->db->insert('sesi', $data_save);
