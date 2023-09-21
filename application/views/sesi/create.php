@@ -45,7 +45,8 @@
 	
 				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 					<label for="title" class="form-label">Catatan</label>
-					<textarea rows="5" class="form-control" id="keterangan" name="keterangan"><?=isset($data['sesi_note']) ? $data['sesi_note'] : ''?></textarea> 
+					<!-- <textarea rows="5" class="form-control" id="keterangan" name="keterangan"><?//=isset($data['sesi_note']) ? $data['sesi_note'] : ''?></textarea>  -->
+					<div id="keterangan" class="form-control mb-3"><?=isset($data['sesi_note']) ? $data['sesi_note'] : '' ?></div>
 				</div>
 				
 				<!-- <div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
@@ -79,8 +80,8 @@
 		let tanggal 	= $('#tanggal').val(); 
 		let jamstart 	= $('#jamstart').val(); 
 		let jamend 		= $('#jamend').val(); 
-		let materi_id 	= $('#materi').val(); 
-		let keterangan 	= $('#keterangan').val(); 
+		let materi_id 	= $('#materi').val();
+		let keterangan 	= quill.container.firstChild.innerHTML;
 		let id 			= $('#id').val();
 
 		$.ajax({
