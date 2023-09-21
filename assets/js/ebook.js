@@ -285,4 +285,27 @@ async ($) => {
     }
     
     new PaginationSystem(pageOption);
+<<<<<<< HEAD
+
+    /**
+     * *********************************************
+     *                SEARCHING
+     * *********************************************
+     */
+
+    const kategori = [...await getCategory()].map(x => ({ id: x.id, text: x.category_name }));
+
+    $('select[name="filter[category]"]').select2({
+        theme: "bootstrap-5",
+        data: kategori,
+        placeholder: 'Pilih Kategori',
+        allowClear: false
+    });
+
+    $('select[name="filter[category]"]').val(null).trigger('change');
+
+    frmSearch.addEventListener('submit', async e => await searchBooks(e));
+})(jQuery);
+=======
 })();
+>>>>>>> bd113a06b7b767b4f742586c044e5c067eba590a
