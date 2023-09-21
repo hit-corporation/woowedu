@@ -285,7 +285,6 @@ async ($) => {
     }
     
     new PaginationSystem(pageOption);
-<<<<<<< HEAD
 
     /**
      * *********************************************
@@ -306,6 +305,3 @@ async ($) => {
 
     frmSearch.addEventListener('submit', async e => await searchBooks(e));
 })(jQuery);
-=======
-})();
->>>>>>> bd113a06b7b767b4f742586c044e5c067eba590a
