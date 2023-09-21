@@ -178,6 +178,7 @@ const getCategory = async () => {
 
     frmSearch.addEventListener('reset', async e => {
         frmSearch.reset();
+        $('select[name="filter[category]"]').val(null).trigger('change');
         await paging.restoreData();
     });
 
