@@ -68,6 +68,9 @@ endif
 			$student = ($user_level == 4) ? $this->db->where('nis', $user['username'])->get('student')->row_array() : [];
 			$student_id = ($student) ? $student['student_id'] : '';
 
+			$teacher = ($user_level == 3) ? $this->db->where('nik', $user['username'])->get('teacher')->row_array() : [];
+			$teacher_id = ($teacher) ? $teacher['teacher_id'] : '';
+
             $name = NULL;
             
             switch($user_level)
@@ -151,7 +154,7 @@ endif
 
     
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url()?>materi?mode=table">Mapel</a>
+                                <a class="nav-link" href="<?=base_url()?>materi?mode=table">Materi</a>
                             </li>
 
                             <li class="nav-item">
@@ -161,7 +164,11 @@ endif
 							<!-- JIKA USER LEVEL GURU OR MURID OR WALI MURID -->
 							<?php if($user_level == 3 || $user_level == 4 || $user_level == 5) : ?>
 									<li class="nav-item">
-										<a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/detail/').$student_id ?>">MEMBER AREA</a>
+										<a class="nav-link" href="<?=($user_level == 3) ? base_url('student/') : base_url('student/detail/').$student_id ?>">Ruang Siswa</a>
+										<!-- <a class="nav-link" href="<?//=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/detail/').$student_id ?>">Ruang Siswa</a> -->
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/detail/').$teacher_id : ''?>">Guru</a>
 									</li>
 									<li class="nav-item">
 										<a class="nav-link" href="<?=base_url('task')?>">Tugas</a>

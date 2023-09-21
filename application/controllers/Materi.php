@@ -86,4 +86,10 @@ class Materi extends CI_Controller {
         echo json_encode($resp, JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);
     }
 
+	public function getAllMateri(){
+		$materies = $this->db->join('subject s', 's.subject_id = m.subject_id')->get('materi m')->result_array();
+
+		header('Content-Type: application/json');
+		echo json_encode($materies, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_QUOT);
+	}
 }

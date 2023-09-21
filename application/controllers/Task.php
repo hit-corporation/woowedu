@@ -83,7 +83,7 @@ class Task extends CI_Controller {
 
 		$config['upload_path'] = $dir;
 		$config['allowed_types']        = 'gif|jpg|jpeg|png|pdf|docx|doc|xls|xlsx';
-		$config['max_size']             = 10000;
+		$config['max_size']             = 30000;
 		$config['encrypt_name']         = true;
 
 		$this->load->library('upload', $config);

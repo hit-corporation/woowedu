@@ -8,6 +8,7 @@ class Student extends CI_Controller {
 		parent::__construct();
 		$this->load->library('session');
 		$this->load->model('model_student');
+		$this->load->model('model_sesi');
 		
 		$this->load->library('xlsxwriter');
 		
@@ -189,7 +190,7 @@ class Student extends CI_Controller {
 
 	}
 
-	public function get_history_book(){
+	public function get_history_book($id = ''){
 		$get = $this->input->get();
 		$student 	= $this->db->where('student_id', $get['student_id'])->get('student')->row_array();
 		$user 		= $this->db->where('username', $student['nis'])->get('users')->row_array();
@@ -229,5 +230,46 @@ class Student extends CI_Controller {
 		$res = ['success'=>true, 'data'=>$data];
 		header('Content-Type: application/json');
 		echo json_encode($res);
+	}
+
+	public function sesi_load_data($id = ''){
+		$params['sdate']	= $_GET['start'];
+		$params['edate']	= $_GET['end'];
+
+		$class_id = '';
+
+		// JIKA USER LOGIN SEBAGAI MURID
+		if($this->session->userdata('user_level') == 4){
+			$class_id = $this->session->userdata('class_id');
+			$teachers = $this->db->where('class_id', $class_id)->get('class_teacher')->result_array();
+			$teacher_ids = [];
+			foreach ($teachers as $val) {
+				$teacher_ids[] = $val['teacher_id'];
+			}
+		}else{
+			// JIKA USER LOGIN SEBAGAI GURU
+			$teacher = $this->db->where('nik', $this->session->userdata('username'))->get('teacher')->row();
+			$teacher_ids[] = $teacher->teacher_id;
+		}
+
+		$params['teacher_id'] = $teacher_ids;
+		
+		$sesi = $this->model_sesi->data_sesi_student($params);
+
+		$list = [];
+		foreach($sesi->result() as $data) {
+			$tanggal =  $data->sesi_date;	 
+			$list[] = [
+				'id' 			=> $data->sesi_id,
+				'title' 		=> $data->sesi_title,
+				'teacher' 		=> $data->teacher_name,
+				'subject_name'	=> $data->subject_name,
+				'start' 		=> $data->sesi_date.'T'.$data->sesi_jam_start,
+				'end' 			=> $data->sesi_date.'T'.$data->sesi_jam_end  
+			];
+		}	
+		if($list == null) $list[] = array(0);
+		echo json_encode($list);			
+		exit;
 	}
 }

@@ -46,10 +46,12 @@ class Model_student extends CI_Model {
 	public function get_task($limit = null, $page = null, $student_id){
 		$class_id = $this->get_class($student_id);
 
-		$this->db->select('t.*, m.title');
+		$this->db->select('t.*, m.title, s.subject_name, g.teacher_name, t.score');
 		$this->db->from('task t');
 		$this->db->join('materi m', 'm.materi_id = t.materi_id');
-		$this->db->where('class_id', $class_id);
+		$this->db->join('subject s', 's.subject_id = m.subject_id');
+		$this->db->join('teacher g', 'g.teacher_id = t.teacher_id');
+		$this->db->where('t.class_id', $class_id);
 		$this->db->order_by('available_date', 'desc');
 		$this->db->limit($limit, $page);
 		return $this->db->get()->result_array();
@@ -67,10 +69,11 @@ class Model_student extends CI_Model {
 
 	public function get_exam($limit = null, $page = null, $student_id){
 		$class_id = $this->get_class($student_id);
-		$this->db->select('e.*, s.subject_name, ec.category_name');
+		$this->db->select('e.*, s.subject_name, ec.category_name, t.teacher_name');
 		$this->db->from('exam e');
 		$this->db->join('subject s', 's.subject_id = e.subject_id');
 		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
+		$this->db->join('teacher t', 't.teacher_id = e.teacher_id', 'left');
 		$this->db->where('e.class_id', $class_id);
 		$this->db->order_by('start_date', 'desc');
 		$this->db->limit($limit, $page);
@@ -118,11 +121,12 @@ class Model_student extends CI_Model {
 	}
 
 	public function get_history_book($limit = null, $page = null, $filter){
-		$this->db->select('book_id, max(start_time), book_code, title, cover_img, author, publish_year, description');
+		$this->db->select('book_id, max(start_time), book_code, title, cover_img, author, publish_year, description, c.category_name');
 		$this->db->from('read_log');
 		$this->db->join('ebooks', 'ebooks.id = read_log.book_id');
+		$this->db->join('categories c', 'c.id = CAST(ebooks.category_id AS INTEGER)', 'left');
 		$this->db->where('member_id', $filter['user_id']);
-		$this->db->group_by('book_id, book_code, title, cover_img, author, publish_year, description');
+		$this->db->group_by('book_id, book_code, title, cover_img, author, publish_year, description, c.category_name');
 		$this->db->limit($limit, $page);
 		return $this->db->get()->result_array();
 	}

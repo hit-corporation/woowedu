@@ -37,7 +37,15 @@ class Sesi extends CI_Controller {
 	
 	public function sesidetail($id)
 	{
+		$user_level = $this->session->userdata('user_level');
 		$data = $this->db->where('sesi_id', $id)->get('sesi')->row_array();
+
+		$button = '';
+		if($user_level == 3){
+			$button = '<a href="sesi/create/'.$id.'" class="btn btn-clear border d-inline me-1 rounded-5"><i class="bi bi-pencil-square"></i></a>
+						<a class="btn btn-clear border d-inline rounded-5" onclick="deleteSesi('.$id.')"><i class="bi bi-trash3-fill"></i></a>';
+		}
+
 		$html = '<div class="container border rounded-4 bg-clear p-3 mb-3 news-item">
 							<div class="d-flex justify-content-between">
 								<h6 class="mb-2">'.$data['sesi_title'].'</h6>
@@ -48,8 +56,7 @@ class Sesi extends CI_Controller {
 							</div>							
 							<p style="font-size: 14px;">'.$data['sesi_note'].'</p>
 							<div class="container d-flex justify-content-end">
-							<a href="sesi/create/'.$id.'" class="btn btn-clear border d-inline me-1 rounded-5"><i class="bi bi-pencil-square"></i></a>
-							<a class="btn btn-clear border d-inline rounded-5" onclick="deleteSesi('.$id.')"><i class="bi bi-trash3-fill"></i></a>
+								'.$button.'
 							</div>
 						</div>';
 		echo $html;
@@ -83,7 +90,15 @@ class Sesi extends CI_Controller {
 				
 		if( isset($post['title'])){
 			$teacher_id =  $this->session->userdata['teacher_id'];
-			$data_save = ['sesi_title'=>$post['title'], 'sesi_date'=>$post['tanggal'], 'sesi_jam_start'=>$post['jamstart'], 'sesi_jam_end'=>$post['jamend'], 'teacher_id' =>$teacher_id,'sesi_note'=>trim($post['keterangan'])];
+			$data_save = [
+				'sesi_title'	=> $post['title'], 
+				'sesi_date'		=> $post['tanggal'], 
+				'sesi_jam_start'=> $post['jamstart'], 
+				'sesi_jam_end'	=> $post['jamend'],
+				'materi_id'		=> $post['materi_id'],
+				'teacher_id' 	=> $teacher_id,
+				'sesi_note'		=> trim($post['keterangan'])
+			];
 
 			if($post['id'] == ''){
 				$save = $this->db->insert('sesi', $data_save);

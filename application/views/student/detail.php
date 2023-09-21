@@ -80,6 +80,7 @@
 					<button class="nav-link active" id="nav-tugas-tab" data-bs-toggle="tab" data-bs-target="#nav-tugas" type="button" role="tab" aria-controls="nav-tugas" aria-selected="false">Tugas</button>
 					<button class="nav-link" id="nav-ujian-tab" data-bs-toggle="tab" data-bs-target="#nav-ujian" type="button" role="tab" aria-controls="nav-ujian" aria-selected="false">Ujian</button>
 					<button class="nav-link" id="nav-ebook-tab" data-bs-toggle="tab" data-bs-target="#nav-ebook" type="button" role="tab" aria-controls="nav-ebook" aria-selected="true">Ebook</button>
+					<button class="nav-link" id="nav-sesi-tab" data-bs-toggle="tab" data-bs-target="#nav-sesi" type="button" role="tab" aria-controls="nav-sesi" aria-selected="true">Sesi</button>
 				</div>
 			</nav>
 			<div class="tab-content mb-4" id="nav-tabContent" style="overflow-x: auto;">
@@ -89,12 +90,15 @@
 							<tr>
 								<th>Id</th>
 								<th>Kode</th>
+								<th>Mata Pelajaran</th>
 								<th>Nama Tugas</th>
+								<th>Guru</th>
 								<th>Ditugaskan</th>
 								<th>Batas waktu</th>
 								<th>Tanggal penyerahan</th>
 								<th>File</th>
 								<th>Notes</th>
+								<th>Nilai</th>
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -109,6 +113,7 @@
 								<th>Id</th>
 								<th>Nama Mapel</th>
 								<th>Jenis Tugas</th>
+								<th>Guru</th>
 								<th>Total Nilai</th>
 								<th>Batas Waktu</th>
 								<th>Tanggal Submit</th>
@@ -129,6 +134,7 @@
 									<th>Terakhir dibaca</th>
 									<th>Kode Buku</th>
 									<th>Title</th>
+									<th>Kategori</th>
 									<th>Pengarang</th>
 									<th>Tahun</th>
 									<th>Deskripsi</th>
@@ -137,6 +143,18 @@
 							</thead>
 							<tbody></tbody>
 						</table>
+					</div>
+				</div>
+				
+				<div class="tab-pane fade" id="nav-sesi" role="tabpanel" aria-labelledby="nav-sesi-tab" tabindex="0">
+					<div class="container px-5">
+						<div class="row">
+							
+							<div class="col-8">
+								<div id="calendar" class="col"></div>
+							</div>
+							<div class="col-4" id="sesi_content"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -221,6 +239,7 @@
 <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/node_modules/daterangepicker/daterangepicker.css')?>" />
 
+<script src="<?=base_url('assets/fullcalendar/index.global.js')?>"></script> 
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <script>
@@ -250,6 +269,52 @@
 				getSummary(student_id, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
 			}
 		);
+
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			height:500,
+			headerToolbar: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'listDay,listWeek'
+			},
+
+			// customize the button names,
+			// otherwise they'd all just say "list"
+			views: {
+				listDay: { buttonText: 'list day' },
+				listWeek: { buttonText: 'list week' },
+			},
+
+			initialView: 'listWeek',
+			initialDate: '<?=date('Y-m-d')?>',
+			navLinks: true, // can click day/week names to navigate views
+			editable: true,
+			dayMaxEvents: true, // allow "more" link when too many events
+			events: {
+					url: '<?php echo base_url(); ?>student/sesi_load_data',
+					error: function() {
+						$('#script-warning').show();
+					}
+				},
+			eventDidMount: function(info) {
+					let title = info.el.children[2].innerText;
+					let teacher = info.event._def.extendedProps.teacher;
+					let subject_name = info.event._def.extendedProps.subject_name;
+					info.el.children[2].innerHTML = (`<p class="fs-14">${title}</p>
+						<p class="text-success fw-bold fs-14">Guru: ${teacher}</p>
+						<span>Mata Pelajaran: <span style="background-color: #3989d9; color: white; padding-left: 5px; padding-right: 5px; border-radius: 10px; box-shadow: 3px 3px 5px lightblue;">${subject_name}</span></span>`);
+				},
+			eventClick: function(info) {
+					var eventObj = info.event;
+					$('#sesi_content').load('<?php echo base_url(); ?>sesi/sesidetail/'+eventObj.id);
+				},
+			loading: function(bool) {
+					$('#loading').toggle(bool);
+				}
+		});
+
+		calendar.render();
 	});
 
 	// FUNGSI UNTUK UBAH DATA CONTENT SUMMARY
@@ -272,7 +337,6 @@
 
 	// INISIALISASI TABLE TUGAS
 	var tableTask = $('#tableTask').DataTable({
-			// destroy: true,
 			serverSide: true,
 			ajax: {
 				url: BASE_URL + 'student/get_task',
@@ -294,7 +358,13 @@
 					data: 'code',
 				},
 				{
+					data: 'subject_name',
+				},
+				{
 					data: 'title',
+				},
+				{
+					data: 'teacher_name',
 				},
 				{
 					data: 'available_date',
@@ -327,6 +397,13 @@
 					class: 'text-center',
 					render(data, row, type, meta){
 						return (data) ? data.substring(0, 100) : `-`;
+					}
+				},
+				{
+					data: 'score',
+					class: 'text-center',
+					render(data, row, type, meta){
+						return `<b>${(data) ? data : '-'}</b>`;
 					}
 				},
 				{
@@ -373,6 +450,9 @@
 			},
 			{
 				data: 'category_name',
+			},
+			{
+				data: 'teacher_name',
 			},
 			{
 				data: 'exam_total_nilai',
@@ -445,6 +525,9 @@
 			},
 			{
 				data: 'title'
+			},
+			{
+				data: 'category_name'
 			},
 			{
 				data: 'author'
