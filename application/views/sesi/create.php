@@ -45,7 +45,7 @@
 	
 				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
 					<label for="title" class="form-label">Catatan</label>
-					<textarea class="form-control" id="keterangan" name="keterangan"><?=isset($data['sesi_note']) ? $data['sesi_note'] : ''?></textarea> 
+					<textarea rows="5" class="form-control" id="keterangan" name="keterangan"><?=isset($data['sesi_note']) ? $data['sesi_note'] : ''?></textarea> 
 				</div>
 				
 				<!-- <div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
@@ -133,8 +133,13 @@
 		data: {},
 		dataType: "JSON",
 		success: function (response) {
+			let materi_id = <?=isset($data['materi_id']) ? $data['materi_id'] : 0 ?>;
 			$.each(response, function (i, val) { 
-				$('#materi').append(`<option value="${val.materi_id}">${val.subject_name} - ${val.title}</option>`);
+				if(materi_id == val.materi_id){
+					$('#materi').append(`<option value="${val.materi_id}" selected>${val.subject_name} - ${val.title}</option>`);
+				}else{
+					$('#materi').append(`<option value="${val.materi_id}">${val.subject_name} - ${val.title}</option>`);
+				}
 			});
 		}
 	});
