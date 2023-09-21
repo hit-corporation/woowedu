@@ -46,7 +46,6 @@ const table = $('#tbl-materi').DataTable({
             render(data, row, type, meta) {
                 var view = '<div class="btn-group btn-group-sm float-right">'+
                                 '<button class="btn bg-purple text-white view_materi"><i class="bi bi-eye font-size-12"></i></button>' +
-                                '<button class="btn bg-orange text-white upload_soal"><i class="bi bi-upload font-size-12"></i></button>' +
                                 '<button class="btn btn-success edit_materi"><i class="bi bi-pen text-white font-size-12"></i></button>' +
                                 '<button class="btn btn-sm btn-danger delete_materi"><i class="bi bi-trash-fill text-white font-size-12"></i></button>' +
                             '</div>';
