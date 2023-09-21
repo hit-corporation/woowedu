@@ -3,6 +3,8 @@ import PaginationSystem from '../node_modules/pagination-system/dist/pagination-
 
 const grid = document.querySelector('#grid');
 const paginationContainer = document.querySelector('.pagination');
+const $ = jQuery;
+const frmSearch = document.forms['frm-search'];
 
 /**
  * @descsription add new grid for a book for list
@@ -79,6 +81,119 @@ const getBooks = async (page, count) => {
         console.error(err);
     }
 }
+
+
+/**
+ * Description placeholder
+ * @date 9/21/2023 - 2:45:56 PM
+ *
+ * @async
+ * @returns {unknown}
+ */
+const getCategory = async () => {
+    try {
+        const adminUri = ADMIN_URL + 'kategori/get_all';
+        const f = await fetch(adminUri);
+
+        return await f.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const searchBooks = async e => {
+    e.preventDefault();
+    try 
+    {
+        const adminUri = new URL(ADMIN_URL + 'kategori/get_all');
+        const entries = new FormData(e.target).entries();
+        const obj = Object.fromEntries(entries);
+
+        const f = await fetch(adminUri.href, {
+            method: 'GET',
+            headers: {
+                'Content-Type':'application/x-www-form-urlencoded'
+            }
+        });
+
+        const ent = await f.json();
+        console.log(ent);
+    } 
+    catch (err) 
+    {
+        console.log(err);
+    }
+}
+
+
+(/**
+ * 
+
+ * @date 9/21/2023 - 9:55:55 AM
+ *
+ * @async
+ * @param {*} $
+ * @returns {*}
+ */
+async ($) => {
+    
+    const pageOption = {
+        url: new URL("ebook/list", BASE_URL).href,
+        urlParams: {
+            limit: 'count',
+            pageNumber: 'page'
+        },
+        dataContainer: grid,
+        dataRenderFn: item => item.data.map(e => { 
+            const imgWidth = 78 * 1.5;
+            const imgHeight = 105 * 1.5;
+            const url = window.location.href + '/detail/' + e.id;
+            const img = (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
+    
+            return `<div class="col-4 p-2">
+                <a class="card ebook-card flex-row flex-nowrap justify-content-around border-0 shadow-sm" href="${ url }"
+                    onmouseover="this.classList.remove('shadow-sm'); this.classList.add('shadow')"
+                    onmouseout="this.classList.remove('shadow'); this.classList.add('shadow-sm')"
+                    style="height: 223px"
+                >
+                    <img width="${imgWidth}" 
+                         height="${imgHeight}" 
+                         src="${ e.cover_img }"
+                         class="ms-2 my-2" 
+                         onerror="this.src = 'assets/images/ebooks/cover/default.png';"/>
+                    <div class="card-body flex-grow-1">
+                        <p class="title p-0">${e.title}</p>
+                        <p class="fs-14 py-2">${e.category_name}</p>
+                    </div>
+                </a>
+            </div>
+        `}).join(''),
+        perPage: 9,
+        pagingContainer: paginationContainer
+    }
+    
+    new PaginationSystem(pageOption);
+
+    /**
+     * *********************************************
+     *                SEARCHING
+     * *********************************************
+     */
+
+    const kategori = [...await getCategory()].map(x => ({ id: x.id, text: x.category_name }));
+
+    $('select[name="filter[category]"]').select2({
+        theme: "bootstrap-5",
+        data: kategori,
+        placeholder: 'Pilih Kategori',
+        allowClear: false
+    });
+
+    $('select[name="filter[category]"]').val(null).trigger('change');
+
+    frmSearch.addEventListener('submit', async e => await searchBooks(e));
+})(jQuery);
+
 
 
 
@@ -199,43 +314,3 @@ const getBooks = async (page, count) => {
 
 //     await viewBookList(currentPage, limit);
 // }
-
-(async () => {
-    
-    const pageOption = {
-        url: new URL("ebook/list", BASE_URL).href,
-        urlParams: {
-            limit: 'count',
-            pageNumber: 'page'
-        },
-        dataContainer: grid,
-        dataRenderFn: item => item.data.map(e => { 
-            const imgWidth = 78 * 1.5;
-            const imgHeight = 105 * 1.5;
-            const url = window.location.href + '/detail/' + e.id;
-            const img = (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
-    
-            return `<div class="col-4 p-2">
-                <a class="card ebook-card flex-row flex-nowrap justify-content-around border-0 shadow-sm" href="${ url }"
-                    onmouseover="this.classList.remove('shadow-sm'); this.classList.add('shadow')"
-                    onmouseout="this.classList.remove('shadow'); this.classList.add('shadow-sm')"
-                    style="height: 223px"
-                >
-                    <img width="${imgWidth}" 
-                         height="${imgHeight}" 
-                         src="${ e.cover_img }"
-                         class="ms-2 my-2" 
-                         onerror="this.src = 'assets/images/ebooks/cover/default.png';"/>
-                    <div class="card-body flex-grow-1">
-                        <p class="title p-0">${e.title}</p>
-                        <p class="fs-14 py-2">${e.category_name}</p>
-                    </div>
-                </a>
-            </div>
-        `}).join(''),
-        perPage: 9,
-        pagingContainer: paginationContainer
-    }
-    
-    new PaginationSystem(pageOption);
-})();

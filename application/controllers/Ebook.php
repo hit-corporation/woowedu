@@ -56,10 +56,11 @@ class Ebook extends CI_Controller {
 
 		$limit  = $this->input->get('count');
 		$page 	= $this->input->get('page');
+		$filter = $this->input->get('filter');
 		$total	= $this->db->count_all_results('ebooks');
 		$offset = ($page - 1) * ($limit + 1); 
 		
-		$data = $this->model_ebook->list($limit, $offset);
+		$data = $this->model_ebook->list($limit, $offset, $filter);
 
 		$json = [
 			'data' 		=> $data,

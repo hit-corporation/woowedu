@@ -8,9 +8,22 @@
 	<h4>Ebook</h4>
 
 	<!-- section search -->
-	<div class="row mt-4">
-		
-	</div>
+	<form class="row mt-4 align-items-end" name="frm-search">
+		<div class="col-4">
+			<label>Judul</label>
+			<input type="text" class="form-control form-control-sm" name="filter[title]" placeholder="Ketik nama atau sebagian nama yang di cari"/>
+		</div>	
+		<div class="col-4">
+			<label>Kategori</label>
+			<select class="form-select form-select-sm" name="filter[category]"></select>
+		</div>	
+		<div class="col-4">
+			<div class="btn-group btn-group-sm">
+				<button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-search text-white"></i></button>
+				<button type="reset" class="btn btn-sm btn-danger"><i class="bi bi-x text-white"></i></button>
+			</div>
+		</div>	
+	</form>
 
 	<!-- content -->
 	<div class="row mt-4" id="content">

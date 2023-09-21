@@ -9,6 +9,7 @@ endif
         <base href="<?=base_url()?>" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="admin_url" content="<?=html_escape($this->config->item('admin_url'))?>">
 
         <meta name="description" content="">
         <meta name="author" content="">
