@@ -14,21 +14,22 @@
 	<div class="container">
 		<div class="row">
 			<!-- profile content -->
-			<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-3">
-				<div class="card border rounded p-3 h-100">
-					<div class="image-content">
+			<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-1" style="height: 450px;">
+				<div class="card border rounded-4 p-3 h-100">
+					<div class="image-content text-center mt-3">
 						<span>
-							<img src="<?=base_url('assets/images/users/').$detail['photo']?>" alt="" width="50">
+							<img src="<?=base_url('assets/images/users/').$detail['photo']?>" alt="" width="100">
 						</span>
-						<span><?=$detail['student_name']?></span>
+						<p class="mt-2"><?=$detail['student_name']?></p>
 					</div>
 
-					<div class="wali mt-3 mb-3">
+					<div class="wali mt-2 mb-2">
 						<span class="fw-bold fs-6 d-block">Wali</span>
 						<span class="fs-6 d-block"><?=$detail['parent_name']?></span>
 					</div>
 
-					<div class="mt-3">
+					<div class="mt-2">
+						<p class="fs-6"><i class="bi bi-book"> </i><?=$detail['class_name']?></p>
 						<p class="fs-6"><i class="bi bi-envelope-paper"> </i><?=$detail['email']?></p>
 						<p class="fs-6"><i class="bi bi-bank"> </i><?=$detail['nama_sekolah']?></p>
 					</div>
@@ -36,8 +37,8 @@
 			</div>
 
 			<!-- skor by date range content -->
-			<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-3 h-100">
-				<div class="card border rounded p-3 data-by-date h-100">
+			<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-1" style="height: 450px;">
+				<div class="card border rounded-4 p-3 data-by-date h-100">
 					<input class="border-width-1 rounded-lg ml-3"  style="height: 40px; text-align:center; border-color: rgba(0, 0, 255, 0.3);" type="text" name="daterange" 
 						value="<?php 
 						if(isset($start)){ 
