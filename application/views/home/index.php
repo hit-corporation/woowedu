@@ -19,13 +19,13 @@
 				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 p-2 text-center">
 					<div class="container border rounded shadow-sm p-3">
 						<span class="mb-2">Murid perkelas</span>
-						<canvas id="muridPerKelas"></canvas>
+						<canvas id="muridPerKelas" style="height: 350px;"></canvas>
 					</div>
 				</div>
 				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 p-2 text-center">
 					<div class="container border rounded shadow-sm p-3">
 						<span class="mb-2">Guru</span>
-						<div id="guruChart"></div>
+						<div id="guruChart" style="height: 350px;"></div>
 					</div>
 				</div>
 
@@ -33,7 +33,7 @@
 				<div class="col-12 p-2 text-center d-none">
 					<div class="container border rounded shadow-sm p-3">
 						<span class="mb-2">Total Login bulanan</span>
-						<div id="loginBulananChart"></div>
+						<div id="loginBulananChart" style="height: 350px;"></div>
 					</div>
 				</div>
 			</div>
