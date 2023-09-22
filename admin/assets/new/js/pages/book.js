@@ -42,7 +42,7 @@ const getBooks = async () => {
 
     try
     {
-        const f = await fetch(`${BASE_URL}/admin/book/get_all`);
+        const f = await fetch(`${BASE_URL}/book/get_all`);
         const j = await f.json();
 
         return j;
@@ -262,7 +262,7 @@ const getBooks = async () => {
     // add data
     document.getElementById('btn-add').addEventListener('click', e => {
          // reset form
-         form.action = BASE_URL + 'admin/book/store';
+         form.action = BASE_URL + 'book/store';
          resetForm();
     });
 
@@ -271,7 +271,7 @@ const getBooks = async () => {
         var row = table.row(e.target.parentNode.closest('tr')).data();
 
         // reset form
-        form.action = BASE_URL + 'admin/book/edit';
+        form.action = BASE_URL + 'book/edit';
         resetForm();
 
         form['book-id'].value = row.id;
