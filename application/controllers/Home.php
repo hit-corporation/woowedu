@@ -179,7 +179,7 @@ class Home extends CI_Controller {
 					'seen' 		=> false,
 					'user_id' 	=> $session['userid'],
 					'created_at' => $sesi['sesi_date'].' '.$sesi['sesi_jam_start'],
-					'link'		=> 'sesi/create/'.$sesi['sesi_id'],
+					'link'		=> 'sesi/detail/'.$sesi['sesi_id'],
 					'sesi_id'	=> $sesi['sesi_id']
 				];
 				$this->db->insert('notif', $data);
