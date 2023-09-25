@@ -61,3 +61,15 @@ const table = $('#tbl-parent').DataTable({
                     + '</div>',
     }
 });
+
+//select_all
+$('#select_all').on('click', e => {
+    if(e.target.checked)
+        table.rows().select();
+    else
+        table.rows().deselect();
+});
+
+$('#btn-refresh').on('click', e => {
+    table.ajax.reload();
+});

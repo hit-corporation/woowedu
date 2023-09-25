@@ -109,3 +109,77 @@ a.close_corner_top_left {
 		</div>
 	</div>
 </div>
+
+
+<!-- Modal add -->
+<section class="modal fade" tabindex="-1" id="modal-add">
+  <div class="modal-dialog">
+    <div class="modal-content border-0">
+      <div class="modal-header bg-success">
+        <h5 class="modal-title text-capitalize text-light text-shadow">Tambah Data Wali Murid</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="false">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="form-add" id="form-add" class="d-flex flex-column">
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <label class="m-0">Username <span class="text-danger"><strong>*</strong></span></label>
+                </div>
+                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_parent_name" /></div>
+            </div>
+            <div class="row align-items-center mt-2">
+                <div class="col-4">
+                    <label class="m-0">Nama Panjang <span class="text-danger"><strong>*</strong></span></label>
+                </div>
+                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_full_name" /></div>
+            </div>
+            <div class="row align-items-center mt-2">
+                <div class="col-4">
+                    <label class="m-0">Kelas <span class="text-danger"><strong>*</strong></span></label>
+                </div>
+                <div class="col-8">
+                    <select  class="form-control form-control-sm" name="a_class">
+                        <option>==Pilih Kelas==</option>
+                        <?php foreach($data_class as $rec){ ?>
+                        <option value="<?php echo $rec['class_id']; ?>"><?php echo $rec['class_name']; ?></option>
+                        <?php } ?>
+                    </select> 
+                </div>
+            </div>						
+            <div class="row align-items-center mt-2">
+                <div class="col-4">
+                    <label class="m-0">Alamat <span class="text-danger"> </span></label>
+                </div>
+                <div class="col-8"> 
+                    <textarea cols="20" class="form-control form-control-sm" name="a_address" rows="4" ></textarea>
+                </div>
+            </div>						
+												
+            <div class="row align-items-center mt-2">
+                <div class="col-4">
+                    <label class="m-0">Phone <span class="text-danger"> </span></label>
+                </div>
+                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_phone" /></div>
+            </div>						
+            <div class="row align-items-center mt-2">
+                <div class="col-4">
+                    <label class="m-0">Email <span class="text-danger"> </span></label>
+                </div>
+                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_email" /></div>
+            </div>						
+
+            <input type="hidden" name="a_parent_id" />
+            <input type="hidden" name="xsrf" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="save-student">Simpan</button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end modal add-->
+
