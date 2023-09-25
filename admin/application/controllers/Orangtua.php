@@ -1,0 +1,47 @@
+<?php
+
+class Orangtua extends MY_Controller {
+
+    public function __construct() {
+        parent::__construct();
+
+		check_loggin();
+		$this->load->model(['model_common', 'model_parent']); 
+		$this->load->helper('url');
+		$this->load->helper('slug');
+		$this->load->helper('assets');	
+		$lang = ($this->session->userdata('lang')) ? $this->session->userdata('lang') : config_item('language');
+		$this->lang->load('message', $lang);
+		$this->load->library('csrfsimple');
+    }
+
+    public function index() {
+        $data['pageTitle']	= 'Data Orang Tua';
+		$data['tableName']	= 'Parents';
+		$data['csrf_token']	= $this->csrfsimple->genToken();
+		$data['page_js']	= [  
+			['path' => 'assets/new/js/pages/_parent.js', 'defer' => true],
+		]; 
+ 
+		$this->template->load('template', 'parent/index', $data);
+    }
+
+    public function list() {
+        $draw = $this->input->get('draw');
+        $limit = $this->input->get('length');
+        $offset = $this->input->get('start');
+        $filters = $this->input->get('columns');
+        $data = $this->model_parent->get_all($limit, $offset, $filters);
+        $count = $this->model_parent->count_all($filters);
+
+        $json = [
+            'draw' => $draw,
+            'data' => $data, 
+            'recordsTotal' => $this->db->count_all_results('parent'),
+            'recordsFiltered' => $count
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($json, SON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    }
+}
