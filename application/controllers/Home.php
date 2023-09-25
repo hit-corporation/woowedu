@@ -14,7 +14,7 @@ class Home extends CI_Controller {
 
 		if (!isset($_SESSION['username'])) redirect('auth/login');
 
-		$this->sync_notif();
+		// $this->sync_notif();
 	}
 
 	public function index()

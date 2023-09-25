@@ -119,18 +119,30 @@
 		});
 
 		// CHANGE BADGE TOTAL TOTIF
-		$.ajax({
-			type: "GET",
-			url: BASE_URL+"home/notif",
-			dataType: "JSON",
-			success: function (response) {
-				if(response.success == true){
-					$('.notif-number').html(response.total);
+		const badgeTotalNotif = function(){
+			$.ajax({
+				type: "GET",
+				url: BASE_URL+"home/notif",
+				dataType: "JSON",
+				success: function (response) {
+					if(response.success == true){
+						$('.notif-number').html(response.total);
+					}
 				}
-			}
-		});
+			});
+		}
 
-		
+		badgeTotalNotif();
+
+		setInterval(function(){
+			$.ajax({
+				type: "GET",
+				url: BASE_URL+"home/sync_notif",
+				success: function (response) {
+					badgeTotalNotif();
+				}
+			});
+		}, 30000);
   
   })(window.jQuery);
 
@@ -150,3 +162,5 @@
 			}
 		});
 	}
+
+	
