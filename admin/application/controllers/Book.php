@@ -178,7 +178,7 @@ class Book extends MY_Controller
 			'qty'			=> $qty
 		];
 
-		if(!$this->db->insert('books', $data))
+		if(!$this->db->insert('ebook', $data))
 		{
 			$resp = ['success' => false, 'message' => 'Data gagal di simpan', 'old' => $_POST];
 			$this->session->set_flashdata('error', $resp);
@@ -284,7 +284,7 @@ class Book extends MY_Controller
 			'qty'			=> $qty
 		];
 
-		if(!$this->db->update('books', $data, ['id' => $id]))
+		if(!$this->db->update('ebooks', $data, ['id' => $id]))
 		{
 			$resp = ['success' => false, 'message' => 'Data gagal di ubah', 'old' => $_POST];
 			$this->session->set_flashdata('error', $resp);
@@ -305,7 +305,7 @@ class Book extends MY_Controller
 	 */
 	public function erase($id): void
 	{
-		if(!$this->db->update('books', ['deleted_at' => date('Y-m-d H:i:s')], ['id' => $id]))
+		if(!$this->db->update('ebooks', ['deleted_at' => date('Y-m-d H:i:s')], ['id' => $id]))
         {
             $return = ['success' => false, 'message' =>  'Data Gagal Di Hapus'];
             $this->session->set_flashdata('error', $return);
@@ -343,7 +343,7 @@ class Book extends MY_Controller
 	  */
 	public function is_new_book_unique($str, $args2): bool
 	{
-		return $this->db->get_where('books', ['title' => $str, 'category_id' => $args2, 'deleted_at' => NULL])->num_rows() > 0 ? FALSE : TRUE;
+		return $this->db->get_where('ebooks', ['title' => $str, 'category_id' => $args2, 'deleted_at' => NULL])->num_rows() > 0 ? FALSE : TRUE;
 	}
 
 	/**
@@ -357,11 +357,11 @@ class Book extends MY_Controller
 	{
 		$args = explode('.', $args2);
 
-		$this->db->where('books.id <> '.$args[1])
+		$this->db->where('ebooks.id <> '.$args[1])
 				 ->where('title', $str)
 				 ->where('category_id', $args[0])
 				 ->where('deleted_at', NULL);
-		$check = $this->db->get('books');
+		$check = $this->db->get('ebooks');
 		return $check->num_rows() > 0 ? FALSE : TRUE;
 	}
 
@@ -420,7 +420,7 @@ class Book extends MY_Controller
 			];
 		}
 
-		$this->db->insert_batch('books', $book_data);
+		$this->db->insert_batch('ebooks', $book_data);
 		$resp = ['success' => true, 'message' => 'Data berhasil di simpan'];
 		$this->session->set_flashdata('success', $resp);
 		redirect($_SERVER['HTTP_REFERER']);
@@ -482,10 +482,10 @@ class Book extends MY_Controller
 				'description'	=> $x[10]
 			];
 			
-			if($this->db->get_where('books', ['book_code' => $x[0]])->num_rows() > 0)
-				$this->db->update('books', $ls, ['book_code' => $x[0]]);
+			if($this->db->get_where('ebooks', ['book_code' => $x[0]])->num_rows() > 0)
+				$this->db->update('ebooks', $ls, ['book_code' => $x[0]]);
 			else
-				$this->db->insert('books', $ls);
+				$this->db->insert('ebooks', $ls);
 		}
 		$this->db->trans_complete();
 

@@ -64,7 +64,7 @@ class Student extends CI_Controller {
 	public function detail($id = ''){
 		if(!$id) redirect(base_url('student'));
 
-		$data['detail']	= $this->db->where('student_id', $id)->get('student')->row_array();
+		$data['detail']	= $this->db->where('student_id', $id)->join('kelas', 'kelas.class_id = student.class_id')->get('student')->row_array();
 		$dataUser = $this->db->where('username', $data['detail']['nis'])->get('users')->row_array();
 		$data['detail']['photo'] = ($dataUser) ? $dataUser['photo'] : 'user.png';
 		$data['detail']['parent_name'] = ($data['detail']['parent_id']) ? $this->db->where('parent_id', $data['detail']['parent_id'])->get('parent')->row_array()['name'] : '';

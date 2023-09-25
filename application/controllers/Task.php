@@ -108,12 +108,15 @@ class Task extends CI_Controller {
 				'task_file'		=> $upload_data['file_name'],
 				'task_submit'	=> date('Y-m-d H:i:s',time())
 			];
-			$insert = $this->db->insert('task_student', $data);
-			if($insert){
-				$resp = ['success'=>true, 'message'=>'Data berhasil disimpan'];
+
+			$check_task_answer = $this->db->where('student_id', $student['student_id'])->where('task_id', $post['task_id'])->get('task_student')->row_array();
+			if($check_task_answer){
+				$result = $this->db->where('student_id', $student['student_id'])->where('task_id', $post['task_id'])->update('task_student', $data);
 			}else{
-				$resp = ['success'=>false, 'message'=>'Data gagal disimpan'];
+				$result = $this->db->insert('task_student', $data);
 			}
+			
+			$resp = ($result) ? ['success'=>true, 'message'=>'Data berhasil disimpan'] : ['success'=>false, 'message'=>'Data gagal disimpan'];
 
 			$this->session->set_flashdata('simpan', $resp);
 			redirect(base_url('task/detail/'.$post['task_id']));

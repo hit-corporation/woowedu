@@ -119,5 +119,16 @@ class Sesi extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	
+	public function detail($id = ''){
+		$data['data'] = $this->db->select('s.*, t.teacher_name, su.subject_name')
+			->where('s.sesi_id', $id)
+			->join('teacher t', 't.teacher_id=s.teacher_id', 'left')
+			->join('materi m', 'm.materi_id=s.materi_id', 'left')
+			->join('subject su', 'su.subject_id=m.subject_id', 'left')
+			->get('sesi s')->row_array();
+
+		$this->load->view('header');
+		$this->load->view('sesi/detail', $data);
+		$this->load->view('footer');
+	}	
 }

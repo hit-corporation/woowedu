@@ -44,9 +44,12 @@
 			<h5 class="card-header">Jawaban Tugas</h5>
 			<div class="card-body">
 				<?php if(!empty($task_student)) : ?>
-					<a href="<?=base_url('assets/files/student_task/').$task['class_id'].'/'.$task_student['task_file']?>">Download File</a>
+					<a href="<?=base_url('assets/files/student_task/').$task['class_id'].'/'.$task_student['task_file']?>">
+						<img src="<?=base_url('assets/images/paper.png')?>" alt="" width="150">
+					Download File</a>
 					<br>
-					<embed width="191" height="207" name="plugin" src="<?=base_url('assets/files/student_task/').$task['class_id'].'/'.$task_student['task_file']?>" type="application/pdf">
+					<!-- <embed width="191" height="207" name="plugin" src="<? //=base_url('assets/files/student_task/').$task['class_id'].'/'.$task_student['task_file']?>" type="application/pdf"> -->
+					
 					<br>
 					<p>Tanggal Submit: <?=date('d M Y H:i', strtotime($task_student['task_submit']))?></p>
 					<p>Catatan:</p>
