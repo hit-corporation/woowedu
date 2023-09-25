@@ -2,6 +2,10 @@
 
 class Model_news extends CI_Model {
 
+	public function __construct(){
+        parent::__construct();
+    }
+	
 	public function get_news(){
 		$this->db->limit('3');
 		$this->db->order_by('tanggal', 'desc');
