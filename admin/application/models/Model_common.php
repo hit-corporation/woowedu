@@ -289,7 +289,7 @@ class Model_common extends CI_Model{
 	}
 
 	private function compiledStudentQuery() {
-		$this->db->select('nis,student_id ,student_name ,student.class_id ,class_name,address ,phone ,email ,parent_name ,parent_phone ,parent_email '); 
+		$this->db->select('nis,student_id ,student_name ,student.class_id ,class_name,address ,phone ,email   '); 
 		$this->db->join('kelas','kelas.class_id=student.class_id');
 		$this->db->get_compiled_select('student', FALSE);
 	}   
