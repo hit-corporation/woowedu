@@ -127,7 +127,7 @@ a.close_corner_top_left {
                 <div class="col-4">
                     <label class="m-0">Username <span class="text-danger"><strong>*</strong></span></label>
                 </div>
-                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_parent_name" /></div>
+                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_username" /></div>
             </div>
             <div class="row align-items-center mt-2">
                 <div class="col-4">

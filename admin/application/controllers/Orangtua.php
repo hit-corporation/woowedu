@@ -26,7 +26,12 @@ class Orangtua extends MY_Controller {
 		$this->template->load('template', 'parent/index', $data);
     }
 
-    public function list() {
+    /**
+     * List all parents data
+     *
+     * @return void
+     */
+    public function list(): void {
         $draw = $this->input->get('draw');
         $limit = $this->input->get('length');
         $offset = $this->input->get('start');
@@ -43,5 +48,34 @@ class Orangtua extends MY_Controller {
 
         header('Content-Type: application/json');
         echo json_encode($json, SON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    }
+
+    /**
+     * Store new data in database
+     *
+     * @return void
+     */
+    public function store(): void {
+        $username = $this->input->post('a_username', TRUE);
+        $name = $this->input->post('a_full_name', TRUE);
+        $address = $this->input->post('a_address', TRUE);
+        $phone = $this->input->post('a_phone', TRUE);
+        $email = $this->input->post('a_email', TRUE);
+
+        header('Content-Type: application/json');
+
+        if(empty($username) || empty($name))
+        {
+            http_response_code(422);
+            $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_is_required'), 'token' => $this->csrfsimple->genToken()];
+            echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+            return;
+        }
+
+        http_response_code(200);
+		$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_form_success'), 'token' => $this->csrfsimple->genToken()];
+		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+		exit;
+
     }
 }
