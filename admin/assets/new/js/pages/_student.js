@@ -51,13 +51,7 @@
             data: 'phone'
         }   , {
             data: 'email'
-        }    , {
-            data: 'parent_name'
-        }  , {
-            data: 'parent_phone'
-        }   , {
-            data: 'parent_email'
-        }, {
+        }    ,  {
             data: null,
             render(data, row, type, meta) {
                 var view = '<div class="btn-group btn-group-sm float-right">'+ 
