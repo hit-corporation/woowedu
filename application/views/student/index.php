@@ -1,4 +1,9 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<style>
+	#table-siswa_info{display: none;}
+</style>
 
 <section class="explore-section section-padding" id="section_2">
 	<div class="container">
@@ -57,9 +62,10 @@
 			</div>
 
 			<div class="container mt-3 p-0">
-				<table class="table table-bordered table-hover w-100">
-					<thead class="text-white" style="background-color: #80d0c7;">
+				<table class="table table-striped" id="table-siswa">
+					<thead>
 						<tr>
+							<th>Id</th>
 							<th>Nama Siswa</th>
 							<th>Email</th>
 							<th>Status Terkini</th>
@@ -80,6 +86,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="<?=base_url('assets/js/jquery.redirect.js')?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -99,68 +106,68 @@
 		});
 	});
 
-	var currentPage = 1;
-	load_data(1,10);
+	// var currentPage = 1;
+	// load_data(1,10);
 
 	// KETIKA BUTTON CARI DI KLIK
-	$('#search').on('click', function(e){
-		load_data();
-	});
+	// $('#search').on('click', function(e){
+	// 	load_data();
+	// });
 
 	// create function load data
-	function load_data(page = 1, limit = 10){
-		let kelas = $('select[name="pilih-kelas"]').val();
-		let namaSiswa = $('input[name="nama-siswa"]').val();
+	// function load_data(page = 1, limit = 10){
+	// 	let kelas = $('select[name="pilih-kelas"]').val();
+	// 	let namaSiswa = $('input[name="nama-siswa"]').val();
 
-		$.ajax({
-			type: "GET",
-			url: BASE_URL+"student/search",
-			data: {
-				page: page,
-				limit: limit,
-				filter: {
-					kelas: kelas,
-					namaSiswa: namaSiswa
-				}
-			},
-			success: function (response) {
-				$('.total-data').text(response.total_records + ' Siswa');
+	// 	$.ajax({
+	// 		type: "GET",
+	// 		url: BASE_URL+"student/search",
+	// 		data: {
+	// 			page: page,
+	// 			limit: limit,
+	// 			filter: {
+	// 				kelas: kelas,
+	// 				namaSiswa: namaSiswa
+	// 			}
+	// 		},
+	// 		success: function (response) {
+	// 			$('.total-data').text(response.total_records + ' Siswa');
 
-				$('#table-body-content').html('');
-				$.each(response.students, function (key, value){
-					$('#table-body-content').append(`
-						<tr class="bg-clear">
-							<td>${value.student_name}</td>
-							<td>${(value.email != null) ? value.email : ''}</td>
-							<td>${(value.ta_aktif == 1) ? 'aktif' : 'tidak aktif'}</td>
-							<td class="btn-eye"><a href="${BASE_URL+'student/detail/'+value.student_id}"><i class="bi bi-eye"></i></a></td>
-						</tr>
-					`);
-				});
+	// 			$('#table-body-content').html('');
+	// 			$.each(response.students, function (key, value){
+	// 				$('#table-body-content').append(`
+	// 					<tr class="bg-clear">
+	// 						<td>${value.student_name}</td>
+	// 						<td>${(value.email != null) ? value.email : ''}</td>
+	// 						<td>${(value.ta_aktif == 1) ? 'aktif' : 'tidak aktif'}</td>
+	// 						<td class="btn-eye"><a href="${BASE_URL+'student/detail/'+value.student_id}"><i class="bi bi-eye"></i></a></td>
+	// 					</tr>
+	// 				`);
+	// 			});
 
-				$('.pagination').html('');
-				for(let i = 0; i < response.total_pages; i++){
-					if(currentPage == i+1){
-						$('.pagination').append(`
-							<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
-					}else{
-						$('.pagination').append(`
-							<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
-					}
+	// 			$('.pagination').html('');
+	// 			for(let i = 0; i < response.total_pages; i++){
+	// 				if(currentPage == i+1){
+	// 					$('.pagination').append(`
+	// 						<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
+	// 					`);
+	// 				}else{
+	// 					$('.pagination').append(`
+	// 						<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
+	// 					`);
+	// 				}
 
-				}
-			}
-		});
-	}
+	// 			}
+	// 		}
+	// 	});
+	// }
 
 	// JIKA PAGE NUMBER DI KLIK
-	function page(pageNumber, e){
-		e.preventDefault();
-		currentPage = pageNumber;
-		load_data(pageNumber);
-	}
+	// function page(pageNumber, e){
+	// 	e.preventDefault();
+	// 	currentPage = pageNumber;
+	// 	load_data(pageNumber);
+	// }
 
 	// DOWNLOAD DATA STUDENT
 	$('#download').click(function (e) { 
@@ -226,4 +233,55 @@
 			}
 		}
 	});
+</script>
+
+<script>
+	// ######################################### DATA TABLE SISWA #########################################
+
+	// INISIALISASI TABLE TUGAS
+	var tableSiswa = $('#table-siswa').DataTable({
+		serverSide: true,
+		ajax: {
+			url: BASE_URL + 'student/search',
+			method: 'GET',
+			data: {}
+		},
+		select: {
+			style: 'multi',
+			selector: 'td:first-child'
+		},
+		columns: [
+			{
+				data: 'student_id',
+				visible: false
+			},{
+				data: 'student_name'
+			},{
+				data: 'email'
+			},{
+				data: 'ta_aktif'
+			},{
+				data: null,
+				class: 'text-center',
+				render(data, type, row, meta){
+					return `<a href="${BASE_URL+'student/detail/'+row.student_id}"><i class="bi bi-eye"></i></a>`;
+				}
+			}
+		]
+	});
+
+	/**
+	 * ************************************
+	 *          SEARCH / FILTER
+	 * ************************************
+	 */
+
+	$('#search').on('click', function(){
+		tableSiswa.columns(0).search($('input[name="nama-siswa"]').val()).draw();
+	});
+
+	$('select[name="pilih-kelas"]').on('change', function(e){
+		tableSiswa.columns(1).search(e.currentTarget.value).draw();
+	});
+
 </script>
