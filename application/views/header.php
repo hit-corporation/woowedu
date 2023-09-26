@@ -141,6 +141,7 @@ endif
                                 <a class="nav-link" href="<?=base_url()?>sesi">Sesi</a>
                             </li>
 
+							<!-- JIKA USER LEVEL KEPALA SEKOLAH -->
 							<?php if($user_level == 6) : ?>
 								<li class="nav-item">
 									<a class="nav-link" href="<?=base_url()?>student">Siswa</a>
@@ -151,8 +152,13 @@ endif
 								</li>
 							<?php endif ?>
 
+							<!-- JIKA USER LOGIN GURU -->
+							<?php if($user_level == 3) : ?>
+								<li class="nav-item">
+									<a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/detail/').$teacher_id : ''?>">Guru</a>
+								</li>
+							<?php endif ?>
 
-    
                             <li class="nav-item">
                                 <a class="nav-link" href="<?=base_url()?>materi?mode=table">Materi</a>
                             </li>
@@ -167,9 +173,7 @@ endif
 										<a class="nav-link" href="<?=($user_level == 3) ? base_url('student/') : base_url('student/detail/').$student_id ?>">Ruang Siswa</a>
 										<!-- <a class="nav-link" href="<?//=($user_level == 3) ? base_url('teacher/tasks') : base_url('student/detail/').$student_id ?>">Ruang Siswa</a> -->
 									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="<?=($user_level == 3) ? base_url('teacher/detail/').$teacher_id : ''?>">Guru</a>
-									</li>
+									
 									<li class="nav-item">
 										<a class="nav-link" href="<?=base_url('task')?>">Tugas</a>
 									</li>														

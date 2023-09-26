@@ -5,7 +5,7 @@ class Teacher extends MY_Controller{
 
   public function __construct()
   {
-    parent::__construct();
+    	parent::__construct();
 		check_loggin();
 		$this->load->model('model_common'); 
 		$this->load->helper('url');

@@ -2,6 +2,10 @@
 
 class Model_student extends CI_Model {
 
+	public function __construct(){
+        parent::__construct();
+    }
+
 	public function get_history($limit = null, $page = null, $filter){
 		if(!empty($filter['namaSiswa']))
 			$this->db->where('LOWER(student_name) LIKE \'%'.trim(strtolower($filter['namaSiswa'])).'%\'', NULL, FALSE);

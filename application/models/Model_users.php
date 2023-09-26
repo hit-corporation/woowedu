@@ -3,6 +3,10 @@
 
 	public $table = 'users';
 
+	public function __construct(){
+        parent::__construct();
+    }
+
 	public function get_profile()
 	{
 		if($this->session->userdata('userid') != ''){

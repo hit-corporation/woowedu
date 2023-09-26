@@ -2,6 +2,10 @@
 
 class Model_teacher extends CI_Model {
 
+	public function __construct(){
+        parent::__construct();
+    }
+
 	public function get_teacher_status($status){
 		$this->db->select('COUNT(status)');
 		$this->db->from('teacher t');

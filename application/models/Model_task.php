@@ -2,6 +2,10 @@
 
 class Model_task extends CI_Model {
 
+	public function __construct(){
+        parent::__construct();
+    }
+
 	public function get_tasks($username){
 		$this->db->select('t.*, tc.teacher_name, sj.subject_name');
 		$this->db->from('student s');
