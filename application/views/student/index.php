@@ -259,7 +259,12 @@
 			},{
 				data: 'email'
 			},{
-				data: 'ta_aktif'
+				data: 'ta_aktif',
+				class: 'text-center',
+				render(data, type, row, meta){
+					let status = (data == 1) ? 'Aktif' : 'Tidak Aktif';
+					return status;
+				}
 			},{
 				data: null,
 				class: 'text-center',
