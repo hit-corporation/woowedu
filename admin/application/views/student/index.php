@@ -97,10 +97,7 @@ a.close_corner_top_left {
 								<th>Kelas</th>   
 								<th>Alamat</th>   
 								<th>Phone</th>   
-								<th>Email</th> 								
-								<th>Nama Orang Tua</th>   
-								<th>Phone Orang Tua</th>   
-								<th>Email Orang Tua</th>      
+								<th>Email</th> 		      
 								<th></th>
 							</tr>
 						</thead>
@@ -175,25 +172,7 @@ a.close_corner_top_left {
                 <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_email" /></div>
             </div>						
 
-            <div class="row align-items-center mt-2">
-                <div class="col-4">
-                    <label class="m-0">Nama Orang Tua <span class="text-danger"> </span></label>
-                </div>
-                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_parent_name" /></div>
-            </div>			
-						
-            <div class="row align-items-center mt-2">
-                <div class="col-4">
-                    <label class="m-0">Phone  Orang Tua<span class="text-danger"> </span></label>
-                </div>
-                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_parent_phone" /></div>
-            </div>						
-            <div class="row align-items-center mt-2">
-                <div class="col-4">
-                    <label class="m-0">Email Orang Tua<span class="text-danger"> </span></label>
-                </div>
-                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_parent_email" /></div>
-            </div>						
+ 					
 												
  
             <input type="hidden" name="a_student_id" />

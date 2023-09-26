@@ -31,16 +31,18 @@ class Student extends CI_Controller {
 		$get = $this->input->get();
 		$username 	= $this->session->userdata('username');
 		$user_level = $this->db->where('username', $username)->get('users')->row_array()['user_level'];
-		$page 		= isset($get['page']) ? (int)$get['page'] : 1;
-		$limit 		= isset($get['limit']) ? (int)$get['limit'] : 3;
-		$filter		= $get['filter'];
+		// $page 		= isset($get['page']) ? (int)$get['page'] : 1;
+		$page 		= $get['start'];
+		$limit 		= $get['length'];
+		$filter['namaSiswa'] = $get['columns'][0]['search']['value'];
+		$filter['kelas'] = $get['columns'][1]['search']['value'];
+		// $page = ($page - 1) * $limit;
 
-		$page = ($page - 1) * $limit;
-
+		$data['draw']			= $get['draw'];
 		$data['user_level'] 	= $user_level;
-		$data['students'] 		= $this->model_student->get_history($limit, $page, $filter);
-		$data['total_records'] 	= $this->model_student->get_total_history($filter);
-		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+		$data['data'] 			= $this->model_student->get_history($limit, $page, $filter);
+		$data['recordsTotal'] 	= $this->model_student->get_total_history($filter);
+		$data['recordsFiltered'] = $this->model_student->get_total_history($filter);
 
 		// create json header	
 		header('Content-Type: application/json');

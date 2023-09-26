@@ -95,4 +95,84 @@ class Model_teacher extends CI_Model {
 		$this->db->join('teacher tc', 'tc.teacher_id = t.teacher_id');
 		return $this->db->get('task t');
 	}
+	
+	public function get_kelas(){
+		
+		$teacher_id 	= $this->session->userdata('teacher_id'); 		
+		$this->db->select('k.class_id, k.class_name');
+		$this->db->from('kelas k');
+		$this->db->join('subject s','s.class_level_id=k.class_level_id');
+		$this->db->join('subject_teacher st','s.subject_id=st.subject_id');
+		$this->db->where('st.teacher_id',$teacher_id);
+		$this->db->group_by('k.class_id, k.class_name');
+		$this->db->order_by('k.class_id');
+		
+ 
+		return $this->db->get()->result_array();
+	}	
+	
+	
+	public function get_mapel(){
+		
+		$teacher_id 	= $this->session->userdata('teacher_id'); 
+		$this->db->select('s.subject_id, subject_name');
+		$this->db->from('subject s');
+		$this->db->join('subject_teacher st','s.subject_id=st.subject_id');
+		$this->db->where('teacher_id',$teacher_id);
+
+		return $this->db->get()->result_array();
+	}	
+	
+	
+	public function get_ujian($limit = null, $page = null, $mapel,$kelas, $startDate, $endDate){
+		
+		$teacher_id 	= $this->session->userdata('teacher_id');
+		$this->db->select('e.*,  s.subject_name, k.class_name');
+		$this->db->from('exam e'); 
+		$this->db->join('subject s', 's.subject_id = e.subject_id');  
+		$this->db->join('kelas k', 'k.class_id = e.class_id');  
+		$this->db->where('e.teacher_id', $teacher_id);
+		
+		if(!empty($mapel))
+			$this->db->where('e.subject_id',$mapel);
+		
+		if(!empty($mapel))
+			$this->db->where('e.class_id',$kelas);		
+
+		if(!empty($startDate))
+			$this->db->where('date(start_date) >=', date('Y-m-d', strtotime($startDate)));
+		
+		if(!empty($endDate))
+			$this->db->where('date(end_date) <=', date('Y-m-d', strtotime($endDate)));
+
+ 
+		$this->db->limit($limit, $page);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	public function get_total_ujian($mapel,$kelas, $startDate, $endDate){
+		
+		$teacher_id 	= $this->session->userdata('teacher_id');  
+		
+		$this->db->where('teacher_id', $teacher_id);
+		
+		if(!empty($mapel))
+			$this->db->where('subject_id',$mapel);
+	
+		if(!empty($kelas))
+			$this->db->where('class_id',$kelas);	
+
+		if(!empty($startDate))
+			$this->db->where('date(start_date) >=', date('Y-m-d', strtotime($startDate)));
+		
+		if(!empty($endDate))
+			$this->db->where('date(end_date) <=', date('Y-m-d', strtotime($endDate)));
+
+		$query = $this->db->get('exam');
+		return $query->num_rows();
+		
+		
+	}
+	
 }

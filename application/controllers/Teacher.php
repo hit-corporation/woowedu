@@ -8,6 +8,7 @@ class Teacher extends CI_Controller {
 		parent::__construct();
 		$this->load->library('session');
 		$this->load->model('model_teacher');
+		$this->load->model('model_task');
 		
 		$this->load->library('xlsxwriter');
 		
@@ -131,4 +132,82 @@ class Teacher extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($data);
 	}
+	
+	public function ujian() {
+ 
+		
+		$data['mapelop'] = $this->model_teacher->get_mapel();
+		$data['kelasop'] = $this->model_teacher->get_kelas();
+		$this->load->view('header');
+		$this->load->view('teacher/ujian', $data);
+		$this->load->view('footer');
+	}
+	
+	public function getujianlist()
+	{
+		$username 	= $this->session->userdata('username');
+		$user_level 				= $this->session->userdata('user_level');
+		$teacher_id 				= $this->session->userdata('teacher_id');
+		$page 		= isset($_GET['page']) ? (int)$_GET['page'] : 1;
+		$limit 		= isset($_GET['limit']) ? (int)$_GET['limit'] : 3;
+		$mapel		= $_GET['mapel'];
+		$kelas		= $_GET['kelas'];
+		$startDate	= $_GET['startDate'];
+		$endDate	= $_GET['endDate'];
+
+		$page = ($page - 1) * $limit;
+
+		$data['user_level'] 	= $user_level;
+		
+ 
+		$data['task'] 			= $this->model_teacher->get_ujian($limit, $page, $mapel,$kelas, $startDate, $endDate);
+		$data['total_records'] 	= $this->model_teacher->get_total_ujian($mapel,$kelas,$startDate, $endDate);			
+ 
+
+		$data['total_pages'] 	= ceil($data['total_records'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);		
+	}	
+		
+		
+	public function createujian($id = ''){
+		$post = $this->input->post();
+		$data['mapelop'] = $this->model_teacher->get_mapel();
+		$data['kelasop'] = $this->model_teacher->get_kelas();
+
+ 
+		if($id != ''){
+			$data['id'] = $id;
+			$data['data'] = $this->db->where('exam_id', $id)->get('exam')->row_array();
+		}
+
+		$this->load->view('header');
+		$this->load->view('teacher/createujian', $data);
+		$this->load->view('footer');
+	}		
+
+	public function saveujian(){ 
+		$teacher_id = $this->session->userdata('teacher_id'); 
+ 
+		$data = [
+			'teacher_id' 	=> $teacher_id,
+			'start_date' 		=> $post['tanggal_start'].' '.$post['jamstart'],
+			'end_date' 		=> $post['tanggal_end'].' '.$post['jamend'], 
+			'subject_id'		=> $post['select_mapel'],
+			'class_id'		=> $post['select_kelas'] 
+		];
+		$insert = $this->db->insert('exam', $data);
+		if($insert){
+			$resp = ['success'=>true, 'message'=>'Data berhasil disimpan'];
+		}else{
+			$resp = ['success'=>false, 'message'=>'Data gagal disimpan'];
+		}
+
+		$this->session->set_flashdata('simpan', $resp);
+		redirect(base_url('teacher/ujian'));
+		 
+	}
+	 	
 }

@@ -67,8 +67,7 @@ class Student extends MY_Controller {
 		$nis   = trim($this->input->post('nis')); 
 		$class_id   = trim($this->input->post('class_id'));  
 		$address   = trim($this->input->post('address')); 
-		$phone   = trim($this->input->post('phone')); 
-		$parent_name = trim($this->input->post('parent_name'));
+		$phone   = trim($this->input->post('phone'));  
 		$parent_phone = trim($this->input->post('parent_phone'));
 		$parent_email = trim($this->input->post('parent_email')); 
 		$sekolah_id = $this->session->userdata('sekolah_id');			
@@ -96,8 +95,7 @@ class Student extends MY_Controller {
 			'class_id' => $class_id, 
 			'address' => $address,
 			'phone' => $phone,
-			'email' => $email,
-			'parent_name' => $parent_name,
+			'email' => $email, 
 			'parent_phone' => $parent_phone,
 			'parent_email' => $parent_email, 
 			'sekolah_id' => $sekolah_id			
@@ -134,8 +132,7 @@ class Student extends MY_Controller {
 		$nis   = trim($input['nis']); 
 		$class_id   = trim($input['class_id']);  
 		$address   = trim($input['address']); 
-		$phone   = trim($input['phone']); 
-		$parent_name = trim($input['parent_name']);
+		$phone   = trim($input['phone']);  
 		$parent_phone = trim($input['parent_phone']);
 		$parent_email = trim($input['parent_email']); 
 		$sekolah_id = $this->session->userdata('sekolah_id');	 
@@ -162,8 +159,7 @@ class Student extends MY_Controller {
 				'class_id' => $class_id, 
 				'address' => $address,
 				'phone' => $phone,
-				'email' => $email,
-				'parent_name' => $parent_name,
+				'email' => $email, 
 				'parent_phone' => $parent_phone,
 				'parent_email' => $parent_email, 
 				'sekolah_id' => $sekolah_id	
@@ -257,8 +253,7 @@ class Student extends MY_Controller {
 				'class_id' => $exc[2], 
 				'address' => $exc[3],
 				'phone' => $exc[4],
-				'email' => $exc[5],
-				'parent_name' => $exc[6],
+				'email' => $exc[5], 
 				'parent_phone' => $exc[7],
 				'parent_email' => $exc[8], 
 				'sekolah_id' => $sekolah_id	
