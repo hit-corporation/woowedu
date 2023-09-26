@@ -288,10 +288,19 @@ class Model_common extends CI_Model{
 		return $res->row_array();
 	}
 
+	// private function compiledStudentQuery() {
+	// 	$this->db->select('nis,student_id ,student_name ,student.class_id ,class_name,address ,phone ,email ,parent_name ,parent_phone ,parent_email '); 
+	// 	$this->db->join('kelas','kelas.class_id=student.class_id');
+	// 	$this->db->get_compiled_select('student', FALSE);
+	// }   
+
 	private function compiledStudentQuery() {
-		$this->db->select('nis,student_id ,student_name ,student.class_id ,class_name,address ,phone ,email   '); 
-		$this->db->join('kelas','kelas.class_id=student.class_id');
-		$this->db->get_compiled_select('student', FALSE);
+		$this->db->select('a.nis, a.student_id, a.student_name, a.class_id, class_name, a.address, a.phone, a.email, d.name as parent_name, 
+							d.phone as parent_phone, d.email as parent_email, subject_name, subject_id'); 
+		$this->db->join('kelas b','b.class_id=a.class_id', 'left');
+		$this->db->join('subject c','b.class_id=c.class_id', 'left');
+		$this->db->join('parent d', 'd.parent_id=a.parent_id', 'left');
+		$this->db->get_compiled_select('student a', FALSE);
 	}   
 	
 	public function save_student(array $data) {

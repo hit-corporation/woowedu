@@ -20,7 +20,12 @@ class Orangtua extends MY_Controller {
 		$data['tableName']	= 'Parents';
 		$data['csrf_token']	= $this->csrfsimple->genToken();
 		$data['page_js']	= [  
-			['path' => 'assets/new/js/pages/_parent.js', 'defer' => true],
+            ['path' => 'assets/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js', 'defer' => true],
+			['path' => 'assets/new/js/pages/_parent.js', 'defer' => true]
+		]; 
+        $data['page_css']	= [  
+			'assets/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
+			'assets/new/css/fpersonno.css'
 		]; 
  
 		$this->template->load('template', 'parent/index', $data);
@@ -47,7 +52,7 @@ class Orangtua extends MY_Controller {
         ];
 
         header('Content-Type: application/json');
-        echo json_encode($json, SON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        echo json_encode($json, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     }
 
     /**
@@ -71,6 +76,8 @@ class Orangtua extends MY_Controller {
             echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
             return;
         }
+
+        
 
         http_response_code(200);
 		$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_form_success'), 'token' => $this->csrfsimple->genToken()];
