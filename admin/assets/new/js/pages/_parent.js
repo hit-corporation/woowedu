@@ -1,5 +1,7 @@
 'use strict';
-const base_url = document.querySelector('base').href;
+const base_url = document.querySelector('base').href,
+      form = document.forms['form-add'],
+      selectStudent = document.querySelector('select[name="a_children"]');
 
 
 const table = $('#tbl-parent').DataTable({
@@ -73,3 +75,54 @@ $('#select_all').on('click', e => {
 $('#btn-refresh').on('click', e => {
     table.ajax.reload();
 });
+
+// SELECT CHILDREN
+
+
+const getStudents = async () => {
+
+    try 
+    {
+        const f = await fetch(base_url + 'api/student/get_all');
+        const j = await f.json();
+        
+        return j.data;
+    } 
+    catch (err) 
+    {
+        console.log(err);
+    }
+}
+
+
+const setStudentSelect = async () => {
+    try 
+    {
+        const students = [...await getStudents()];
+        selectStudent.innerHTML = null;
+    
+        Array.from(students, item => {
+            const option = document.createElement('option');
+
+            option.text = `${item.student_name} - ${item.nis}`;
+            option.value = item.student_id;
+
+            selectStudent.add(option);
+        });
+    } 
+    catch (err) 
+    {
+        console.log(err);
+    }
+}
+
+(async $ => {
+
+    await setStudentSelect();
+    $('select[name="a_children"]').selectpicker({
+        liveSearch: true,
+        deselectAllText: true,
+        noneSelectedText:  '- Pilih Murid -',
+    });
+
+})(jQuery);

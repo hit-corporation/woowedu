@@ -4,7 +4,7 @@ class Student extends MY_Controller {
 	public function __construct() 
 	{
 		parent::__construct(); 
-		$this->load->model(['model_common']);
+		$this->load->model(['model_common', 'model_student']);
 		$this->load->model(['Model_settings']);
 		$this->load->library(['csrfsimple', 'curl']);
 		$lang = ($this->session->userdata('lang')) ? $this->session->userdata('lang') : config_item('language');
@@ -13,24 +13,25 @@ class Student extends MY_Controller {
 
 	public function get_all() 
 	{
-    header('Access-Control-Allow-Origin: *');
+    	header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: GET');
 		header('Content-Type: application/json');		
 		
-		if($_SERVER['REQUEST_METHOD'] !== 'GET') {
-				http_response_code(405);
-				$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_mismatch_method')];
-				echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
-				return;
+		if($_SERVER['REQUEST_METHOD'] !== 'GET') 
+		{
+			http_response_code(405);
+			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_mismatch_method')];
+			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+			return;
 		}
 				
-		$draw   = $this->input->get('draw');
-		$limit  = $this->input->get('length');
-		$offset = $this->input->get('start');
-		$filter = $this->input->get('columns'); 
-		$rec   = $this->model_common->get_all_student($filter, $limit, $offset);
-		$count  = $this->model_common->count_all_student($filter);
-    $countFilter = $this->model_common->count_all_student($filter);
+		$draw   	 = $this->input->get('draw');
+		$limit  	 = $this->input->get('length');
+		$offset 	 = $this->input->get('start');
+		$filter 	 = $this->input->get('columns'); 
+		$rec    	 = $this->model_common->get_all_student($filter, $limit, $offset);
+		$count  	 = $this->db->count_all_results('student');
+    	$countFilter = $this->model_common->count_all_student($filter);
 		
 		$datas =   array(
 			"draw"			  => $draw,
@@ -38,7 +39,9 @@ class Student extends MY_Controller {
 			"recordsFiltered" => $countFilter,
 			"data"			  => $rec
 		);
+
 		http_response_code(200);
+		header("Content-Type: application/json");
 		echo json_encode($datas, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 		exit();
 	}

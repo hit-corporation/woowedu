@@ -57,10 +57,12 @@ class Model_student extends CI_Model{
 	}
 
 	private function compiledStudentQuery() {
-		$this->db->select('nis,student_id ,student_name ,student.class_id ,class_name,address ,phone ,email ,parent_name ,parent_phone ,parent_email,subject_name,subject_id '); 
-		$this->db->join('kelas','kelas.class_id=student.class_id');
-		$this->db->join('subject','kelas.class_id=subject.class_id');
-		$this->db->get_compiled_select('student', FALSE);
+		$this->db->select('a.nis, a.student_id, a.student_name, a.class_id, class_name, a.address, a.phone, a.email, d.name as parent_name, 
+							d.phone as parent_phone, d.email as parent_email, subject_name, subject_id'); 
+		$this->db->join('kelas b','kelas.class_id=student.class_id', 'left');
+		$this->db->join('subject c','kelas.class_id=subject.class_id', 'left');
+		$this->db->join('parent d', 'd.parent_id=a.parent_id', 'left');
+		$this->db->get_compiled_select('student a', FALSE);
 	}   
 	
 	public function save_student(array $data) {

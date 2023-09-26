@@ -137,14 +137,11 @@ a.close_corner_top_left {
             </div>
             <div class="row align-items-center mt-2">
                 <div class="col-4">
-                    <label class="m-0">Kelas <span class="text-danger"><strong>*</strong></span></label>
+                    <label class="m-0">Wali Dari <span class="text-danger"><strong>*</strong></span></label>
                 </div>
                 <div class="col-8">
-                    <select  class="form-control form-control-sm" name="a_class">
-                        <option>==Pilih Kelas==</option>
-                        <?php foreach($data_class as $rec){ ?>
-                        <option value="<?php echo $rec['class_id']; ?>"><?php echo $rec['class_name']; ?></option>
-                        <?php } ?>
+                    <select  class="form-control form-control-sm" name="a_children" multiple>
+                       
                     </select> 
                 </div>
             </div>						
