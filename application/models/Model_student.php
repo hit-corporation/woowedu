@@ -61,13 +61,33 @@ class Model_student extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
-	public function get_total_task($student_id){
+	public function get_total_task($student_id, $filter = null){
 		$class_id = $this->get_class($student_id);
 
 		$this->db->select('t.*, m.title');
 		$this->db->from('task t');
-		$this->db->join('materi m', 'm.materi_id = t.materi_id');
+		$this->db->join('materi m', 'm.materi_id = t.materi_id', 'left');
 		$this->db->where('class_id', $class_id);
+
+		if(isset($filter['start_dt'])){
+			$this->db->where('DATE(t.available_date) >=', $filter['start_dt']);
+			$this->db->where('DATE(t.due_date) <=', $filter['end_dt']);
+		}
+		return $this->db->get()->num_rows();
+	}
+
+	public function get_total_task_submit($student_id = null, $filter = null){
+		$this->db->select('ts.student_id, ts.task_id');
+		$this->db->from('task_student ts');
+		$this->db->where('student_id', $student_id);
+
+		if(isset($filter['start_dt'])){
+			$this->db->where('DATE(t.available_date) >=', $filter['start_dt']);
+			$this->db->where('DATE(t.due_date) <=', $filter['end_dt']);
+		}
+
+		$this->db->join('task t', 't.task_id=ts.task_id');
+		$this->db->group_by('student_id, ts.task_id');
 		return $this->db->get()->num_rows();
 	}
 
