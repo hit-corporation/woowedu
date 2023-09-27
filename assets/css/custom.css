@@ -200,4 +200,18 @@ a { cursor: pointer; }
 	#navbarNav #ulNavbarNav{
 		margin-left: 0px !important;
 	}
+	.card-foto-siswa, .card-filter-tugas{
+		height: 300px;
+	}
+}
+
+/* .total-exam{
+	background: #c1faff;
+    border: 1px solid #0dc7ff;
+} */
+
+@media screen and(min-width: 768px) and(max-width: 990px){
+	.card-foto-siswa, .card-filter-tugas{
+		height: 400px;
+	}
 }
