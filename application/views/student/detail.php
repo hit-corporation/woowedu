@@ -14,7 +14,7 @@
 	<div class="container">
 		<div class="row">
 			<!-- profile content -->
-			<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-1" style="height: 450px;">
+			<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-1 card-foto-siswa">
 				<div class="card border rounded-4 p-3 h-100">
 					<div class="image-content text-center mt-3">
 						<span>
@@ -23,23 +23,36 @@
 						<p class="mt-2"><?=$detail['student_name']?></p>
 					</div>
 
-					<div class="wali mt-2 mb-2">
-						<span class="fw-bold fs-6 d-block">Wali</span>
+					<div class="wali mt-2 mb-2 text-center">
+						<span class="fw-bold fs-6 d-block">Wali Murid</span>
 						<span class="fs-6 d-block"><?=$detail['parent_name']?></span>
 					</div>
 
-					<div class="mt-2">
-						<p class="fs-6"><i class="bi bi-book"> </i><?=$detail['class_name']?></p>
+					<div class="mt-3">
+						<!-- <p class="fs-6"><i class="bi bi-book"> </i><?=$detail['class_name']?></p>
 						<p class="fs-6"><i class="bi bi-envelope-paper"> </i><?=$detail['email']?></p>
-						<p class="fs-6"><i class="bi bi-bank"> </i><?=$detail['nama_sekolah']?></p>
+						<p class="fs-6"><i class="bi bi-bank"> </i><?=$detail['nama_sekolah']?></p> -->
 					</div>
 				</div>
 			</div>
 
 			<!-- skor by date range content -->
-			<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-1" style="height: 450px;">
+			<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-1 card-filter-tugas">
 				<div class="card border rounded-4 p-3 data-by-date h-100">
-					<input class="border-width-1 rounded-lg ml-3"  style="height: 40px; text-align:center; border-color: rgba(0, 0, 255, 0.3);" type="text" name="daterange" 
+
+					<div class="row mt-3 mx-3">
+						<div class="col-6">
+							<p class="fs-6"><i class="bi bi-book"> </i><?=$detail['class_name']?></p>
+						</div>
+						<div class="col-6">
+							<p class="fs-6"><i class="bi bi-envelope-paper"> </i><?=$detail['email']?></p>
+						</div>
+						<div class="col-6">
+							<p class="fs-6"><i class="bi bi-bank"> </i><?=$detail['nama_sekolah']?></p>
+						</div>
+					</div>
+
+					<input class="border-width-1 rounded-lg mx-3"  style="height: 40px; text-align:center; border-color: rgba(0, 0, 255, 0.3);" type="text" name="daterange" 
 						value="<?php 
 						if(isset($start)){ 
 							echo date('m/d/Y', strtotime($start));
@@ -53,13 +66,13 @@
 						}?>" />
 
 					<div class="row data-content mt-4 justify-content-center">
-						<div class="col-3 total-exam text-center">
+						<div class="col-6 total-task text-center">
 							<h4>0</h4>
-							<span>Total Tugas</span>
+							<span>Total Tugas yang di berikan oleh guru</span>
 						</div>
-						<div class="col-3 ave-exam-score text-center">
+						<div class="col-6 total-task-submit text-center">
 							<h4>0</h4>
-							<span>Skor Rata-rata</span>
+							<span>Total Tugas yang sudah di kerjakan</span>
 						</div>
 					</div>
 				</div>
@@ -330,8 +343,8 @@
 			},
 			dataType: "JSON",
 			success: function (response) {
-				$('.total-exam')[0].children[0].innerHTML = response.total_exam;
-				$('.ave-exam-score')[0].children[0].innerHTML = response.average_exam_score;
+				$('.total-task')[0].children[0].innerHTML = response.total_task;
+				$('.total-task-submit')[0].children[0].innerHTML = response.total_task_submit;
 			}
 		});
 	}

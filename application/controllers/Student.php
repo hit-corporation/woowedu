@@ -80,8 +80,11 @@ class Student extends CI_Controller {
 	public function get_summary(){
 		$post 				= $this->input->post();
 		$class_id 			= $this->db->where('student_id', $post['student_id'])->get('student')->row_array()['class_id'];
-		$data['total_exam']	= $this->model_student->get_total_exam($class_id, $post['start'], $post['end']);
-
+		$filter['start_dt']	= $post['start'];
+		$filter['end_dt']	= $post['end'];
+		$data['total_task']	= $this->model_student->get_total_task($post['student_id'], $filter);
+		$data['total_task_submit'] = $this->model_student->get_total_task_submit($post['student_id'], $filter);
+		
 		$examRataRata = $this->model_student->average_exam_score($post['student_id'], $post['start'], $post['end'])['exam_total_nilai'];
 		$data['average_exam_score'] = ($examRataRata) ? $examRataRata : 0;
 
