@@ -3,6 +3,15 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/libs/sweetalert2/sweetalert2.min.css')?>" />
 
+<?php 
+
+$photo = base_url('assets/images/users/user.png');
+
+if(file_exists(FCPATH.'assets/images/users/'.$detail['photo']))
+	$photo = base_url('assets/images/users/'.$detail['photo']);
+
+?>
+
 <style>
 	#tbl-tugas td {
 		max-width: 140px;
@@ -25,7 +34,7 @@
 				<div class="card border rounded p-3 h-100">
 					<div class="image-content">
 						<span>
-							<img src="<?=base_url('assets/images/users/').$detail['photo']?>" alt="" width="50">
+							<img id="img-profile" src="<?=$photo?>" alt="" width="50" height="50">
 						</span>
 						<span><?=$detail['teacher_name']?></span>
 					</div>
@@ -178,8 +187,6 @@
 
 		try 
 		{
-			
-
 			const url = new URL(admin_url + 'api/materi/getAll');
 			const f = await fetch(url.href, {
 				headers: {
@@ -206,8 +213,6 @@
 
 		try 
 		{
-			
-
 			const url = new URL(admin_url + 'api/kelas/get_all');
 			const f = await fetch(url.href, {
 				headers: {
@@ -266,7 +271,7 @@
             contentType: false,
             processData: false,
             success(reslv) {
-                //console.log(reslv);
+
                 var prog = document.getElementById('import-progress-1');
 
                 prog.getElementsByClassName('progress-bar')[0].setAttribute('aria-valuenow', 100);
@@ -369,6 +374,9 @@
 			formTugas['a_tugas_start'].value = startDate;
 			formTugas['a_tugas_end'].value = endDate;
 		});
+
+	
+
 
 	window.onload = e => (async $ => {
 
@@ -555,6 +563,15 @@
             }
         });
      }
+
+
+	/**
+	 * @description "Check if image is error"
+	 * 
+	 */
+		document.getElementById('img-profile').onerror = e => {
+			document.getElementById('img-profile').src = '<?=base_url('assets/images/users/user.png')?>';
+		};
 	})(jQuery);
 
 	tinymce.init({
