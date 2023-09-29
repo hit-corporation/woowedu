@@ -275,8 +275,12 @@
 		$('input[name="a_tugas_periode"]').daterangepicker({
 			showDropdowns: true,
 			minDate: 0,
-			dateFormat: 'yyyy-mm-dd',
+			locale: {
+				format: 'YYYY-MM-DD',
+			},
     		drops: 'up'
+		}, (start, end, label) => {
+
 		});
 	});
 
