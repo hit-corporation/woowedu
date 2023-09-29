@@ -38,7 +38,7 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 						<span>
 							<img id="img-profile" src="<?=$photo?>" alt="" width="50" height="50">
 						</span>
-						<span class="h5 ms-1" id="teacher-name"><?=$detail['teacher_name']?></span>
+						<span class="h6 ms-1 font-size-16" id="teacher-name"><?=$detail['teacher_name']?></span>
 					</div>
 
 					<div class="mt-3">
