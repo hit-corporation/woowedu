@@ -2,7 +2,7 @@
 
 		<footer class="site-footer pt-3">
             <div class="container">
-                <div class="row">
+                <div class="row d-none">
 					<p class="fs-16 mb-0">Dipersembahkan oleh</p>
                     <p style="font-size: 30px; color: green; font-weight: bold;">WoowEdu</p>
                 </div>
