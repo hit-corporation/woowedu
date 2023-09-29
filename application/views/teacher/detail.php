@@ -6,10 +6,8 @@
 <?php 
 
 $photo = base_url('assets/images/users/user.png');
-
-if(file_exists(FCPATH.'assets/images/users/'.$detail['photo']))
+if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.$detail['photo']))
 	$photo = base_url('assets/images/users/'.$detail['photo']);
-
 ?>
 
 <style>
@@ -18,6 +16,10 @@ if(file_exists(FCPATH.'assets/images/users/'.$detail['photo']))
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+
+	#teacher-name {
+		text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
 	}
 </style>
 
@@ -36,7 +38,7 @@ if(file_exists(FCPATH.'assets/images/users/'.$detail['photo']))
 						<span>
 							<img id="img-profile" src="<?=$photo?>" alt="" width="50" height="50">
 						</span>
-						<span><?=$detail['teacher_name']?></span>
+						<span class="h5 ms-1" id="teacher-name"><?=$detail['teacher_name']?></span>
 					</div>
 
 					<div class="mt-3">
@@ -408,6 +410,9 @@ if(file_exists(FCPATH.'assets/images/users/'.$detail['photo']))
 			formTugas['a_tugas_code'].value = Math.floor(Math.random() * Date.now()).toString(36).toUpperCase();
 			formTugas['a_tugas_guru'].value = teacher_id;
 
+			$(selectMateri).val(null).trigger('change');
+			$(selectKelas).val(null).trigger('change');
+
 			const today = Date.now();
 			$('input[name="a_tugas_periode"]').data('daterangepicker').setStartDate(today);
 			$('input[name="a_tugas_periode"]').data('daterangepicker').setEndDate(today);
@@ -564,14 +569,6 @@ if(file_exists(FCPATH.'assets/images/users/'.$detail['photo']))
         });
      }
 
-
-	/**
-	 * @description "Check if image is error"
-	 * 
-	 */
-		document.getElementById('img-profile').onerror = e => {
-			document.getElementById('img-profile').src = '<?=base_url('assets/images/users/user.png')?>';
-		};
 	})(jQuery);
 
 	tinymce.init({
