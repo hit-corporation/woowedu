@@ -1,6 +1,11 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+
+
 <section class="explore-section section-padding" id="section_2">
 	<div class="container">
-		<p class="mt-4"><a href="<?=base_url()?>student" class="text-secondary">Semua Siswa</a> > <span class="fw-bold">Detail Siswa</span></p>
+		<p class="mt-4"><a href="<?=base_url()?>student" class="text-secondary">Semua Guru</a> > <span class="fw-bold">Detail</span></p>
 	</div>
 
 	<div class="container">
@@ -76,18 +81,19 @@
 				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
 					<div class="row">
 						<div class="col-12">
-							<button class="btn btn-sm btn-primary">Tambah</button>
+							<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-add">Tambah</button>
 						</div>
 					</div>
-					<table class="table-rounded w-100">
+					<table class="table-rounded w-100" id="tbl-tugas">
 						<thead>
 							<tr>
+								<th>Materi ID</th>
 								<th>Materi</th>
-								<th>Mapel</th>
+								<th>Kelas ID</th>
+								<th>Kelas</th>
 								<th>Ditugaskan</th>
 								<th>Batas waktu</th>
-								<th>File</th>
-								<th>Notes</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody id="tugas-body-content">
@@ -98,7 +104,7 @@
 					<div class="pagination"></div>
 				</div>	
 				<div class="tab-pane fade p-3" id="nav-ujian" role="tabpanel" aria-labelledby="nav-ujian-tab" tabindex="0">
-					<table class="table-rounded w-100" id="exam-body">
+					<table class="table-rounded w-100" id="tbl-exam">
 						<thead>
 							<tr>
 								<th>Kode</th>
@@ -121,20 +127,131 @@
 	</div>
 </section>
 
-<?= $this->load->view('teacher/modal', [], TRUE) ?>
+<?php $this->load->view('teacher/modal') ?>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<!-- Include the selectize library -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+	'use strict';
+
 	var currentPage = 1;
 	var teacher_id 	= <?=$detail['teacher_id']?>;
 	let startDate 	= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
 	let endDate		= moment().startOf('day').format('YYYY-MM-DD');
+	const admin_url = document.querySelector('meta[name="admin_url"]').content;
+	const modalAdd  = document.getElementById('modal-add');
+	const form 		= document.forms['form-add'];
 
 	getSummary(teacher_id, startDate, endDate);
+	
+	/**
+	 * @description "Ambil data materi"
+	 * 
+	 * @async
+	 * @return {Json Object}
+	 */
+	const getMateri = async () => {
+
+		try 
+		{
+			const url = new URL(admin_url + 'api/materi/getAll');
+			const f = await fetch(url.href);
+			const j = await f.json();
+			
+			return j.data;
+		} 
+		catch (err) 
+		{
+			console.log(err)
+		}
+	}
+
+	/**
+	 * @description "Ambil data kelas"
+	 * 
+	 * @async
+	 * @return {Json Object}
+	 */
+	const getKelas = async () => {
+
+		try 
+		{
+			const url = new URL(admin_url + 'api/kelas/get_all');
+			const f = await fetch(url.href);
+			const j = await f.json();
+			
+			return j.data;
+		} 
+		catch (err) 
+		{
+			console.log(err)
+		}
+	}
+
+	const tableTugas = $('#tbl-tugas').DataTable({
+		serverSide: true,
+		processing: true,
+		ajax: { 
+			url: admin_url + 'api/tugas/getAll',
+			data: d => {
+				d.teacher = teacher_id;
+				return d;
+			} 
+		},
+		columns: [
+			{
+				data: 'class_id',
+				visible: false
+			},
+			{
+				data: 'class_name'
+			},
+			{
+				data: 'materi_id',
+				visible: false
+			},
+			{
+				data: 'title'
+			},
+			{
+
+			}
+		]
+	});
+
+	(async $ => {
+
+		const materi = [...await getMateri()].map(x => ({ id: x.materi_id, text: x.title }));
+		const kelas  = [...await getKelas()].map(x => ({ id: x.class_id, text: x.class_name }));
+
+
+		$('select[name="a_tugas_materi"]').select2({
+			theme: "bootstrap-5",
+			data: materi,
+			placeholder: 'Pilih Materi',
+			allowClear: true,
+			width: '100%'
+		});
+
+		$('select[name="a_tugas_class"]').select2({
+			theme: "bootstrap-5",
+			data: kelas,
+			placeholder: 'Pilih Kelas',
+			allowClear: true,
+			width: '100%'
+		});
+
+		modalAdd.addEventListener('show.bs.modal', e => {
+			console.log(form);
+			form['a_tugas_code'].value = Math.floor(Math.random() * Date.now()).toString(10);
+		});
+
+	})(jQuery)
 
 	$(document).ready(function () {
 		$('input[name="daterange"]').daterangepicker({
@@ -154,6 +271,13 @@
 				getSummary(teacher_id, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
 			}
 		);
+
+		$('input[name="a_tugas_periode"]').daterangepicker({
+			showDropdowns: true,
+			minDate: 0,
+			dateFormat: 'yyyy-mm-dd',
+    		drops: 'up'
+		});
 	});
 
 	// FUNGSI UNTUK UBAH DATA CONTENT SUMMARY
@@ -281,4 +405,6 @@
 	$('#nav-ujian-tab').on('click', function(){
 		getExam(1, 10, teacher_id);
 	});
+
+
 </script>

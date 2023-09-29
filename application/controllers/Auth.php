@@ -97,8 +97,10 @@ class auth extends CI_Controller
 			$this->session->set_userdata(array('class_level_id'=>$class_level_id));
 		}		
 
+		$_token = base64_encode($dt->username.':'.$password);
+
 		http_response_code(200);
-        $msg = ['err_status' => 'success', 'message' => 'Login Success','ulevel'=>$dt->user_level];
+        $msg = ['err_status' => 'success', 'message' => 'Login Success','ulevel'=>$dt->user_level, 'token' => $_token];
         echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
         exit;
 	}

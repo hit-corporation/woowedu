@@ -156,6 +156,21 @@ a.close_corner_top_left {
 												
             <div class="row align-items-center mt-2">
                 <div class="col-4">
+                    <label class="m-0">Kelamin </label>
+                </div>
+                <div class="col-8">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="a_gender" id="male" value="laki-laki"/>
+                        <label for="male" class="form-check-label">Laki - Laki</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="a_gender" id="female" value="perempuan"/>
+                        <label for="female" class="form-check-label">Perempuan</label>
+                    </div>
+                </div>
+            </div>						
+            <div class="row align-items-center mt-2">
+                <div class="col-4">
                     <label class="m-0">Phone <span class="text-danger"> </span></label>
                 </div>
                 <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_phone" /></div>
@@ -164,7 +179,7 @@ a.close_corner_top_left {
                 <div class="col-4">
                     <label class="m-0">Email <span class="text-danger"> </span></label>
                 </div>
-                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_email" /></div>
+                <div class="col-8"><input type="email" class="form-control form-control-sm" name="a_email" /></div>
             </div>						
 
             <input type="hidden" name="a_parent_id" />
@@ -173,7 +188,7 @@ a.close_corner_top_left {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="save-student">Simpan</button>
+        <button type="button" class="btn btn-primary" id="save-parent">Simpan</button>
       </div>
     </div>
   </div>

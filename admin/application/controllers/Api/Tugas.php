@@ -4,7 +4,16 @@ class Tugas extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
-        check_Loggin();
+
+        if(!empty($_SERVER['PHP_AUTH_USER']))
+        {
+            $is_auth = check_auth($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+
+            if(!$is_auth)
+                http_response_code(403);
+        }
+        else
+            check_Loggin();
         $this->load->model(['model_common', 'model_tugas', 'model_materi']);
 		$this->load->model(['Model_settings']);
 		$this->load->library(['csrfsimple', 'curl']);
@@ -21,7 +30,9 @@ class Tugas extends MY_Controller {
         $offset = $this->input->get('start');
         $filters = $this->input->get('columns');
 
-        $data = $this->model_tugas->getAll($filters, $limit, $offset);
+        $id = $this->input->get('teacher') ?? NULL;
+
+        $data = $this->model_tugas->getAll($filters, $limit, $offset, $id);
 
         $_data = [
             'draw' => $draw,

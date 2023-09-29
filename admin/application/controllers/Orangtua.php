@@ -66,10 +66,11 @@ class Orangtua extends MY_Controller {
         $address = $this->input->post('a_address', TRUE);
         $phone = $this->input->post('a_phone', TRUE);
         $email = $this->input->post('a_email', TRUE);
+        $children = $this->input->post('a_children', TRUE);
 
         header('Content-Type: application/json');
 
-        if(empty($username) || empty($name))
+        if(empty($username) || empty($name) || empty($children))
         {
             http_response_code(422);
             $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_is_required'), 'token' => $this->csrfsimple->genToken()];
@@ -77,12 +78,97 @@ class Orangtua extends MY_Controller {
             return;
         }
 
-        
+        $data = [
+            'username' => $username, 
+            'name'     => $name,
+            'address'  => $address,
+            'phone'     => $phone,
+            'email'     => $email
+        ];
 
+        $children = explode(',', $children);
+
+        $this->db->trans_start();
+        $this->db->insert('parent', $data);
+        $id = $this->db->insert_id();
+        
+        foreach($children as $child)
+            $this->db->update('student', ['parent_id' => $id], ['student_id' => intval($child)]);
+        $this->db->trans_complete();
+
+        if($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            http_response_code(422);
+			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_form_error'), 'token' => $this->csrfsimple->genToken()];
+			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+			return;
+        }
+
+        $this->db->trans_commit();
+        
         http_response_code(200);
-		$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_form_success'), 'token' => $this->csrfsimple->genToken()];
+		$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_form_success'), 'token' => $this->csrfsimple->genToken(), 'POST' => $post];
 		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 		exit;
 
+    }
+
+    /**
+     * Edit An Exitsting data in database
+     *
+     * @return void
+     */
+    public function edit(): void {
+        $id = $this->input->post('a_parent_id', TRUE);
+        $username = $this->input->post('a_username', TRUE);
+        $name = $this->input->post('a_full_name', TRUE);
+        $address = $this->input->post('a_address', TRUE);
+        $phone = $this->input->post('a_phone', TRUE);
+        $email = $this->input->post('a_email', TRUE);
+        $children = $this->input->post('a_children', TRUE);
+
+        header('Content-Type: application/json');
+
+        if(empty($username) || empty($name) || empty($id))
+        {
+            http_response_code(422);
+            $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_is_required'), 'token' => $this->csrfsimple->genToken()];
+            echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+            return;
+        }
+
+        $data = [
+            'username' => $username, 
+            'name'     => $name,
+            'address'  => $address,
+            'phone'     => $phone,
+            'email'     => $email
+        ];
+
+        $children = explode(',', $children);
+
+        $this->db->trans_start();
+        $this->db->update('parent', $data, ['parent_id' => intval($id)]);
+        
+        foreach($children as $child)
+            $this->db->update('student', ['parent_id' => $id], ['student_id' => intval($child)]);
+        $this->db->trans_complete();
+
+        if($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            http_response_code(422);
+			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_form_error'), 'token' => $this->csrfsimple->genToken()];
+			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+			return;
+        }
+
+        $this->db->trans_commit();
+        
+        http_response_code(200);
+		$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_form_success'), 'token' => $this->csrfsimple->genToken(), 'POST' => $post];
+		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+		exit;
     }
 }

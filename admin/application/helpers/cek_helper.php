@@ -26,3 +26,18 @@ function chek_session_login()
         redirect('dashboard');
     }
 }
+
+function check_auth($username=NULL, $password=NULL) {
+
+    $ci = &get_instance();
+    $has_auth = true;
+    $user = $ci->db->get_where('users', ['username' => $username])->row_array();
+
+    if(empty($user['username']))
+        $has_auth = false;
+
+    if(!password_verify($password, $user['password']))
+        $has_auth = false;
+
+    return $has_auth;
+}

@@ -2,7 +2,7 @@
 const base_url = document.querySelector('base').href,
       form = document.forms['form-add'],
       selectStudent = document.querySelector('select[name="a_children"]');
-
+let isUpdate = 0;
 
 const table = $('#tbl-parent').DataTable({
     serverSide: true,
@@ -49,8 +49,8 @@ const table = $('#tbl-parent').DataTable({
             data: null,
             render(data, row, type, meta) {
                 var view = '<div class="btn-group btn-group-sm float-right">'+ 
-                                '<button class="btn btn-success edit_student"><i class="bx bx-edit-alt font-size-12"></i></button>' +
-                                '<button class="btn btn-sm btn-danger delete_student"><i class="bx bx-trash font-size-12"></i></button>' +
+                                '<button class="btn btn-success edit_data"><i class="bx bx-edit-alt font-size-12"></i></button>' +
+                                '<button class="btn btn-sm btn-danger delete_data"><i class="bx bx-trash font-size-12"></i></button>' +
                             '</div>';
                 return view;
             }
@@ -79,6 +79,13 @@ $('#btn-refresh').on('click', e => {
 // SELECT CHILDREN
 
 
+/**
+ * Description placeholder
+ * @date 9/27/2023 - 3:14:01 PM
+ *
+ * @async
+ * @returns {unknown}
+ */
 const getStudents = async () => {
 
     try 
@@ -95,6 +102,13 @@ const getStudents = async () => {
 }
 
 
+/**
+ * Description placeholder
+ * @date 9/27/2023 - 3:13:56 PM
+ *
+ * @async
+ * @returns {*}
+ */
 const setStudentSelect = async () => {
     try 
     {
@@ -116,6 +130,82 @@ const setStudentSelect = async () => {
     }
 }
 
+const btnAdd = e => {
+    isUpdate = 0;
+    $('select[name="a_children"]').selectpicker('val', null);
+    form.reset();
+}
+
+const btnEdit = e => {
+    const data = table.row(e.target.parentNode.closest('tr')).data();
+    isUpdate = 1;
+
+    form['a_parent_id'].value = data.parent_id;
+    form['a_username'].value = data.username;
+    form['a_full_name'].value = data.name;
+    form['a_address'].value = data.address;
+    form['a_email'].value = data.email;
+    form['a_gender'].value = data.gender;
+
+    $('#modal-add').modal('show');
+}
+
+
+/**
+ * Submit Form
+ * @date 9/28/2023 - 10:13:02 PM
+ *
+ * @param {*} e
+ */
+const submit = async e => {
+    e.preventDefault();
+
+    let url = isUpdate == 0 ? base_url + 'orangtua/store' : base_url + 'orangtua/edit';
+    const children = $('select[name="a_children"]').selectpicker('val');
+    const entries = {...Object.fromEntries(new FormData(e.target)), a_children: children };
+    const params = new URLSearchParams(entries);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: params.toString(),
+        contentType: 'application/x-www-form-urlencoded',
+        beforeSend(xhr, obj) {
+            Swal.fire({
+                html: 	'<div class="d-flex flex-column align-items-center">'
+                + '<span class="spinner-border text-primary"></span>'
+                + '<h3 class="mt-2">Loading...</h3>'
+                + '<div>',
+                showConfirmButton: false,
+                width: '10rem'
+            });
+        },
+        success(resp) {
+            Swal.fire({
+                type: resp.err_status,
+                title:`<h5 class="text-${resp.err_status} text-uppercase">${resp.err_status}</h5>`,
+                html: resp.message,
+            });
+            
+            
+            //csrfToken.content = resp.token;
+        },
+        error(err) {
+            let response = JSON.parse(err.responseText);
+            Swal.fire({
+                type: response.err_status,
+                title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
+                html: response.message
+            });
+            //if(response.hasOwnProperty('token'))
+            //	csrfToken.setAttribute('content', response.token);
+        },
+        complete() {
+            table.ajax.reload();
+        }
+    });
+}
+
 (async $ => {
 
     await setStudentSelect();
@@ -123,6 +213,19 @@ const setStudentSelect = async () => {
         liveSearch: true,
         deselectAllText: true,
         noneSelectedText:  '- Pilih Murid -',
+    });
+
+    console.log(form.querySelectorAll('input'));
+
+    document.querySelector('#btn-add').addEventListener('click', e => btnAdd(e));
+
+    $('#tbl-parent tbody').on('click', '.btn.edit_data', e => btnEdit(e));
+
+    form.addEventListener('submit', e => submit(e));
+
+    document.getElementById('save-parent').addEventListener('click', e => {
+        const evt = new Event('submit');
+        form.dispatchEvent(evt);
     });
 
 })(jQuery);

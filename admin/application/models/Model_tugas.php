@@ -6,10 +6,16 @@ class Model_tugas extends CI_Model {
         parent::__construct();
     }
 
-    public function getAll(array $filters = NULL, int $limit = NULL, int $offset = NULL) {
+    public function getAll(array $filters = NULL, int $limit = NULL, int $offset = NULL, string $id = NULL) {
         $query = $this->queryString();
 
         $filt = [];
+
+        if(!empty($id))
+        {
+            $query .= " AND c.teacher_id=?";
+            $filt[] = $id;
+        }
 
         if(!empty($filters[2]['search']['value'])) {
             $query .= " AND a.code LIKE ?";

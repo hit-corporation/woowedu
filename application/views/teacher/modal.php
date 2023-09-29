@@ -4,9 +4,7 @@
     <div class="modal-content border-0">
       <div class="modal-header bg-success">
         <h5 class="modal-title text-capitalize text-light text-shadow">Tambah Tugas</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="false">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form name="form-add" id="form-add" class="d-flex flex-column">
@@ -19,28 +17,18 @@
                             <input type="text" class="form-control form-control-sm" name="a_tugas_code" required/>
                         </div>
                         
-                        <div class="form-group">
+                        <div class="w-100">
                             <label class="m-0">Materi <span class="text-danger"><strong>*</strong></span></label>
                             <span class="d-flex flex-nowrap">
-                              <select type="text" class="form-control form-control-sm col" name="a_tugas_materi" data-live-search="true" required></select>
-                              <button type="button" id="reset-materi" class="btn btn-sm btn-primary"><i class="fas fa-undo"></i></button>
+                              <select type="text" class="form-control form-control-sm" name="a_tugas_materi" required></select>
                             </span>
                             <input type="hidden" name="a_tugas_materi_text">
                         </div>
-                        <div class="form-group">
-                            <label class="m-0">Guru <span class="text-danger"><strong>*</strong></span></label>
-                            <span class="d-flex flex-nowrap">
-                              <select type="text" class="form-control form-control-sm col" name="a_tugas_guru" data-live-search="true" required></select>
-                              <button type="button" id="reset-guru" class="btn btn-sm btn-primary"><i class="fa fa-undo"></i></button>
-                            </span>
-                            <input type="hidden" name="a_tugas_guru_text">
-                        </div>
 
-                        <div class="form-group">
+                        <div class="w-100">
                             <label class="m-0">Kelas <span class="text-danger"><strong>*</strong></span></label>
                             <span class="d-flex flex-nowrap">
-                              <select type="text" class="form-control form-control-sm col" name="a_tugas_class" data-live-search="true" required></select>
-                              <button type="button" id="reset-class" class="btn btn-sm btn-primary"><i class="fa fa-undo"></i></button>
+                              <select type="text" class="form-control form-control-sm w-100" name="a_tugas_class" required></select>
                             </span>
                             <input type="hidden" name="a_tugas_class_text">
                         </div>
@@ -54,9 +42,8 @@
 
                         <div class="form-group">
                           <label class="m-0">File Pendukung</label>
-                          <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="a_tugas_file" name="a_tugas_file" aria-describedby="a_tugas_file">
-                            <label class="custom-file-label overflow-hidden" for="a_tugas_file" data-browse="Pilih File"></label>
+                          <div class="input-group input-group-sm">
+                            <input type="file" class="form-control form-control-sm" id="a_tugas_file" name="a_tugas_file" aria-describedby="a_tugas_file">
                           </div>
                         </div>
                     

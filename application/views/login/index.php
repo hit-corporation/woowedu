@@ -100,21 +100,23 @@
             	},
             	success: (resp) => {
 								//var res = JSON.parse(resp);
-								var res = resp;
-								var ulevel = res.ulevel;
-								
-								Swal.fire({
-														type: res.err_status,
-														title:'<h5 class="text-success text-uppercase">'+res.err_status+'</h5>',
-														html: res.message,
-									timer: 1000
-												}).then((t) => {
-													if(ulevel==8)
-													window.location.href = '<?=base_url('transaction/add')?>';
-													else
-													window.location.href = '<?=base_url('dashboard')?>';
-												});
-												//csrfToken.setAttribute('content', res.token);
+					var res = resp;
+					var ulevel = res.ulevel;
+
+					window.localStorage.setItem('token', res.token);
+					
+					Swal.fire({
+						type: res.err_status,
+						title:'<h5 class="text-success text-uppercase">'+res.err_status+'</h5>',
+						html: res.message,
+						timer: 1000
+					}).then((t) => {
+						if(ulevel==8)
+						window.location.href = '<?=base_url('transaction/add')?>';
+						else
+						window.location.href = '<?=base_url('dashboard')?>';
+					});
+									//csrfToken.setAttribute('content', res.token);
             	},
             	error: (err) => {
             	    var response = JSON.parse(err.responseText);
