@@ -1,6 +1,16 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+<link rel="stylesheet" type="text/css" href="<?=base_url('assets/libs/sweetalert2/sweetalert2.min.css')?>" />
+
+<style>
+	#tbl-tugas td {
+		max-width: 140px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+</style>
 
 
 <section class="explore-section section-padding" id="section_2">
@@ -81,16 +91,16 @@
 				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
 					<div class="row">
 						<div class="col-12">
-							<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-add">Tambah</button>
+							<button class="btn btn-sm btn-primary text-white" data-bs-toggle="modal" data-bs-target="#modal-add" id="btn-add-tugas">Tambah</button>
 						</div>
 					</div>
-					<table class="table-rounded w-100" id="tbl-tugas">
+					<table class="table-rounded w-100" id="tbl-tugas" style="width: 100%">
 						<thead>
 							<tr>
-								<th>Materi ID</th>
-								<th>Materi</th>
 								<th>Kelas ID</th>
 								<th>Kelas</th>
+								<th>Materi ID</th>
+								<th>Materi</th>
 								<th>Tanggal Buat</th>
 								<th>Batas waktu</th>
 								<th></th>
@@ -135,17 +145,24 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <!-- Include the selectize library -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="<?=base_url('assets/libs/tinymce/tinymce.min.js')?>"></script>
+<script src="<?=base_url('assets/libs/sweetalert2/sweetalert2.min.js')?>"></script>
 
 <script>
 	'use strict';
 
-	var currentPage = 1;
-	var teacher_id 	= <?=$detail['teacher_id']?>;
-	let startDate 	= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
-	let endDate		= moment().startOf('day').format('YYYY-MM-DD');
-	const admin_url = document.querySelector('meta[name="admin_url"]').content;
-	const modalAdd  = document.getElementById('modal-add');
-	const formTugas = document.forms['form-add'];
+	var currentPage 	= 1;
+	var teacher_id 		= <?=$detail['teacher_id']?>;
+	let startDate 		= moment().startOf('month').startOf('day').format('YYYY-MM-DD');
+	let endDate			= moment().startOf('day').format('YYYY-MM-DD');
+	const admin_url 	= document.querySelector('meta[name="admin_url"]').content;
+	const modalAdd  	= document.getElementById('modal-add');
+	const formTugas 	= document.forms['form-add'];
+	const btnAddTugas   = document.querySelector('#btn-add-tugas');
+	const selectMateri 	= document.getElementsByName('a_tugas_materi')[0];
+    const selectKelas 	= document.getElementsByName('a_tugas_class')[0];
+	const token 		= window.localStorage.getItem('token');
+
 	let isUpdate = 0;
 
 
@@ -161,8 +178,14 @@
 
 		try 
 		{
+			
+
 			const url = new URL(admin_url + 'api/materi/getAll');
-			const f = await fetch(url.href);
+			const f = await fetch(url.href, {
+				headers: {
+					'Authorization': 'Basic ' + token
+				}
+			});
 			const j = await f.json();
 			
 			return j.data;
@@ -183,8 +206,14 @@
 
 		try 
 		{
+			
+
 			const url = new URL(admin_url + 'api/kelas/get_all');
-			const f = await fetch(url.href);
+			const f = await fetch(url.href, {
+				headers: {
+					'Authorization': 'Basic ' + token
+				}
+			});
 			const j = await f.json();
 			
 			return j.data;
@@ -195,7 +224,12 @@
 		}
 	}
 
-	const simpanTugas = async e => {
+	/**
+	 * @description "simpan data tugas"
+	 * 
+	 * @return {Object}
+	 */
+	formTugas.addEventListener('submit', e => {
 		const formData = new FormData(e.target);
 
 		$.ajax({
@@ -225,7 +259,10 @@
             },
             url: isUpdate == 1 ? admin_url + 'api/tugas/edit' : admin_url + 'api/tugas/save',
             type: 'POST',
-            data: fData,
+            data: formData,
+			headers: {
+				'Authorization': 'Basic ' + token
+			},
             contentType: false,
             processData: false,
             success(reslv) {
@@ -255,21 +292,29 @@
             complete() {
                 var prog = document.getElementById('import-progress-1');
                 prog.setAttribute('hidden', 'hidden');
-                table.ajax.reload();
+                tableTugas.ajax.reload();
             }
 		});
-	}
+	});
 
+	/**
+	 * @description "Data Table Tugas"
+	 * 
+	 */
 	const tableTugas = $('#tbl-tugas').DataTable({
 		serverSide: true,
 		processing: true,
 		ajax: { 
 			url: admin_url + 'api/tugas/getAll',
+			headers: {
+				'Authorization': 'Basic ' + token
+			},
 			data: d => {
 				d.teacher = teacher_id;
 				return d;
 			} 
 		},
+		length: 8,
 		columns: [
 			{
 				data: 'class_id',
@@ -295,8 +340,9 @@
                 data: null,
                 render(data, row, type, meta) {
                     var view = '<div class="btn-group btn-group-sm float-right">' +
-                                    '<button class="btn btn-success edit_tugas"><i class="bx bx-edit-alt font-size-12"></i></button>' +
-                                    '<button class="btn btn-sm btn-danger delete_tugas"><i class="bx bx-trash font-size-12"></i></button>' +
+                                    '<button class="btn view_tugas" style="background-color: var(--bs-purple)"><i class="bi bi-eye text-white font-size-12"></i></button>' +
+                                    '<button class="btn btn-success edit_tugas"><i class="bi bi-pen text-white font-size-12"></i></button>' +
+                                    '<button class="btn btn-sm btn-danger delete_tugas"><i class="bi bi-trash text-white font-size-12"></i></button>' +
                                 '</div>';
                     return view;
                 }
@@ -304,13 +350,33 @@
 		]
 	});
 
-	(async $ => {
+	/**
+	 * @description "Date Range Picker for Periode Tugas"
+	 * 
+	 */
+	$('input[name="a_tugas_periode"]').daterangepicker({
+			showDropdowns: true,
+			minDate: 0,
+			locale: {
+				format: 'YYYY-MM-DD',
+				separator: ' s/d '
+			},
+    		drops: 'up'
+		}, (start, end, label) => {
+			const startDate = start.format("YYYY-MM-DD HH:mm:ss"),
+              	  endDate   = end.format("YYYY-MM-DD HH:mm:ss");
+
+			formTugas['a_tugas_start'].value = startDate;
+			formTugas['a_tugas_end'].value = endDate;
+		});
+
+	window.onload = e => (async $ => {
 
 		const materi = [...await getMateri()].map(x => ({ id: x.materi_id, text: x.title }));
 		const kelas  = [...await getKelas()].map(x => ({ id: x.class_id, text: x.class_name }));
 
 
-		$('select[name="a_tugas_materi"]').select2({
+		$(selectMateri).select2({
 			theme: "bootstrap-5",
 			data: materi,
 			placeholder: 'Pilih Materi',
@@ -318,7 +384,7 @@
 			width: '100%'
 		});
 
-		$('select[name="a_tugas_class"]').select2({
+		$(selectKelas).select2({
 			theme: "bootstrap-5",
 			data: kelas,
 			placeholder: 'Pilih Kelas',
@@ -326,12 +392,176 @@
 			width: '100%'
 		});
 
-		modalAdd.addEventListener('shown.bs.modal', e => {
-			form['a_tugas_code'].value = Math.floor(Math.random() * Date.now()).toString(10);
+		btnAddTugas.addEventListener('click', e => {
+			isUpdate = 0;
+			formTugas.reset();
+
+			formTugas['a_tugas_code'].value = '';
+			formTugas['a_tugas_code'].value = Math.floor(Math.random() * Date.now()).toString(36).toUpperCase();
+			formTugas['a_tugas_guru'].value = teacher_id;
+
+			const today = Date.now();
+			$('input[name="a_tugas_periode"]').data('daterangepicker').setStartDate(today);
+			$('input[name="a_tugas_periode"]').data('daterangepicker').setEndDate(today);
+
+			formTugas['a_tugas_start'].value = $('input[name="a_tugas_periode"]').data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
+			formTugas['a_tugas_end'].value = $('input[name="a_tugas_periode"]').data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
 		});
 
+		/**
+		 * @description "Button Edit Tugas"
+		 * 
+		 */
+		$('#tbl-tugas tbody').on('click', '.btn.edit_tugas', e => {
+			isUpdate = 1;
+			const row = tableTugas.row(e.target.parentNode.closest('tr')).data();
+			formTugas['a_id'].value = row.task_id;
+			formTugas['a_tugas_code'].value = row.code;
+			formTugas['a_tugas_guru'].value = teacher_id;
 
-	})(jQuery)
+			$(selectMateri).val(row.materi_id);
+			$(selectKelas).val(row.class_id);
+
+			tinymce.get('detail-tugas').setContent(row.note);
+			formTugas['a_tugas_start'].value = row.available_date;
+			formTugas['a_tugas_end'].value = row.due_date;
+			formTugas['a_tugas_periode'].value = row.available_date + ' - ' + row.due_date;
+
+			// tugas
+			formTugas['a_tugas_materi_text'].value = row.title;
+			formTugas['a_tugas_class_text'].value = row.class_name;
+			//formTugas['a_tugas_guru_text'].value = row.teacher_name;
+
+			//document.querySelector('label[for="a_tugas_file"]').innerText = row.task_file;
+			$('#modal-add').modal('show');
+		});
+
+		document.querySelector('#save-tugas').addEventListener('click', e => {
+			const evt = new Event('submit');
+			formTugas.dispatchEvent(evt);
+		});
+
+		$('input[name="a_tugas_periode"]').on('apply.daterangepicker', (e, picker) => {
+			const start = picker.startDate.format("YYYY-MM-DD HH:mm:ss"),
+			end   = picker.endDate.format("YYYY-MM-DD HH:mm:ss");
+
+			formTugas['a_tugas_start'].value = start;
+			formTugas['a_tugas_end'].value = end;
+		});
+
+		         /**
+     ===================================================
+     *               DELETE DATA
+     ===================================================
+     */
+
+     // DELETE ALL
+     $('#delete_all').on('click', e => {
+        var rows = tableTugas.rows({selected: true});
+        var data = rows.data(),
+            count = rows.count();
+        var arr = [];
+        if(count === 0) {
+            Swal.fire({
+				type: "error",
+				title:'<h5 class="text-danger text-uppercase">Error</h5>',
+				text: "No row selected !!!"
+			});
+			return false;
+        }
+
+        for(var i =0; i< count; i++) {
+            arr.push(data[i].task_id);
+        }
+
+        Swal.fire({
+            title: "Anda Yakin ?",
+            text: "Data yang dihapus tidak dapat dikembalikan",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn btn-success mt-2",
+            cancelButtonColor: "#f46a6a",
+            confirmButtonText: "Ya, Hapus Data",
+            cancelButtonText: "Tidak, Batalkan Hapus",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then(t => {
+            if(t.value) {
+                erase(arr, 1);
+            }
+        })
+     });
+
+    // DELETE ONE
+    $('#tbl-tugas tbody').on('click', '.btn.delete_tugas', e => {
+        var row = tableTugas.row($(e.target).parents('tr')).data();
+        Swal.fire({
+            title: "Anda Yakin ?",
+            text: "Data yang dihapus tidak dapat dikembalikan",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn btn-success mt-2",
+            cancelButtonColor: "#f46a6a",
+            confirmButtonText: "Ya, Hapus Data",
+            cancelButtonText: "Tidak, Batalkan Hapus",
+            closeOnConfirm: false,
+            closeOnCancel: false
+            }).then(t => {
+                if(t.value) {
+                    erase(row.task_id, 0);
+                }
+            })
+    });
+
+     function erase(data, isBulk) {
+        return $.ajax({
+            url: base_url + 'api/tugas/delete',
+            type: 'DELETE',
+            data: JSON.stringify({data: data, isBulk: isBulk}),
+            contentType: 'application/json',
+			headers: {
+				'Authorization': 'Basic ' + token
+			},
+            beforeSend(xhr, obj) {
+                Swal.fire({
+                    html: 	'<div class="d-flex flex-column align-items-center">'
+                    + '<span class="spinner-border text-primary"></span>'
+                    + '<h3 class="mt-2">Loading...</h3>'
+                    + '<div>',
+                    showConfirmButton: false,
+                    width: '10rem'
+                });
+            },
+            success(resp) {
+                Swal.fire({
+					type: resp.err_status,
+					title:`<h5 class="text-${resp.err_status} text-uppercase">${resp.err_status}</h5>`,
+					html: resp.message
+				});
+				//csrfToken.content = resp.token;
+            },
+            error(err) {
+                let response = JSON.parse(err.responseText);
+				Swal.fire({
+					type: response.err_status,
+					title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
+					html: response.message
+				});
+				//if(response.hasOwnProperty('token'))
+				//	csrfToken.setAttribute('content', response.token);
+            },
+            complete() {
+                table.ajax.reload();
+            }
+        });
+     }
+	})(jQuery);
+
+	tinymce.init({
+        selector: '#detail-tugas',
+        height: 240,
+		paste_as_text: true
+    });
 
 	$(document).ready(function () {
 		$('input[name="daterange"]').daterangepicker({
@@ -352,17 +582,7 @@
 			}
 		);
 
-		$('input[name="a_tugas_periode"]').daterangepicker({
-			showDropdowns: true,
-			minDate: 0,
-			locale: {
-				format: 'YYYY-MM-DD',
-				separator: ' s/d '
-			},
-    		drops: 'up'
-		}, (start, end, label) => {
-
-		});
+		
 	});
 
 	// FUNGSI UNTUK UBAH DATA CONTENT SUMMARY
@@ -384,46 +604,46 @@
 	}
 
 	// FUNGSI UNTUK ISI LIST DATA TUGAS
-	function getTask(page = 1, limit = 10, teacher_id){
-		$.ajax({
-			type: "GET",
-			url: BASE_URL+"teacher/get_task",
-			data: {
-				page: page,
-				limit: limit,
-				teacher_id: teacher_id
-			},
-			success: function (response) {
-				$('#tugas-body-content').html('');
-				$.each(response.data, function (key, value){
-					$('#tugas-body-content').append(`
-						<tr>
-							<td>${value.title}</td>
-							<td>${value.subject_name}</td>
-							<td>${moment(value.available_date).format('DD MMM YYYY, HH:mm')}</td>
-							<td>${moment(value.due_date).format('DD MMM YYYY, HH:mm')}</td>
-							<td><a href="${BASE_URL+`assets/files/student_task/`+value.task_file_answer}">${(value.task_file_answer != undefined) ? value.task_file_answer : ``}</a></td>
-							<td>${value.note.substring(0,100)}</td>
-						</tr>
-					`);
-				});
+	// function getTask(page = 1, limit = 10, teacher_id){
+	// 	$.ajax({
+	// 		type: "GET",
+	// 		url: BASE_URL+"teacher/get_task",
+	// 		data: {
+	// 			page: page,
+	// 			limit: limit,
+	// 			teacher_id: teacher_id
+	// 		},
+	// 		success: function (response) {
+	// 			$('#tugas-body-content').html('');
+	// 			$.each(response.data, function (key, value){
+	// 				$('#tugas-body-content').append(`
+	// 					<tr>
+	// 						<td>${value.title}</td>
+	// 						<td>${value.subject_name}</td>
+	// 						<td>${moment(value.available_date).format('DD MMM YYYY, HH:mm')}</td>
+	// 						<td>${moment(value.due_date).format('DD MMM YYYY, HH:mm')}</td>
+	// 						<td><a href="${BASE_URL+`assets/files/student_task/`+value.task_file_answer}">${(value.task_file_answer != undefined) ? value.task_file_answer : ``}</a></td>
+	// 						<td>${value.note.substring(0,100)}</td>
+	// 					</tr>
+	// 				`);
+	// 			});
 
-				$('.pagination').html('');
-				for(let i = 0; i < response.total_pages; i++){
-					if(currentPage == i+1){
-						$('.pagination').append(`
-							<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
-					}else{
-						$('.pagination').append(`
-							<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
-						`);
-					}
+	// 			$('.pagination').html('');
+	// 			for(let i = 0; i < response.total_pages; i++){
+	// 				if(currentPage == i+1){
+	// 					$('.pagination').append(`
+	// 						<li class="page-item active"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
+	// 					`);
+	// 				}else{
+	// 					$('.pagination').append(`
+	// 						<li class="page-item"><a class="page-link" href="#" onclick="page(${i+1}, event)">${i+1}</a></li>
+	// 					`);
+	// 				}
 
-				}
-			}
-		});
-	}
+	// 			}
+	// 		}
+	// 	});
+	// }
 
 	// FUNGSI UNTUK ISI LIST DATA EXAM
 	function getExam(page = 1, limit = 10, teacher_id){
@@ -469,15 +689,15 @@
 
 	// JIKA nav-tugas-tab DI KLIK
 	$('#nav-tugas-tab').on('click', function(){
-		getTask(1, 10, teacher_id);
+		tableTugas.ajax.reload();
 	});
 
 	// JIKA PAGE NUMBER DI KLIK
-	function page(pageNumber, e){
-		e.preventDefault();
-		currentPage = pageNumber;
-		getTask(pageNumber, 10, teacher_id);
-	}
+	// function page(pageNumber, e){
+	// 	e.preventDefault();
+	// 	currentPage = pageNumber;
+	// 	getTask(pageNumber, 10, teacher_id);
+	// }
 
 	// JIKA PAGE NUMBER 2 DI KLIK
 	function page2(pageNumber, e){

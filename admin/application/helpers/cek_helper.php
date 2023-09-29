@@ -27,17 +27,24 @@ function chek_session_login()
     }
 }
 
-function check_auth($username=NULL, $password=NULL) {
+function check_auth($token) {
 
     $ci = &get_instance();
-    $has_auth = true;
-    $user = $ci->db->get_where('users', ['username' => $username])->row_array();
 
-    if(empty($user['username']))
-        $has_auth = false;
+    if(empty($token))
+        return false;
 
-    if(!password_verify($password, $user['password']))
-        $has_auth = false;
+    $token = ltrim($token, 'Basic ');
 
-    return $has_auth;
+    $auth = explode(':', base64_decode($token));
+
+    if(empty($auth[0]))
+        return false;
+
+    $user = $ci->db->get_where('users', ['username' => $auth[0]])->row_array();
+
+    if(!password_verify($auth[1], $user['password']))
+        return false;
+
+    return true;
 }

@@ -10,7 +10,14 @@ class Materi extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
-        check_Loggin();
+
+        $headers = getallheaders();
+        if(!empty($headers['Authorization']))
+        {
+            $is_auth = check_auth($headers['Authorization']);
+        }
+        else
+            check_Loggin();
         $this->load->model(['model_common', 'model_materi', 'model_subject']); 
 		$this->load->helper('url');
 		$this->load->helper(['slug', 'tgl']);

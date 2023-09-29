@@ -5,12 +5,17 @@ class Tugas extends MY_Controller {
     public function __construct() {
         parent::__construct();
 
-        if(!empty($_SERVER['PHP_AUTH_USER']))
-        {
-            $is_auth = check_auth($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+        $headers = getallheaders();
 
-            if(!$is_auth)
+        if(!empty($headers['Authorization']))
+        {
+            $is_auth = check_auth($headers['Authorization']);
+
+            if(!$is_auth) {
                 http_response_code(403);
+                $msg = ['err_status' => 'error', 'message' => 'Anda tidak dapat mengakses halaman ini !!!'];
+                echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+            }
         }
         else
             check_Loggin();
@@ -64,7 +69,7 @@ class Tugas extends MY_Controller {
         header('Content-Type: application/json');
 
         // empty validation
-        if(empty($code) || empty($materi) || empty($class) || empty($start) || empty($end) || empty($periode) || empty($detail) || empty($guru))
+        if(empty($code) || empty($materi) || empty($class) || empty($start) || empty($end) || empty($detail) || empty($guru))
         {
             http_response_code(422);
             $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_is_required')];
