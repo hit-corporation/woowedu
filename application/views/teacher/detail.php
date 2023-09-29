@@ -91,7 +91,7 @@
 								<th>Materi</th>
 								<th>Kelas ID</th>
 								<th>Kelas</th>
-								<th>Ditugaskan</th>
+								<th>Tanggal Buat</th>
 								<th>Batas waktu</th>
 								<th></th>
 							</tr>
@@ -145,7 +145,9 @@
 	let endDate		= moment().startOf('day').format('YYYY-MM-DD');
 	const admin_url = document.querySelector('meta[name="admin_url"]').content;
 	const modalAdd  = document.getElementById('modal-add');
-	const form 		= document.forms['form-add'];
+	const formTugas = document.forms['form-add'];
+	let isUpdate = 0;
+
 
 	getSummary(teacher_id, startDate, endDate);
 	
@@ -193,6 +195,71 @@
 		}
 	}
 
+	const simpanTugas = async e => {
+		const formData = new FormData(e.target);
+
+		$.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                var prog = document.getElementById('import-progress-1');
+                xhr.upload.addEventListener('progress', e1 => {
+                    if(e1.lengthComputable) {
+                        prog.removeAttribute('hidden');
+                        var completed = (e1.loaded === e1.total) ? 90 : Math.round((e1.loaded / e1.total) * 100);
+                        prog.getElementsByClassName('progress-bar')[0].setAttribute('aria-valuenow', completed);
+                        prog.getElementsByClassName('progress-bar')[0].style.width = completed + '%';
+                        prog.getElementsByClassName('progress-bar')[0].innerHTML = completed + '%';
+                    }
+                }, false);
+                xhr.addEventListener('progress', e2 => {
+                    if(e2.lengthComputable) {
+                        prog.removeAttribute('hidden');
+                        var completed = (e2.loaded === e2.total) ? 90 : Math.round((e2.loaded / e2.total) * 100);
+                        prog.getElementsByClassName('progress-bar')[0].setAttribute('aria-valuenow', completed);
+                        prog.getElementsByClassName('progress-bar')[0].style.width = completed + '%';
+                        prog.getElementsByClassName('progress-bar')[0].innerHTML = completed + '%';
+                    }
+                }, false);
+
+                return xhr;
+            },
+            url: isUpdate == 1 ? admin_url + 'api/tugas/edit' : admin_url + 'api/tugas/save',
+            type: 'POST',
+            data: fData,
+            contentType: false,
+            processData: false,
+            success(reslv) {
+                //console.log(reslv);
+                var prog = document.getElementById('import-progress-1');
+
+                prog.getElementsByClassName('progress-bar')[0].setAttribute('aria-valuenow', 100);
+                prog.getElementsByClassName('progress-bar')[0].style.width = '100%';
+                prog.getElementsByClassName('progress-bar')[0].innerHTML = '100%';
+
+                var res = reslv;
+                Swal.fire({
+                    type: res.err_status,
+                    title: '<h5 class="text-success text-uppercase">'+res.err_status+'</h5>',
+                    html: res.message
+                });
+            },
+            error(err) {
+                let response = JSON.parse(err.responseText);
+
+                Swal.fire({
+                    type: response.err_status,
+                    title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
+                    html: response.message
+                });
+            },
+            complete() {
+                var prog = document.getElementById('import-progress-1');
+                prog.setAttribute('hidden', 'hidden');
+                table.ajax.reload();
+            }
+		});
+	}
+
 	const tableTugas = $('#tbl-tugas').DataTable({
 		serverSide: true,
 		processing: true,
@@ -219,8 +286,21 @@
 				data: 'title'
 			},
 			{
-
-			}
+                data: 'available_date'
+            },
+            {
+                data: 'due_date'
+            },
+            {
+                data: null,
+                render(data, row, type, meta) {
+                    var view = '<div class="btn-group btn-group-sm float-right">' +
+                                    '<button class="btn btn-success edit_tugas"><i class="bx bx-edit-alt font-size-12"></i></button>' +
+                                    '<button class="btn btn-sm btn-danger delete_tugas"><i class="bx bx-trash font-size-12"></i></button>' +
+                                '</div>';
+                    return view;
+                }
+            }
 		]
 	});
 
@@ -246,10 +326,10 @@
 			width: '100%'
 		});
 
-		modalAdd.addEventListener('show.bs.modal', e => {
-			console.log(form);
+		modalAdd.addEventListener('shown.bs.modal', e => {
 			form['a_tugas_code'].value = Math.floor(Math.random() * Date.now()).toString(10);
 		});
+
 
 	})(jQuery)
 
@@ -277,6 +357,7 @@
 			minDate: 0,
 			locale: {
 				format: 'YYYY-MM-DD',
+				separator: ' s/d '
 			},
     		drops: 'up'
 		}, (start, end, label) => {
