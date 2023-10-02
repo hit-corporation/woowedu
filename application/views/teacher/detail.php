@@ -32,7 +32,7 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 	<div class="container">
 		<div class="row">
 			<!-- profile content -->
-			<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-3">
+			<div class="col-xl-34 col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-3">
 				<div class="card border rounded p-3 h-100">
 					<div class="image-content">
 						<span>
@@ -49,7 +49,7 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 			</div>
 
 			<!-- skor by date range content -->
-			<div class="col-xl-9 col-lg-9 col-md-6 col-sm-12 col-xs-12 mb-3 h-100">
+			<div class="col-xl-8 col-lg-8 col-md-6 col-sm-12 col-xs-12 mb-3 h-100">
 				<div class="card border rounded p-3 data-by-date h-100">
 					<input class="border-width-1 rounded-lg ml-3"  style="height: 40px; text-align:center; border-color: rgba(0, 0, 255, 0.3);" type="text" name="daterange" 
 						value="<?php 
@@ -402,6 +402,10 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 			width: '100%'
 		});
 
+		/**
+		 * @description "Button Tambah Tugas Listener"
+		 * 
+		 */
 		btnAddTugas.addEventListener('click', e => {
 			isUpdate = 0;
 			formTugas.reset();
@@ -422,6 +426,23 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 		});
 
 		/**
+		 * @description "View Tugas Listner"
+		 * 
+		 */
+		$('#tbl-tugas tbody').on('click', '.btn.view_tugas', e => {
+			const row = tableTugas.row(e.target.parentNode.closest('tr')).data();
+
+			document.getElementById('title').innerHTML = row.title;
+			document.getElementById('note').innerHTML = row.note;
+			var link = row.task_file.replace('\\', '/');
+			const downloadUrl = new URL(admin_url + '/' + link);
+
+			document.getElementById('task_file').href = downloadUrl.href;
+
+			$('#mdl-view-tugas').modal('show');
+		});
+
+		/**
 		 * @description "Button Edit Tugas"
 		 * 
 		 */
@@ -436,6 +457,7 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 			$(selectKelas).val(row.class_id);
 
 			tinymce.get('detail-tugas').setContent(row.note);
+			formTugas['a_tugas_detail'].value = tinymce.get('detail-tugas').getContent();
 			formTugas['a_tugas_start'].value = row.available_date;
 			formTugas['a_tugas_end'].value = row.due_date;
 			formTugas['a_tugas_periode'].value = row.available_date + ' - ' + row.due_date;
@@ -448,6 +470,7 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 			//document.querySelector('label[for="a_tugas_file"]').innerText = row.task_file;
 			$('#modal-add').modal('show');
 		});
+		
 
 		document.querySelector('#save-tugas').addEventListener('click', e => {
 			const evt = new Event('submit');
@@ -462,7 +485,7 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 			formTugas['a_tugas_end'].value = end;
 		});
 
-		         /**
+	/**
      ===================================================
      *               DELETE DATA
      ===================================================

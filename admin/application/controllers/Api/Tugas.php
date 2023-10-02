@@ -43,7 +43,7 @@ class Tugas extends MY_Controller {
             'draw' => $draw,
             'data' => $data,
             'recordsTotal' => $this->db->count_all_results('task'),
-            'recordsFiltered' => $this->model_tugas->countAll($filters)
+            'recordsFiltered' => $this->model_tugas->countAll($filters, $id)
         ];
 
         echo json_encode($_data, JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);

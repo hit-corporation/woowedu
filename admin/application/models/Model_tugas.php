@@ -44,11 +44,46 @@ class Model_tugas extends CI_Model {
         return $res->result_array();
     }
 
-    public function countAll(array $filters = NULL) {
+    /**
+     * Count All Data With Filter
+     *
+     * @param array $filters
+     * @param int $id
+     * @return int
+     */
+    public function countAll(array $filters = NULL, int $id = NULL): int {
         $query = $this->queryString();
 
-        $res = $this->db->query($query);
-        return $res->num_rows();
+        $filt = [];
+
+        if(!empty($id))
+        {
+            $query .= " AND c.teacher_id=?";
+            $filt[] = $id;
+        }
+
+        if(!empty($filters[2]['search']['value'])) {
+            $query .= " AND a.code LIKE ?";
+            $filt[] = '%'.$filters[2]['search']['value'].'%';
+        }
+
+        if(!empty($filters[3]['search']['value'])) {
+            $query .= " AND d.materi_id=?";
+            $filt[] = $filters[3]['search']['value'];
+        }
+
+        if(!empty($filters[5]['search']['value'])) {
+            $query .= " AND b.class_id=?";
+            $filt[] = $filters[5]['search']['value'];
+        }
+
+        if(!empty($filters[7]['search']['value'])) {
+            $query .= " AND c.teacher_id=?";
+            $filt[] = $filters[7]['search']['value'];
+        }
+
+        $res = $this->db->query($query, $filt);
+        return $res->num_rows() ?? 0;
     }
 
     private function queryString() {

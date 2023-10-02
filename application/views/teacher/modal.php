@@ -90,15 +90,23 @@
 <!-- end modal add-->
 
 <!-- Modal View -->
-<div class="modal fade" tabindex="-1">
+<div class="modal fade" tabindex="-1" id="mdl-view-tugas">
 
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: var(--bs-purple); color: var(--bs-white)">
-                <h5 class="modal-title text-capitalize text-light text-shadow">Tambah Tugas</h5>
+                <h5 class="modal-title text-capitalize text-light text-shadow">Tugas</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body">
+                <h4 id="title" class="mb-4"></h4>
+                <span id="note" class="mb-5 text-justify"></span>
+                <div class="d-flex flex-nowrap justify-content-end pt-3">
+                    <a id="task_file" href="" class="btn btn-primary text-white" download>
+                        <i class="bi bi-download"></i> Download
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
