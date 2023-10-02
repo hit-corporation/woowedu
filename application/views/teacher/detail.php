@@ -42,8 +42,8 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 					</div>
 
 					<div class="mt-3">
-						<p class="fs-6"><i class="bi bi-envelope-paper"> </i><?=$detail['email']?></p>
-						<p class="fs-6"><i class="bi bi-bank"> </i><?=$detail['nama_sekolah']?></p>
+						<p class="fs-6"><i class="bi bi-envelope-paper"></i><?=$detail['email']?></p>
+						<p class="fs-6"><i class="bi bi-bank"></i><?=$detail['nama_sekolah']?></p>
 					</div>
 				</div>
 			</div>
@@ -173,6 +173,7 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 	const selectMateri 	= document.getElementsByName('a_tugas_materi')[0];
     const selectKelas 	= document.getElementsByName('a_tugas_class')[0];
 	const token 		= window.localStorage.getItem('token');
+	const level			= window.atob(window.localStorage.getItem('level'));
 
 	let isUpdate = 0;
 
@@ -347,10 +348,11 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
                 data: null,
                 render(data, row, type, meta) {
                     var view = '<div class="btn-group btn-group-sm float-right">' +
-                                    '<button class="btn view_tugas" style="background-color: var(--bs-purple)"><i class="bi bi-eye text-white font-size-12"></i></button>' +
-                                    '<button class="btn btn-success edit_tugas"><i class="bi bi-pen text-white font-size-12"></i></button>' +
-                                    '<button class="btn btn-sm btn-danger delete_tugas"><i class="bi bi-trash text-white font-size-12"></i></button>' +
-                                '</div>';
+                                    '<button class="btn view_tugas" style="background-color: var(--bs-purple)"><i class="bi bi-eye text-white font-size-12"></i></button>';
+					if([1,3,10].includes(+level))
+                    	view += '<button class="btn btn-success edit_tugas"><i class="bi bi-pen text-white font-size-12"></i></button>' +
+                                    '<button class="btn btn-sm btn-danger delete_tugas"><i class="bi bi-trash text-white font-size-12"></i></button>';
+                        view += '</div>';
                     return view;
                 }
             }

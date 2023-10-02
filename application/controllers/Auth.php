@@ -114,6 +114,11 @@ class auth extends CI_Controller
 	public function logout()
 	{
 		$this->session->sess_destroy();
+		$script = '<script>
+					window.localStorage.removeItem(\'level\');
+					window.localStorage.removeItem(\'token\');
+				  </script>';
+		echo $script;
 		redirect('auth/login');
 	}
 

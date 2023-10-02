@@ -104,6 +104,7 @@
 					var ulevel = res.ulevel;
 
 					window.localStorage.setItem('token', res.token);
+					window.localStorage.setItem('level', window.btoa(ulevel));
 					
 					Swal.fire({
 						type: res.err_status,

@@ -303,8 +303,34 @@ class Model_common extends CI_Model{
 		$this->db->get_compiled_select('student a', FALSE);
 	}   
 	
-	public function save_student(array $data) {
-			return $this->db->insert('student', $data);
+	/**
+	 * Save new student 
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public function save_student(array $data): bool {
+			$this->db->trans_start();
+			$this->db->insert('student', $data);
+
+			$newUser = [
+				'username' 		=> $data['nis'],
+				'user_level'	=> 4,
+				'password'		=> password_hash('123456', PASSWORD_DEFAULT)
+			];
+
+			$this->db->insert('users', $newUser);
+
+			$this->db->trans_complete();
+
+			if($this->db->trans_status() === FALSE)
+			{
+				$this->db->trans_rollback();
+				return false;
+			}
+			$this->db->trans_commit();
+
+			return true;
 	}	
 	
 	public function modify_student(array $data) {

@@ -3,12 +3,6 @@
 <div class="container">
 
 	<form class="row mb-3" name="frm-filter">
-		<div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-			<select class="form-select" name="select-kelas" id="select-kelas" aria-label="Pilih Kelas">
-				
-			</select>
-		</div>
-
 		
 		<div class="col-lg-4 col-md-6 col-sm-12 mb-2">
             <select class="form-select" name="select-mapel" id="select-mapel" aria-label="Pilih Matapelajaran">
@@ -16,11 +10,7 @@
             </select>
 		</div>
         <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-            <div class="btn-group">
-                <button class="btn btn-primary" type="submit" ><i class="bi bi-search text-white"></i></button>
-                <button class="btn btn-danger" type="reset" ><i class="bi bi-x-circle text-white"></i></button>
-            </div>
-            
+            <button class="btn btn-primary text-white" type="submit" ><i class="bi bi-search text-white"></i> Cari</button>
         </div>
        
     </form>
@@ -78,7 +68,7 @@
 
       </div>
       <div class="modal-body">
-        <form name="form-add" id="form-add" class="d-flex flex-column"  >
+        <form name="form-add" id="form-add" class="d-flex flex-column" >
             <div class="row">
                 <div class="col-12 col-lg-7">
                      
