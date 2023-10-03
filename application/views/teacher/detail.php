@@ -41,10 +41,10 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 						<span class="h6 ms-1 font-size-16" id="teacher-name"><?=$detail['teacher_name']?></span>
 					</div>
 
-					<div class="mt-3">
-						<p class="fs-6"><i class="bi bi-envelope-paper"></i><?=$detail['email']?></p>
-						<p class="fs-6"><i class="bi bi-bank"></i><?=$detail['nama_sekolah']?></p>
-					</div>
+					<dl class="row mt-3 fs-6">
+						<dt class="col-1"><i class="bi bi-envelope-paper"></i></dt><dd class="col-11"><?=$detail['email']?></dd>
+						<dt class="col-1"><i class="bi bi-bank"></i></dt><dd class="col-11"><?=$detail['nama_sekolah']?></dd>
+					</dl>
 				</div>
 			</div>
 

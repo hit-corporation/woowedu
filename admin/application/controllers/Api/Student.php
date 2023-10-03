@@ -47,7 +47,6 @@ class Student extends MY_Controller {
 	}
  
  
- 
 	public function add_data() 
 	{
     	header('Access-Control-Allow-Origin: *');
@@ -266,7 +265,7 @@ class Student extends MY_Controller {
 						$prog += 1;
 			} else {
 				$nsd['create_by'] = $this->session->userdata('username');
-				if($this->db->insert('student', $nsd))
+				if($this->model_common->save_student($nsd))
 						$prog += 1;
 			}
 			echo json_encode(['total' => count($excelRows), 'prog' => $prog]);
