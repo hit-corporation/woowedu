@@ -203,9 +203,14 @@ class Student extends CI_Controller {
 		$page 		= isset($get['start']) ? (int)$get['start'] : 1;
 		$limit 		= isset($get['length']) ? (int)$get['length'] : 3;
 
-		$filter['user_id'] = $user['userid'];
+		$filter['user_id'] = ($user) ? $user['userid'] : [];
 
-		$books = $this->model_student->get_history_book($limit, $page, $filter);
+		if($filter['user_id']){
+			$books = $this->model_student->get_history_book($limit, $page, $filter);
+		}else{
+			$books = [];
+		}
+
 		// foreach ($books as $key => $val) {
 		// 	$ebook = $this->db->where('id', $val['book_id'])->get('ebooks')->row_array();
 		// 	$books[$key]['book_code'] = $ebook['book_code']; 
@@ -218,9 +223,9 @@ class Student extends CI_Controller {
 
 		$data['data'] 				= $books;
 		$data['draw'] 				= $get['draw'];
-		$data['recordsTotal'] 		= $this->model_student->get_history_book_total($filter);
+		$data['recordsTotal'] 		= ($books) ? $this->model_student->get_history_book_total($filter) : 0;
 		$data['recordsFiltered'] 	= $data['recordsTotal'];
-		$data['total_pages'] 		= ceil($data['recordsTotal'] / $limit);
+		// $data['total_pages'] 		= ceil($data['recordsTotal'] / $limit);
 
 		// create json header	
 		header('Content-Type: application/json');
