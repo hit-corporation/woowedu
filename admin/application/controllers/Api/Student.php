@@ -50,7 +50,7 @@ class Student extends MY_Controller {
  
 	public function add_data() 
 	{
-    header('Access-Control-Allow-Origin: *');
+    	header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: POST');
 		header('Content-Type: application/json');
 
@@ -68,8 +68,8 @@ class Student extends MY_Controller {
 		$class_id   = trim($this->input->post('class_id'));  
 		$address   = trim($this->input->post('address')); 
 		$phone   = trim($this->input->post('phone'));  
-		$parent_phone = trim($this->input->post('parent_phone'));
-		$parent_email = trim($this->input->post('parent_email')); 
+		// $parent_phone = trim($this->input->post('parent_phone'));
+		// $parent_email = trim($this->input->post('parent_email')); 
 		$sekolah_id = $this->session->userdata('sekolah_id');			
 		$token  = trim($this->input->post('xsrf_token'));
 		//validation
@@ -96,8 +96,8 @@ class Student extends MY_Controller {
 			'address' => $address,
 			'phone' => $phone,
 			'email' => $email, 
-			'parent_phone' => $parent_phone,
-			'parent_email' => $parent_email, 
+			// 'parent_phone' => $parent_phone,
+			// 'parent_email' => $parent_email, 
 			'sekolah_id' => $sekolah_id			
 		];
 		if(!$this->model_common->save_student($data)) {
@@ -153,17 +153,18 @@ class Student extends MY_Controller {
 		
 		// update action
 		$data = [
-				'student_id'        => $student_id, 
-				'nis' => $nis,
-				'student_name' => $student_name,
-				'class_id' => $class_id, 
-				'address' => $address,
-				'phone' => $phone,
-				'email' => $email, 
-				'parent_phone' => $parent_phone,
-				'parent_email' => $parent_email, 
-				'sekolah_id' => $sekolah_id	
+				'student_id'	=> $student_id, 
+				'nis' 			=> $nis,
+				'student_name'  => $student_name,
+				'class_id' 		=> $class_id, 
+				'address' 		=> $address,
+				'phone' 		=> $phone,
+				'email' 		=> $email, 
+				'parent_phone' 	=> $parent_phone,
+				'parent_email' 	=> $parent_email, 
+				'sekolah_id' 	=> $sekolah_id	
 		];
+
 		if(!$this->model_common->modify_student($data)) {
 				http_response_code(422);
 			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_form_error'), 'token' => $this->csrfsimple->genToken()];

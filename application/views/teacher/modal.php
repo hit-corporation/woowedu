@@ -17,7 +17,7 @@
                             <input type="text" class="form-control form-control-sm" name="a_tugas_code" required/>
                         </div>
                         
-                        <div class="w-100">
+                        <div class="w-100 mt-2">
                             <label class="m-0">Materi <span class="text-danger"><strong>*</strong></span></label>
                             <span class="d-flex flex-nowrap">
                               <select type="text" class="form-control form-control-sm" name="a_tugas_materi" required></select>
@@ -25,7 +25,7 @@
                             <input type="hidden" name="a_tugas_materi_text">
                         </div>
 
-                        <div class="w-100">
+                        <div class="w-100 mt-2">
                             <label class="m-0">Kelas <span class="text-danger"><strong>*</strong></span></label>
                             <span class="d-flex flex-nowrap">
                               <select type="text" class="form-control form-control-sm w-100" name="a_tugas_class" required></select>
@@ -33,14 +33,14 @@
                             <input type="hidden" name="a_tugas_class_text">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mt-2">
                           <label class="m-0">Periode <span class="text-danger"><strong>*</strong></span></label>
                           <input type="text" class="form-control form-control-sm" name="a_tugas_periode" id="a_tugas_periode">
                           <input type="hidden" name="a_tugas_start">
                           <input type="hidden" name="a_tugas_end">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mt-2">
                           <label class="m-0">File Pendukung</label>
                           <div class="input-group input-group-sm">
                             <input type="file" class="form-control form-control-sm" id="a_tugas_file" name="a_tugas_file" aria-describedby="a_tugas_file">
@@ -69,6 +69,7 @@
             </div>
 
             <input type="hidden" name="a_id" />
+            <input type="hidden" name="a_tugas_guru" />
             <input type="hidden" name="xsrf" />
         </form>
         <span class="w-100 d-flex flex-nogrow">
@@ -87,3 +88,27 @@
   </div>
 </section>
 <!-- end modal add-->
+
+<!-- Modal View -->
+<div class="modal fade" tabindex="-1" id="mdl-view-tugas">
+
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: var(--bs-purple); color: var(--bs-white)">
+                <h5 class="modal-title text-capitalize text-light text-shadow">Tugas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4 id="title" class="mb-4"></h4>
+                <span id="note" class="mb-5 text-justify"></span>
+                <div class="d-flex flex-nowrap justify-content-end pt-3">
+                    <a id="task_file" href="" class="btn btn-primary text-white" download>
+                        <i class="bi bi-download"></i> Download
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- End Modal View -->

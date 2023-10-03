@@ -361,7 +361,7 @@ const frm = document.forms['form-add'],
                     erase(row.task_id, 0);
                 }
             })
-        });
+    });
 
      function erase(data, isBulk) {
         return $.ajax({

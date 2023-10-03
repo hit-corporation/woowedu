@@ -126,9 +126,9 @@
 				address: form['a_address'].value, 
 				phone: form['a_phone'].value, 
 				email: form['a_email'].value, 
-				parent_name: form['a_parent_name'].value, 
-				parent_phone: form['a_parent_phone'].value, 
-				parent_email: form['a_parent_email'].value,  
+				// parent_name: form['a_parent_name'].value, 
+				// parent_phone: form['a_parent_phone'].value, 
+				// parent_email: form['a_parent_email'].value,  
 				xsrf_token: form['xsrf'].value
 		};
 		let conf = {};

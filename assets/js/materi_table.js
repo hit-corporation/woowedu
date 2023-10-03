@@ -3,6 +3,7 @@ const form = document.forms['form-add'];
 const frmFilter = document.forms['frm-filter']
 const embedFile = document.querySelector('#embed-file');
 let isUpdate = 0;
+const lvlGuru = [1, 3, 10];
 
 
 /**
@@ -44,11 +45,15 @@ const table = $('#tbl-materi').DataTable({
         {
             data: null,
             render(data, row, type, meta) {
+                const level = window.atob(window.localStorage.getItem('level'));
+
                 var view = '<div class="btn-group btn-group-sm float-right">'+
-                                '<button class="btn bg-purple text-white view_materi"><i class="bi bi-eye font-size-12"></i></button>' +
-                                '<button class="btn btn-success edit_materi"><i class="bi bi-pen text-white font-size-12"></i></button>' +
-                                '<button class="btn btn-sm btn-danger delete_materi"><i class="bi bi-trash-fill text-white font-size-12"></i></button>' +
-                            '</div>';
+                                '<button class="btn bg-purple text-white view_materi"><i class="bi bi-eye font-size-12"></i></button>';
+                if(lvlGuru.includes(+level))
+                    view += '<button class="btn btn-success edit_materi"><i class="bi bi-pen text-white font-size-12"></i></button>' +
+                                '<button class="btn btn-sm btn-danger delete_materi"><i class="bi bi-trash-fill text-white font-size-12"></i></button>';
+                view += '</div>';
+                
                 return view;
             },
             width: '60px'
