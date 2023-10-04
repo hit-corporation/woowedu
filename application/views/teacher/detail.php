@@ -102,7 +102,14 @@ if(!empty($detail['photo']) && file_exists(FCPATH.'assets'.DIRECTORY_SEPARATOR.'
 				<div class="tab-pane fade p-3" id="nav-tugas" role="tabpanel" aria-labelledby="nav-tugas-tab" tabindex="0">
 					<div class="row">
 						<div class="col-12">
+							<?php 
+								$bisaliat = [1, 3, 10];
+								$_level = intval($_SESSION['user_level']) ?? 0;
+								
+								if(in_array($_level, $bisaliat)):
+							?>
 							<button class="btn btn-sm btn-primary text-white" data-bs-toggle="modal" data-bs-target="#modal-add" id="btn-add-tugas">Tambah</button>
+							<?php endif; ?>
 						</div>
 					</div>
 					<table class="table-rounded w-100" id="tbl-tugas" style="width: 100%">
