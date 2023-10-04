@@ -2,6 +2,8 @@
 const form = document.forms['form-add'];
 const frmFilter = document.forms['frm-filter']
 const embedFile = document.querySelector('#embed-file');
+const btnAdd = document.getElementById('btn-add');
+
 let isUpdate = 0;
 const lvlGuru = [1, 3, 10];
 
@@ -339,7 +341,8 @@ const filter = async e => {
     // Input File
     document.querySelector('#videoFile').addEventListener('change', inputFileHandler);
     // Button Add
-    document.getElementById('btn-add').addEventListener('click', e => btnAddClick(e));
+    if(btnAdd)
+        btnAdd.addEventListener('click', e => btnAddClick(e));
     // Update Click
     $('#tbl-materi > tbody').on('click', '.btn.edit_materi', e => btnUpdateClick(e));
     $('#tbl-materi > tbody').on('click', '.btn.view_materi', e => showData(e));
