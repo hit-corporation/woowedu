@@ -38,9 +38,16 @@
 		<div class="row mb-2">
 			<div class="col-md-8 col-lg-10"></div>
 			<div class="col-md-4 col-lg-2 d-flex flex-nowrap justify-content-end">
+				<?php
+					$bisaliat = [1, 3, 10];
+					$_level = intval($_SESSION['user_level']) ?? 0;
+
+					if(in_array($_level, $bisaliat)):
+				?>
 				<button type="button" class="btn btn-sm btn-success text-white shadow-sm rounded-pill" id="btn-add" data-bs-toggle="modal" data-bs-target="#modal-add">
 					<i class="bi bi-plus font-size-12"></i> Tambah
 				</button>
+				<?php endif;  ?>
 			</div>
 		</div>
 
