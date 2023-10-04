@@ -21,12 +21,8 @@ class Student extends MY_Controller{
 	public function index()
 	{
 		
-		$url = base_url().'api/kelas/get_all';
-		$header = [
-				'Content-Type: application/x-www-form-urlencoded'
-		];
-		$resp = $this->curl->setHeader($header)->request($url, 'GET', http_build_query($param));
-		$response_class = json_decode($resp, TRUE);
+		
+		$response_class = ['data' => $this->model_common->get_all_class(), 'count' => $this->model_common->count_all_class()];
  
 		if($response['ErrStatus'] === 'error') {
 				http_response_code(422);

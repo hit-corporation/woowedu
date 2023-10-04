@@ -46,7 +46,7 @@ class Kelas extends MY_Controller {
 
 	public function get_all() 
 	{
-    header('Access-Control-Allow-Origin: *');
+    	header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: GET');
 		header('Content-Type: application/json');		
 		
