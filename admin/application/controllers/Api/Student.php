@@ -66,9 +66,10 @@ class Student extends MY_Controller {
 		$nis   = trim($this->input->post('nis')); 
 		$class_id   = trim($this->input->post('class_id'));  
 		$address   = trim($this->input->post('address')); 
+		$gender   = trim($this->input->post('gender'));
 		$phone   = trim($this->input->post('phone'));  
 		// $parent_phone = trim($this->input->post('parent_phone'));
-		// $parent_email = trim($this->input->post('parent_email')); 
+		$email = trim($this->input->post('email')); 
 		$sekolah_id = $this->session->userdata('sekolah_id');			
 		$token  = trim($this->input->post('xsrf_token'));
 		//validation
@@ -94,7 +95,8 @@ class Student extends MY_Controller {
 			'class_id' => $class_id, 
 			'address' => $address,
 			'phone' => $phone,
-			'email' => $email, 
+			'email' => $email,
+			'gender' => $gender,
 			// 'parent_phone' => $parent_phone,
 			// 'parent_email' => $parent_email, 
 			'sekolah_id' => $sekolah_id			
