@@ -116,27 +116,29 @@
 		form['a_phone'].value = row[0].phone; 
 		form['a_email'].value = row[0].email;
 		form['a_parent_name'].value = row[0].parent_name; 
-		form['a_parent_phone'].value = row[0].parent_phone; 
-		form['a_parent_email'].value = row[0].parent_email; 	
+		// form['a_parent_phone'].value = row[0].parent_phone; 
+		// form['a_parent_email'].value = row[0].parent_email; 	
 		form['xsrf'].value = csrfToken.content; 
 		$('#modal-add').modal('show');
 
 		// #################################### ISI COMBO BOX PARENT NAME ####################################
-
+		
 		$.ajax({
 			type: "GET",
 			url: base_url + "Orangtua/list",
 			data: {},
 			dataType: "JSON",
 			success: function (response) {
-				$('select[name="a_parent_name"]').html('');
+				$('select[name="a_parent_name"]').html(''); // kosongkan select sebelum di isi
+				$('select[name="a_parent_name"]').append(`<option value="">-- Pilih Wali --</option>`);
 				$.each(response.data, function (i, val) {
-					if(row[0].parent_id == val.parent_id){
+					if(row[0].parent_id === val.parent_id){
 						$('select[name="a_parent_name"]').append(`<option value="${val.parent_id}" selected>${val.name} - ${val.phone}</option>`);
 					}else{
 						$('select[name="a_parent_name"]').append(`<option value="${val.parent_id}">${val.name} - ${val.phone}</option>`);
 					}
 				});
+				$('select[name="a_parent_name"]').select2();
 			}
 		});
 
@@ -159,9 +161,9 @@
 				phone		: form['a_phone'].value,
 				email		: form['a_email'].value,
 				gender		: form['a_gender'].value,
-				parent_name	: form['a_parent_name'].value,
-				parent_phone: form['a_parent_phone'].value,
-				parent_email: form['a_parent_email'].value,
+				parent_id	: form['a_parent_name'].value,
+				// parent_phone: form['a_parent_phone'].value,
+				// parent_email: form['a_parent_email'].value,
 				xsrf_token	: form['xsrf'].value
 		};
 		let conf = {};
