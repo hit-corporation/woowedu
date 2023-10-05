@@ -53,7 +53,7 @@ a.close_corner_top_left {
                     </div>
                 </div>
                 <div class="col">
-                    <button type="button" id="btn-search_student" class="btn btn-primary shadow">
+                    <button type="button" id="btn-search-student" class="btn btn-primary shadow">
                         <i class="fa fa-search fa-fw"></i>
                         Cari
                     </button>

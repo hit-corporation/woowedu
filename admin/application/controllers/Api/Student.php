@@ -118,7 +118,7 @@ class Student extends MY_Controller {
 
 	public function edit_data() 
 	{
-    header('Access-Control-Allow-Origin: *');
+  	  	header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: PUT');
 		header('Content-Type: application/json');
 

@@ -77,7 +77,12 @@
 		}
 
     });
- 
+
+	// ########################### SEARCH STUDENT ###########################
+	$('#btn-search-student').on('click', function(e){
+		e.preventDefault();
+		table.columns(4).search($('input[name="s_student_name"]').val()).draw();
+	});
  
     //select_all
     $('#select_all').on('click', e => {
