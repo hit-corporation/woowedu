@@ -64,6 +64,12 @@ const table = $('#tbl-parent').DataTable({
     }
 });
 
+// ########################### SEARCH STUDENT ###########################
+$('#btn-search-parent').on('click', function(e){
+	e.preventDefault();
+	table.columns(3).search($('input[name="s_parent_name"]').val()).draw();
+});
+
 //select_all
 $('#select_all').on('click', e => {
     if(e.target.checked)

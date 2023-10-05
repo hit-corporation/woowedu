@@ -49,11 +49,11 @@ a.close_corner_top_left {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="s_student_name">Nama Wali</span>
                         </div>
-                        <input type="search" class="form-control" aria-describedby="s_student_name" name="s_student_name" placeholder="Cari Nama Wali Murid" />
+                        <input type="search" class="form-control" aria-describedby="s_student_name" name="s_parent_name" placeholder="Cari Nama Wali Murid" />
                     </div>
                 </div>
                 <div class="col">
-                    <button type="button" id="btn-search_student" class="btn btn-primary shadow">
+                    <button type="button" id="btn-search-parent" class="btn btn-primary shadow">
                         <i class="fa fa-search fa-fw"></i>
                         Cari
                     </button>
