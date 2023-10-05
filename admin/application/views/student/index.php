@@ -193,29 +193,13 @@ a.close_corner_top_left {
 
 			<div class="row align-items-center mt-2">
                 <div class="col-4">
-                    <label class="m-0">Wali Dari <span class="text-danger"><strong>*</strong></span></label>
+                    <label class="m-0">Wali <span class="text-danger"><strong>*</strong></span></label>
                 </div>
                 <div class="col-8">
-                    <select  class="form-control form-control-sm" name="a_parent_name">
-						
-                    </select> 
+                    <select  class="form-control form-control-sm" name="a_parent_name"></select> 
                 </div>
             </div>	
 			
-			<div class="row align-items-center mt-2">
-                <div class="col-4">
-                    <label class="m-0">Telp Wali <span class="text-danger"> </span></label>
-                </div>
-                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_parent_phone" /></div>
-            </div>
-			
-			<div class="row align-items-center mt-2">
-                <div class="col-4">
-                    <label class="m-0">Email Wali <span class="text-danger"> </span></label>
-                </div>
-                <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_parent_email" /></div>
-            </div>
- 
             <input type="hidden" name="a_student_id" />
             <input type="hidden" name="xsrf" />
         </form>
