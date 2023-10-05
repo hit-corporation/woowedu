@@ -66,10 +66,12 @@ class Student extends MY_Controller {
 		$nis   = trim($this->input->post('nis')); 
 		$class_id   = trim($this->input->post('class_id'));  
 		$address   = trim($this->input->post('address')); 
+		$email = trim($this->input->post('email')); 
 		$gender   = trim($this->input->post('gender'));
 		$phone   = trim($this->input->post('phone'));  
+		$parent_id = trim($this->input->post('parent_id'));
 		// $parent_phone = trim($this->input->post('parent_phone'));
-		$email = trim($this->input->post('email')); 
+		// $parent_email = trim($this->input->post('parent_email'));
 		$sekolah_id = $this->session->userdata('sekolah_id');			
 		$token  = trim($this->input->post('xsrf_token'));
 		//validation
@@ -97,12 +99,13 @@ class Student extends MY_Controller {
 			'phone' => $phone,
 			'email' => $email,
 			'gender' => $gender,
+			'parent_id' => ($parent_id) ? $parent_id : null,
 			// 'parent_phone' => $parent_phone,
 			// 'parent_email' => $parent_email, 
 			'sekolah_id' => $sekolah_id			
 		];
 		if(!$this->model_common->save_student($data)) {
-				http_response_code(422);
+			http_response_code(422);
 			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_form_error'), 'token' => $this->csrfsimple->genToken()];
 			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 			return;
@@ -134,8 +137,9 @@ class Student extends MY_Controller {
 		$class_id   = trim($input['class_id']);  
 		$address   = trim($input['address']); 
 		$phone   = trim($input['phone']);  
-		$parent_phone = trim($input['parent_phone']);
-		$parent_email = trim($input['parent_email']); 
+		$parent_id = trim($input['parent_id']);
+		// $parent_phone = trim($input['parent_phone']);
+		$email = trim($input['email']); 
 		$sekolah_id = $this->session->userdata('sekolah_id');	 
 		$token  = trim($input['xsrf_token']);
 
@@ -160,9 +164,10 @@ class Student extends MY_Controller {
 				'class_id' 		=> $class_id, 
 				'address' 		=> $address,
 				'phone' 		=> $phone,
-				'email' 		=> $email, 
-				'parent_phone' 	=> $parent_phone,
-				'parent_email' 	=> $parent_email, 
+				'email' 		=> $email,
+				'parent_id'		=> ($parent_id) ? $parent_id : null,
+				// 'parent_phone' 	=> $parent_phone,
+				// 'parent_email' 	=> $parent_email, 
 				'sekolah_id' 	=> $sekolah_id	
 		];
 
