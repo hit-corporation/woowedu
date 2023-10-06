@@ -171,4 +171,53 @@ class Orangtua extends MY_Controller {
 		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 		exit;
     }
+
+    /**
+     * Delete One Or More Data in Database
+     *
+     * @return void
+     */
+    public function delete(): void {
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: DELETE');
+		header('Content-Type: application/json');
+
+			$params = file_get_contents('php://input');
+			$input = json_decode($params, TRUE);
+			if($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+					http_response_code(405);
+					$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_mismatch_method')];
+					echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+					return;
+			}
+			// if($this->csrfsimple->checkToken($input['xsrf_token']) === false) {
+			// 		http_response_code(422);
+			// 		$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_csrf_token_false'), 'token' => $this->csrfsimple->genToken()];
+			// 		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+			// 		return;
+			// }
+
+            if($this->db->get_where('student', ['parent_id' => $input['data']])->num_rows() > 0)
+            {
+                http_response_code(422);
+                $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_delete_error')];
+                echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+                return;
+            }
+
+			if($input['bulk'])
+					$this->db->where_in('parent_id', $input['data']);
+			else
+					$this->db->where('parent_id', $input['data']);
+			if(!$this->db->delete('parent')) {
+				http_response_code(422);
+				$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_delete_error'), 'token' => $this->csrfsimple->genToken()];
+				echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+				return;
+			}
+			http_response_code(200);
+			$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_delete_success'), 'token' => $this->csrfsimple->genToken()];
+			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+			exit();
+	}
 }

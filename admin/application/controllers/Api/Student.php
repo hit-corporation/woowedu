@@ -184,8 +184,6 @@ class Student extends MY_Controller {
 	}
  
 
- 
-
 	public function delete_data() {
 		header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: DELETE');
@@ -210,15 +208,15 @@ class Student extends MY_Controller {
 			else
 					$this->db->where('student_id', $input['data']);
 			if(!$this->db->delete('student')) {
-					http_response_code(422);
-		$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_delete_error'), 'token' => $this->csrfsimple->genToken()];
-		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
-		return;
+				http_response_code(422);
+				$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_delete_error'), 'token' => $this->csrfsimple->genToken()];
+				echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+				return;
 			}
 			http_response_code(200);
-	$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_delete_success'), 'token' => $this->csrfsimple->genToken()];
-	echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
-	exit();
+			$msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_delete_success'), 'token' => $this->csrfsimple->genToken()];
+			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+			exit();
 	}
 
 	// import data

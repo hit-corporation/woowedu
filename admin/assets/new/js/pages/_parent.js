@@ -1,7 +1,8 @@
 'use strict';
 const base_url = document.querySelector('base').href,
       form = document.forms['form-add'],
-      selectStudent = document.querySelector('select[name="a_children"]');
+      selectStudent = document.querySelector('select[name="a_children"]'),
+      csrfToken = document.querySelector('base').href;
 let isUpdate = 0;
 
 const table = $('#tbl-parent').DataTable({
@@ -70,6 +71,9 @@ $('#btn-search-parent').on('click', function(e){
 	table.columns(3).search($('input[name="s_parent_name"]').val()).draw();
 });
 
+$('input[name="s_parent_name"]').on('search', e => {
+    table.columns(3).search($('input[name="s_parent_name"]').val()).draw();
+});
 //select_all
 $('#select_all').on('click', e => {
     if(e.target.checked)
@@ -152,6 +156,10 @@ const btnEdit = e => {
     form['a_address'].value = data.address;
     form['a_email'].value = data.email;
     form['a_gender'].value = data.gender;
+    form['a_phone'].value = data.phone;
+    const students = data.student_id.split(',');
+    console.log(students);
+    $('select[name="a_children"]').selectpicker('val', students.map(i => +i));
 
     $('#modal-add').modal('show');
 }
@@ -211,6 +219,140 @@ const submit = async e => {
         }
     });
 }
+
+
+/* ######################## DELETE DATA ################################*/
+/**
+ * DELETE SINGLE
+ */
+$('#tbl-parent tbody').on('click', '.btn.delete_data', e =>{
+    e.preventDefault();
+    let row = table.row($(e.target).parents('tr')).data(); 
+    Swal.fire({
+            title: "Anda Yakin?",
+            text: "Data yang dihapus tidak dapat dikembalikan",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn btn-success mt-2",
+            cancelButtonColor: "#f46a6a",
+            confirmButtonText: "Ya, Hapus Data",
+            cancelButtonText: "Tidak, Batalkan Hapus" 
+}).then(reslt => {
+        if(!reslt.value)
+                return false;
+        $.ajax({
+            url: base_url + 'orangtua/delete',
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify({bulk: false, data: row.parent_id, xsrf_token: csrfToken.content}),
+            beforeSend(xhr, obj) {
+                Swal.fire({
+                    html: 	'<div class="d-flex flex-column align-items-center">'
+                    + '<span class="spinner-border text-primary"></span>'
+                    + '<h3 class="mt-2">Loading...</h3>'
+                    + '<div>',
+                    showConfirmButton: false,
+                    width: '10rem'
+                });
+            },
+            success(resp) {
+                Swal.fire({
+                    type: resp.err_status,
+                    title:`<h5 class="text-${resp.err_status} text-uppercase">${resp.err_status}</h5>`,
+                    html: resp.message
+                });
+                csrfToken.content = resp.token;
+            },
+            error(err) {
+                let response = JSON.parse(err.responseText);
+                Swal.fire({
+                    type: response.err_status,
+                    title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
+                    html: response.message
+                });
+                if(response.hasOwnProperty('token'))
+                    csrfToken.setAttribute('content', response.token);
+            },
+            complete() {
+                    table.ajax.reload();
+            }
+        });
+});
+});
+
+/**
+*DELETE MULTI
+*/
+document.querySelector('#delete_all').addEventListener('click', e => {
+    e.preventDefault();
+    let rows = table.rows({selected: true}).data(),
+        count = table.rows({selected: true}).count();
+    if(count === 0) {
+        Swal.fire({
+            title: "Tidak Ada Data Terpilih!",
+            text: "Harap pilih data yang akan dihapus terlebih dahulu.",
+            confirmButtonClass: "btn btn-warning mt-2",
+            type: "warning"
+        });
+    return false;
+    }
+
+    let datas = [];
+    for(let i=0;i<rows.length;i++) { 
+            datas.push(rows[i].parent_id);
+    }
+    Swal.fire({
+        title: "Anda Yakin?",
+        text: "Data yang dihapus tidak dapat dikembalikan",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn btn-success mt-2",
+        cancelButtonColor: "#f46a6a",
+        confirmButtonText: "Ya, Hapus Data",
+        cancelButtonText: "Tidak, Batalkan Hapus" 
+    }).then(reslt => {
+        if(!reslt.value)
+                return false;
+        $.ajax({
+            url: base_url + 'api/student/delete_data',
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify({bulk: true, data: datas, xsrf_token: csrfToken.content}),
+            beforeSend(xhr, obj) {
+                Swal.fire({
+                    html: 	'<div class="d-flex flex-column align-items-center">'
+                    + '<span class="spinner-border text-primary"></span>'
+                    + '<h3 class="mt-2">Loading...</h3>'
+                    + '<div>',
+                    showConfirmButton: false,
+                    width: '10rem'
+                });
+            },
+            success(resp) {
+                Swal.fire({
+                    type: resp.err_status,
+                    title:`<h5 class="text-${resp.err_status} text-uppercase">${resp.err_status}</h5>`,
+                    html: resp.message
+                });
+                csrfToken.content = resp.token;
+            },
+            error(err) {
+                let response = JSON.parse(err.responseText);
+                Swal.fire({
+                    type: response.err_status,
+                    title: '<h5 class="text-danger text-uppercase">'+response.err_status+'</h5>',
+                    html: response.message
+                });
+                if(response.hasOwnProperty('token'))
+                        csrfToken.setAttribute('content', response.token);
+            },
+            complete() {
+                    table.ajax.reload();
+            }
+        });
+    });
+});
+
 
 (async $ => {
 
