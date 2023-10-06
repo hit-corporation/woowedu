@@ -11,6 +11,7 @@ class Book extends MY_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		check_Loggin();
 		$this->load->model(['book_model', 'kategori_model', 'publisher_model', 'model_settings']);
 		$this->load->library(['form_validation']);
 		$this->load->helper('assets');

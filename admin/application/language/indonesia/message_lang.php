@@ -432,3 +432,4 @@ $lang['woow_login_empty_username'] = 'Username tidak boleh kosong !!!';
 $lang['woow_login_empty_password'] = 'Password tidak boleh kosong !!!';
 $lang['woow_login_username_mismatch'] = 'Username tidak sesuai';
 $lang['woow_login_password_mismatch'] = 'Password tidak sesuai';
+$lang['woow_unauthorized'] = 'And tidak memiliki hak untuk meng akses halaman ini';

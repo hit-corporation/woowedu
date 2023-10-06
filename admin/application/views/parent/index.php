@@ -71,7 +71,7 @@ a.close_corner_top_left {
 								<i class="fa fa-plus-circle fa-fw"></i> Tambah
 						</button>
 						<button type="button" class="btn btn-pink waves-light waves-effect" id="delete_all"><i class="fa fa-trash fa-fw"></i> Hapus</button> 
-						<div class="btn-group" role="toolbar">
+						<!-- <div class="btn-group" role="toolbar">
 								<button type="button" class="btn btn-info waves-light waves-effect dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btn-import">
 										<i class="fa fa-upload fa-fw"></i> Import
 								</button>
@@ -79,7 +79,7 @@ a.close_corner_top_left {
 										<a class="dropdown-item" type="button" data-toggle="modal" data-target="#modal-import">Import</a>
 										<a class="dropdown-item" href="<?=html_escape('assets/files/download/template_guru.xlsx')?>">Download import template</a>
 								</div>
-						</div>
+						</div> -->
 				</div>
 
 										

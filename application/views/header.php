@@ -137,9 +137,11 @@ endif
                                 <a class="nav-link" href="<?=base_url()?>">Home</a>
                             </li>
 
+                            <?php if($user_level == 3): ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?=base_url()?>sesi">Sesi</a>
                             </li>
+                            <?php endif; ?>
 
 							<!-- JIKA USER LEVEL KEPALA SEKOLAH -->
 							<?php if($user_level == 6) : ?>

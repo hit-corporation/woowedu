@@ -7,7 +7,7 @@ class Dashboard extends CI_Controller
 	{
 		parent::__construct();
 		// Cek apakah user sudah login
-		check_loggin(); 
+		check_Loggin(); 
 		$this->load->model('model_users');
 
 		$lang = ($this->session->userdata('lang')) ? $this->session->userdata('lang') : config_item('language');

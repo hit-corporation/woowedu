@@ -15,7 +15,8 @@ class Model_parent extends CI_Model {
      * @return array
      */
     public function get_all(int $limit = NULL, int $offset = NULL, array $filter = NULL): array {
-        $this->db->select("a.parent_id, a.username, a.name, a.address, a.gender, a.phone, a.email, string_agg(b.student_name, ',') as wali_dari ", NULL, FALSE)
+        $this->db->select("a.parent_id, a.username, a.name, a.address, a.gender, a.phone, a.email, 
+                           string_agg(b.student_id::text, ',') as student_id, string_agg(b.student_name, ',') as wali_dari ", NULL, FALSE)
                  ->join('student b', 'a.parent_id=b.parent_id', 'left outer')
                  ->group_by('a.parent_id, a.username, a.name, a.address, a.gender, a.phone, a.email');
 

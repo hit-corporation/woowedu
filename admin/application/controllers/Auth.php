@@ -51,6 +51,16 @@ class auth extends CI_Controller
 		}
 
 		$getUser = $this->db->get_where('users', ['username' => $username]);
+		$dt = $getUser->row();
+		$bisaliat = [1,10];
+
+		if(!in_array($dt->user_level, $bisaliat))
+		{
+			http_response_code(403);
+            $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_unauthorized')];
+            echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+            return;
+		}
 
 		if($getUser->num_rows() == 0) {
 			http_response_code(422);
@@ -58,8 +68,6 @@ class auth extends CI_Controller
             echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
             return;
 		}
-
-		$dt = $getUser->row();
 
 		if(password_verify($password, $dt->password) == FALSE) {
 			http_response_code(422);
