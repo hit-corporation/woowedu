@@ -49,7 +49,7 @@ a.close_corner_top_left {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="s_student_name">Nama Siswa</span>
                         </div>
-                        <input type="search" class="form-control" aria-describedby="s_student_name" name="s_student_name" placeholder="Cari Nama Guru" />
+                        <input type="search" class="form-control" aria-describedby="s_student_name" name="s_student_name" placeholder="Cari Nama Siswa" />
                     </div>
                 </div>
                 <div class="col">
