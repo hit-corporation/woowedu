@@ -47,11 +47,18 @@
             data: 'class_name'
         }   , {
             data: 'address'
-        }  , {
+        }  ,{
+			data: 'gender'
+		}, {
             data: 'phone'
         }   , {
             data: 'email'
-        }    ,  {
+        }   , {
+			data: 'parent_id',
+			visible: false
+		}, {
+			data: 'parent_name'
+		}	, {
             data: null,
             render(data, row, type, meta) {
                 var view = '<div class="btn-group btn-group-sm float-right">'+ 
@@ -70,7 +77,12 @@
 		}
 
     });
- 
+
+	// ########################### SEARCH STUDENT ###########################
+	$('#btn-search-student').on('click', function(e){
+		e.preventDefault();
+		table.columns(4).search($('input[name="s_student_name"]').val()).draw();
+	});
  
     //select_all
     $('#select_all').on('click', e => {
@@ -105,31 +117,59 @@
 		form['a_class'].value = row[0].class_id; 
 		form['a_nis'].value = row[0].nis; 
 		form['a_address'].value = row[0].address; 
+		form['a_gender'].value = row[0].gender; 
 		form['a_phone'].value = row[0].phone; 
-		form['a_email'].value = row[0].email; 
+		form['a_email'].value = row[0].email;
 		form['a_parent_name'].value = row[0].parent_name; 
-		form['a_parent_phone'].value = row[0].parent_phone; 
-		form['a_parent_email'].value = row[0].parent_email; 	
+		// form['a_parent_phone'].value = row[0].parent_phone; 
+		// form['a_parent_email'].value = row[0].parent_email; 	
 		form['xsrf'].value = csrfToken.content; 
 		$('#modal-add').modal('show');
+
+		// #################################### ISI COMBO BOX PARENT NAME ####################################
+		
+		$.ajax({
+			type: "GET",
+			url: base_url + "Orangtua/list",
+			data: {},
+			dataType: "JSON",
+			success: function (response) {
+				$('select[name="a_parent_name"]').html(''); // kosongkan select sebelum di isi
+				$('select[name="a_parent_name"]').append(`<option value="">-- Pilih Wali --</option>`);
+				$.each(response.data, function (i, val) {
+					if(row[0].parent_id === val.parent_id){
+						$('select[name="a_parent_name"]').append(`<option value="${val.parent_id}" selected>${val.name} - ${val.phone}</option>`);
+					}else{
+						$('select[name="a_parent_name"]').append(`<option value="${val.parent_id}">${val.name} - ${val.phone}</option>`);
+					}
+				});
+				$('select[name="a_parent_name"]').select2();
+			}
+		});
+
 	});
+
+
+
+
 
  // submit
 	btnSubmit.addEventListener('click', e => {
 		e.preventDefault();
 
 		let frmObj = { 
-				student_id: form['a_student_id'].value,
+				student_id	: form['a_student_id'].value,
 				student_name: form['a_student_name'].value, 
-				nis: form['a_nis'].value, 
-				class_id: form['a_class'].value, 
-				address: form['a_address'].value, 
-				phone: form['a_phone'].value, 
-				email: form['a_email'].value, 
-				// parent_name: form['a_parent_name'].value, 
-				// parent_phone: form['a_parent_phone'].value, 
-				// parent_email: form['a_parent_email'].value,  
-				xsrf_token: form['xsrf'].value
+				nis			: form['a_nis'].value,
+				class_id	: form['a_class'].value,
+				address		: form['a_address'].value,
+				phone		: form['a_phone'].value,
+				email		: form['a_email'].value,
+				gender		: form['a_gender'].value,
+				parent_id	: form['a_parent_name'].value,
+				// parent_phone: form['a_parent_phone'].value,
+				// parent_email: form['a_parent_email'].value,
+				xsrf_token	: form['xsrf'].value
 		};
 		let conf = {};
 		if(is_update) {

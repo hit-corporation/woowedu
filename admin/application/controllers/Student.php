@@ -35,8 +35,14 @@ class Student extends MY_Controller{
 		$data['data_class']	= $response_class['data'];
 		$data['tableName']	= 'siswa';
 		$data['csrf_token']	= $this->csrfsimple->genToken();
+
+		$data['page_css'] = [
+			'assets/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
+		];
+
 		$data['page_js']	= [  
 			['path' => 'assets/new/js/pages/_student.js', 'defer' => true],
+			['path' => 'assets/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js', 'defer' => true],
 		]; 
  
 		$this->template->load('template', 'student/index', $data);

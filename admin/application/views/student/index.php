@@ -53,7 +53,7 @@ a.close_corner_top_left {
                     </div>
                 </div>
                 <div class="col">
-                    <button type="button" id="btn-search_student" class="btn btn-primary shadow">
+                    <button type="button" id="btn-search-student" class="btn btn-primary shadow">
                         <i class="fa fa-search fa-fw"></i>
                         Cari
                     </button>
@@ -95,9 +95,12 @@ a.close_corner_top_left {
 								<th>NIS</th>   
 								<th>Nama</th>   
 								<th>Kelas</th>   
-								<th>Alamat</th>   
+								<th>Alamat</th>  
+								<th>Jenis Kelamin</th>  
 								<th>Phone</th>   
-								<th>Email</th> 		      
+								<th>Email</th>	      
+								<th>Parent Id</th>      
+								<th>Wali</th>	      
 								<th></th>
 							</tr>
 						</thead>
@@ -157,7 +160,23 @@ a.close_corner_top_left {
                 <div class="col-8"> 
 								<textarea cols="20" class="form-control form-control-sm" name="a_address" rows="4" ></textarea>
 								</div>
-            </div>						
+            </div>
+			
+			<div class="row align-items-center mt-2">
+                <div class="col-4">
+                    <label class="m-0">Jenis Kelamin </label>
+                </div>
+                <div class="col-8">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="a_gender" id="male" value="laki-laki"/>
+                        <label for="male" class="form-check-label">Laki - Laki</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="a_gender" id="female" value="perempuan"/>
+                        <label for="female" class="form-check-label">Perempuan</label>
+                    </div>
+                </div>
+            </div>			
 												
             <div class="row align-items-center mt-2">
                 <div class="col-4">
@@ -172,9 +191,15 @@ a.close_corner_top_left {
                 <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_email" /></div>
             </div>						
 
- 					
-												
- 
+			<div class="row align-items-center mt-2">
+                <div class="col-4">
+                    <label class="m-0">Wali <span class="text-danger"><strong>*</strong></span></label>
+                </div>
+                <div class="col-8">
+                    <select  class="form-control form-control-sm" name="a_parent_name"></select> 
+                </div>
+            </div>	
+			
             <input type="hidden" name="a_student_id" />
             <input type="hidden" name="xsrf" />
         </form>
