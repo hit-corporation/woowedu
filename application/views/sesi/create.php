@@ -24,28 +24,37 @@
 				</div>
  
 
-				<div class="row mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
-					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label for="title" class="form-label">Tanggal</label>
-						<input type="date"  class="form-control" id="tanggal" name="tanggal" value="<?=isset($data['sesi_date']) ? $data['sesi_date'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
+				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+					<div class="row">
+						<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<label for="title" class="form-label">Tanggal</label>
+							<input type="date"  class="form-control" id="tanggal" name="tanggal" value="<?=isset($data['sesi_date']) ? $data['sesi_date'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
+						</div>
+	
+						<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<label for="title" class="form-label">Jam Mulai</label>
+							<input type="time" class="form-control" id="jamstart" name="jamstart" value="<?=isset($data['sesi_jam_start']) ? $data['sesi_jam_start'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
+						</div> 
+	
+						<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<label for="title" class="form-label">Jam Akhir</label>
+							<input type="time" class="form-control" id="jamend" name="jamend" value="<?=isset($data['sesi_jam_end']) ? $data['sesi_jam_end'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
+						</div>
 					</div>
-
-					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label for="title" class="form-label">Jam Mulai</label>
-						<input type="time" class="form-control" id="jamstart" name="jamstart" value="<?=isset($data['sesi_jam_start']) ? $data['sesi_jam_start'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
-					</div> 
-
-					<div class="mb-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label for="title" class="form-label">Jam Akhir</label>
-						<input type="time" class="form-control" id="jamend" name="jamend" value="<?=isset($data['sesi_jam_end']) ? $data['sesi_jam_end'] : ''?>" <?=(!$user_level) ? 'readonly' : '' ?>>
-					</div> 						
 				</div>
 
-				<div class="row mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
-					<div class="mb-4 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label for="materi">Materi</label>
+				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+					<!-- <div class="mb-4 col-lg-12 col-md-12 col-sm-12 col-xs-12"> -->
+						<label for="kelas" class="form-label">Kelas</label>
+						<select class="form-control" name="kelas" id="kelas"></select>
+					<!-- </div> -->
+				</div>
+
+				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+					<!-- <div class="mb-4 col-lg-12 col-md-12 col-sm-12 col-xs-12"> -->
+						<label for="materi" class="form-label">Materi</label>
 						<select class="form-control" name="materi" id="materi"></select>
-					</div>
+					<!-- </div> -->
 				</div>
 	
 				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
@@ -88,6 +97,7 @@
 		let jamstart 	= $('#jamstart').val(); 
 		let jamend 		= $('#jamend').val(); 
 		let materi_id 	= $('#materi').val();
+		let class_id 	= $('#kelas').val();
 		let keterangan 	= quill.container.firstChild.innerHTML;
 		let id 			= $('#id').val();
 
@@ -100,6 +110,7 @@
 				jamstart: jamstart,
 				jamend: jamend,
 				materi_id: materi_id,
+				class_id: class_id,
 				keterangan: keterangan,
 				id: id
 			},
@@ -126,7 +137,7 @@
 		});
 	});
 
-	// COMBO BOX MATERI
+	// ################################# COMBO BOX MATERI #################################
 	let user_level = <?=$this->session->userdata('user_level')?>;
 	if(user_level != 3){
 		$('select[name="materi"]').select2({disabled: true});
@@ -139,7 +150,20 @@
         allowClear: true
     });
 
-	// AJAX GET MATERI
+	// ################################# AJAX GET KELAS #################################
+	$.ajax({
+		type: "GET",
+		url: BASE_URL+"admin/API/Kelas/get_all",
+		data: {},
+		dataType: "JSON",
+		success: function (response) {
+			$.each(response.data, function (i, val) { 
+				$('#kelas').append(`<option value="${val.class_id}">${val.class_name}</option>`);
+			});
+		}
+	});
+
+	// ################################# AJAX GET MATERI #################################
 	$.ajax({
 		type: "GET",
 		url: BASE_URL+"/materi/getAllMateri",
