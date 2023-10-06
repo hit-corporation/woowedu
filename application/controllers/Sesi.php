@@ -96,6 +96,7 @@ class Sesi extends CI_Controller {
 				'sesi_jam_start'=> $post['jamstart'], 
 				'sesi_jam_end'	=> $post['jamend'],
 				'materi_id'		=> $post['materi_id'],
+				'class_id'		=> $post['class_id'],
 				'teacher_id' 	=> $teacher_id,
 				'sesi_note'		=> trim($post['keterangan'])
 			];
