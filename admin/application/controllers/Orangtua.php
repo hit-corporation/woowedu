@@ -5,7 +5,7 @@ class Orangtua extends MY_Controller {
     public function __construct() {
         parent::__construct();
 
-		check_loggin();
+		check_Loggin();
 		$this->load->model(['model_common', 'model_parent']); 
 		$this->load->helper('url');
 		$this->load->helper('slug');

@@ -11,7 +11,9 @@ function check_Loggin()
 {
     $CI= & get_instance();
     $session=$CI->session->userdata('status_login');
-    if($session!='y')
+    $level = $CI->session->userdata('user_level');
+    $bisaliat = [1, 10];
+    if($session!='y' && !in_array(intval($level), $bisaliat))
     {
         redirect('auth/login');
     }

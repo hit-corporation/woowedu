@@ -466,5 +466,6 @@ $lang['woow_login_empty_username'] = 'Username must not empty';
 $lang['woow_login_empty_password'] = 'Password must not empty';
 $lang['woow_login_username_mismatch'] = 'Username not match';
 $lang['woow_login_password_mismatch'] = 'Password not match';
+$lang['woow_unauthorized'] = 'You are not allowed to access this pages';
 
 
