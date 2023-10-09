@@ -151,8 +151,8 @@ class Model_common extends CI_Model{
 	}   
 	
 	private function compiledClassQuery() {
-		$this->db->select('*'); 
-		$this->db->get_compiled_select('kelas', FALSE);
+		$this->db->select('a.*, b.class_level_name')->join('class_level b', 'a.class_level_id=b.class_level_id'); 
+		$this->db->get_compiled_select('kelas a', FALSE);
 	}   	
 	
 	public function save_class(array $data) {

@@ -63,7 +63,7 @@ class Kelas extends MY_Controller {
 		$filter = $this->input->get('columns'); 
 		$rec   = $this->model_common->get_all_class($filter, $limit, $offset);
 		$count  = $this->model_common->count_all_class($filter);
-    $countFilter = $this->model_common->count_all_class($filter);
+    	$countFilter = $this->model_common->count_all_class($filter);
 		
 		$datas =   array(
 			"draw"			  => $draw,

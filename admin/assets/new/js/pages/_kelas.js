@@ -1,4 +1,4 @@
-(($, base_url) => {
+(async ($, base_url) => {
     'use strict';
 
 		const form = document.forms['form-add'];
@@ -39,6 +39,11 @@
         }  , {
             data: 'class_name'
         }  , {
+			data: 'class_level_id',
+			visible: false
+		}, {
+			data: 'class_level_name'
+		},{
             data: null,
             render(data, row, type, meta) {
                 var view = '<div class="btn-group btn-group-sm float-right">'+
@@ -300,6 +305,18 @@
 				}
 			});
 		})
-  });	 
+  	});	 
+
+
+  	const getClassLevel = async () => {
+		try 
+		{
+			const 
+		} 
+		catch (err) 
+		{
+			
+		}
+  	}
 		
 })(jQuery, document.querySelector('base').href);
