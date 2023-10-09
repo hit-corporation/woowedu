@@ -82,6 +82,8 @@ a.close_corner_top_left {
 								</th>
 								<th>#</th> 
 								<th>Nama</th>   
+								<th>ID Kelas</th>   
+								<th>Level Kelas</th>   
 								<th></th>
 							</tr>
 						</thead>
@@ -93,8 +95,6 @@ a.close_corner_top_left {
 		</div>
 	</div>
 </div>
-
-
 
 
 <!-- Modal add -->
@@ -109,15 +109,19 @@ a.close_corner_top_left {
       </div>
       <div class="modal-body">
         <form name="form-add" id="form-add" class="d-flex flex-column">
-            <div class="row align-items-center">
+            <div class="row align-items-center mb-3">
                 <div class="col-4">
                     <label class="m-0">Nama <span class="text-danger"><strong>*</strong></span></label>
                 </div>
                 <div class="col-8"><input type="text" class="form-control form-control-sm" name="a_class_name" /></div>
             </div>
- 				
-						
-            
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <label class="m-0">Kelas Level <span class="text-danger"><strong>*</strong></span></label>
+                </div>
+                <div class="col-8"><select class="form-control form-control-sm" name="a_class_level"></select></div>
+            </div>
+
             <input type="hidden" name="a_class_id" />
             <input type="hidden" name="xsrf" />
         </form>

@@ -1,4 +1,4 @@
-(($, base_url) => {
+(async ($, base_url) => {
     'use strict';
 
 		const form = document.forms['form-add'];
@@ -39,6 +39,11 @@
         }  , {
             data: 'class_name'
         }  , {
+			data: 'class_level_id',
+			visible: false
+		}, {
+			data: 'class_level_name'
+		},{
             data: null,
             render(data, row, type, meta) {
                 var view = '<div class="btn-group btn-group-sm float-right">'+
@@ -98,9 +103,10 @@
 	$('#tbl_kelas tbody').on('click', '.btn.edit_kelas', e => {
 		is_update = true;
 		let target = e.target;
-		let row = table.rows($(target).parents('tr')).data(); 
-		form['a_class_id'].value = row[0].class_id;
-		form['a_class_name'].value = row[0].class_name; 
+		let row = table.row($(target).parents('tr')).data(); 
+		form['a_class_id'].value = row.class_id;
+		form['a_class_name'].value = row.class_name;
+		form['a_class_level'].value = row.class_level_id; 
 		form['xsrf'].value = csrfToken.content; 
 		$('#modal-add').modal('show');
 	});
@@ -112,6 +118,7 @@
 		let frmObj = { 
 				class_id: form['a_class_id'].value,
 				class_name: form['a_class_name'].value, 
+				class_level: form['a_class_level'].value,
 				xsrf_token: form['xsrf'].value
 		};
 		let conf = {};
@@ -300,6 +307,30 @@
 				}
 			});
 		})
-  });	 
+  	});	 
+
+
+  	const getClassLevel = async () => {
+		try 
+		{
+			const f = await fetch(`${base_url}/api/kelas/get_all_level`);
+			const j = await f.json();
+			const select = document.querySelector('select[name="a_class_level"]');
+
+			Array.from([...j.data], item => {
+				const option = document.createElement('option');
+				option.value = item.class_level_id;
+				option.text = item.class_level_name;
+
+				select.add(option);
+			});
+		} 
+		catch (err) 
+		{
+			console.log(err);
+		}
+  	}
+
+	await getClassLevel();
 		
 })(jQuery, document.querySelector('base').href);

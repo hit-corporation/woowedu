@@ -89,16 +89,15 @@ class Subject extends MY_Controller {
  
 				
         $data = [
-            'code'         => $code,
-            'subject_name' => $name,
-            'class_level_id'     => $class,
-            'thumbnail_pic'       => str_replace(' ', '_', strtolower($name)).'.'.$ext1,
-            'detail_pic'       => str_replace(' ', '_', strtolower($name)).'.'.$ext2
+            'code'              => $code,
+            'subject_name'      => $name,
+            'class_level_id'    => $class,
+            'thumbnail_pic'     => str_replace(' ', '_', strtolower($name)).'.'.$ext1,
+            'detail_pic'        => str_replace(' ', '_', strtolower($name)).'.'.$ext2
         ];
 
         if(!$this->db->insert('subject', $data))
         {
-
 			http_response_code(422);
 			$msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_form_error')];
 			echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
@@ -169,11 +168,11 @@ class Subject extends MY_Controller {
         $move2 = move_uploaded_file($_FILES['detail-file']['tmp_name'], FCPATH.$filename2.'.'.$ext2);
 				
         $data = [
-            'code'         => $code,
-            'subject_name' => $name,
-            'class_level_id'     => $class,
-            'thumbnail_pic'       => str_replace(' ', '_', strtolower($name)).'.'.$ext1,
-            'detail_pic'       => str_replace(' ', '_', strtolower($name)).'.'.$ext2
+            'code'              => $code,
+            'subject_name'      => $name,
+            'class_level_id'    => $class,
+            'thumbnail_pic'     => str_replace(' ', '_', strtolower($name)).'.'.$ext1,
+            'detail_pic'        => str_replace(' ', '_', strtolower($name)).'.'.$ext2
         ];
 
         if(!$this->db->update('subject', $data, ['subject_id' => $id]))
