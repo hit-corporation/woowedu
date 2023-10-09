@@ -311,12 +311,24 @@
   	const getClassLevel = async () => {
 		try 
 		{
-			const 
+			const f = await fetch(`${base_url}/api/kelas/get_all_level`);
+			const j = await f.json();
+			const select = document.querySelector('select[name="a_class_level"]');
+
+			Array.from([...j.data], item => {
+				const option = document.createElement('option');
+				option.value = item.class_level_id;
+				option.text = item.class_level_name;
+
+				select.add(option);
+			});
 		} 
 		catch (err) 
 		{
-			
+			console.log(err);
 		}
   	}
+
+	await getClassLevel();
 		
 })(jQuery, document.querySelector('base').href);
