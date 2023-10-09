@@ -103,9 +103,10 @@
 	$('#tbl_kelas tbody').on('click', '.btn.edit_kelas', e => {
 		is_update = true;
 		let target = e.target;
-		let row = table.rows($(target).parents('tr')).data(); 
-		form['a_class_id'].value = row[0].class_id;
-		form['a_class_name'].value = row[0].class_name; 
+		let row = table.row($(target).parents('tr')).data(); 
+		form['a_class_id'].value = row.class_id;
+		form['a_class_name'].value = row.class_name;
+		form['a_class_level'].value = row.class_level_id; 
 		form['xsrf'].value = csrfToken.content; 
 		$('#modal-add').modal('show');
 	});
@@ -117,6 +118,7 @@
 		let frmObj = { 
 				class_id: form['a_class_id'].value,
 				class_name: form['a_class_name'].value, 
+				class_level: form['a_class_level'].value,
 				xsrf_token: form['xsrf'].value
 		};
 		let conf = {};

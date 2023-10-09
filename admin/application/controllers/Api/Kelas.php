@@ -94,6 +94,7 @@ class Kelas extends MY_Controller {
 		// params
 		 
 		$class_name   = trim($this->input->post('class_name')); 
+		$class_level  = trim($this->input->post('class_level', TRUE));
 		$token  = trim($this->input->post('xsrf_token'));
 		//validation
 		if($this->csrfsimple->checkToken($token) === false) {
@@ -111,7 +112,8 @@ class Kelas extends MY_Controller {
  
 		// insert action
 		$data = [ 
-				'class_name'  => $class_name 
+				'class_name'  	 => $class_name,
+				'class_level_id' => $class_level
 		];
 		if(!$this->model_common->save_class($data)) {
 				http_response_code(422);
@@ -141,6 +143,7 @@ class Kelas extends MY_Controller {
 		// params 
 		$class_id     = trim($input['class_id']);
 		$class_name   = trim($input['class_name']); 
+		$class_level  = trim($input['class_level']);
 		$token  = trim($input['xsrf_token']);
 
 		if($this->csrfsimple->checkToken($token) === false) {
@@ -158,8 +161,9 @@ class Kelas extends MY_Controller {
 		
 		// update action
 		$data = [
-				'class_id'        => $class_id, 
-				'class_name'  => $class_name 
+				'class_id'    	 => $class_id, 
+				'class_name'  	 => $class_name,
+				'class_level_id' => $class_level
 		];
 		if(!$this->model_common->modify_class($data)) {
 				http_response_code(422);
