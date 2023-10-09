@@ -10,18 +10,10 @@ var arrPage = [];
 				// template method of yourself
 				// var html = template(data);
 				// dataContainer.html(html);
-
-				// console.log(data);
-				// console.log(pagination);
-
-				
 				load_data(pagination.pageNumber);
 			}
 		})
 	});
-
-	// var currentPage = 1;
-	// load_data(1,10);
 
 	// KETIKA BUTTON CARI DI KLIK
 	$('#search').on('click', function(e){
@@ -64,39 +56,13 @@ var arrPage = [];
 					`);
 				});
 
-				// $('.pagination').html('');
-				// for(let i = 0; i < response.total_pages; i++){
-				// 	if(currentPage == i+1){
-				// 		$('.pagination').append(`
-				// 			<li class="page-item active"><a class="page-link" onclick="page(${i+1}, this)">${i+1}</a></li>
-				// 		`);
-				// 	}else{
-				// 		$('.pagination').append(`
-				// 			<li class="page-item"><a class="page-link" onclick="page(${i+1}, this)">${i+1}</a></li>
-				// 		`);
-				// 	}
-
-				// }
-
 				// ########################## PAGINATION JS ##############################
 				for(let i=1; i<=response.total_records; i++){
 					arrPage.push(i);
 				}
-
-				
 			}
 		});
 	}
-
-
-	
-
-
-	// JIKA PAGE NUMBER DI KLIK
-	// function page(pageNumber, e){
-	// 	currentPage = pageNumber;
-	// 	load_data(pageNumber);
-	// }
 
 	// BUTTON GROUP EDIT & DELETE
 	function buttonGroup(user_level, id){
@@ -105,7 +71,6 @@ var arrPage = [];
 		if(user_level == 3 || user_level == 6){
 			return buttonGroup;
 		}
-
 		return '';
 	}
 
@@ -137,8 +102,6 @@ var arrPage = [];
 						}
 					}
 				});
-
-				
 			}
 		})
 	}

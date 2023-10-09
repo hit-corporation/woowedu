@@ -1,4 +1,5 @@
 <section class="explore-section section-padding" id="section_2">
+<link rel="stylesheet" href="https://pagination.js.org/dist/2.6.0/pagination.css">
 	
 <div class="container">
 
@@ -66,17 +67,27 @@
 	</div>
 		
 	<nav aria-label="Page navigation example" class="d-flex justify-content-center">
-		<ul class="pagination">
-			
-		</ul>
+		<div id="page"></div>
 	</nav>
 	
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://pagination.js.org/dist/2.6.0/pagination.js"></script>
 <script>
-	var currentPage = 1;
-	load_data(1,10);
+	var arrPage = [];
+
+	$(document).ready(function () {
+		load_data(1,10);
+		// ########################## PAGINATION JS ##############################
+		$('#page').pagination({
+			dataSource: arrPage,
+			className: 'paginationjs-theme-blue paginationjs-big',
+			callback: function(data, pagination){
+				load_data(pagination.pageNumber);
+			}
+		});
+	});
 
 	// KETIKA BUTTON CARI DI KLIK
 	$('#search').on('click', function(e){
@@ -92,6 +103,7 @@
 		$.ajax({
 			type: "GET",
 			url: BASE_URL+"task/getlist",
+			async: false,
 			data: {
 				page: page,
 				limit: limit,
@@ -118,27 +130,12 @@
 					`);
 				});
 
-				$('.pagination').html('');
-				for(let i = 0; i < response.total_pages; i++){
-					if(currentPage == i+1){
-						$('.pagination').append(`
-							<li class="page-item active"><a class="page-link" onclick="page(${i+1}, this)">${i+1}</a></li>
-						`);
-					}else{
-						$('.pagination').append(`
-							<li class="page-item"><a class="page-link" onclick="page(${i+1}, this)">${i+1}</a></li>
-						`);
-					}
-
+				// ########################## PAGINATION JS ##############################
+				for(let i=1; i<=response.total_records; i++){
+					arrPage.push(i);
 				}
 			}
 		});
-	}
-
-	// JIKA PAGE NUMBER DI KLIK
-	function page(pageNumber, e){
-		currentPage = pageNumber;
-		load_data(pageNumber);
 	}
 
 	// BUTTON GROUP EDIT & DELETE
