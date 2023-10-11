@@ -24,7 +24,12 @@ class Model_sesi extends CI_Model {
 		$this->db->join('subject', 'subject.subject_id = materi.subject_id', 'left');
 		$this->db->where('sesi_date >=', date("Y-m-d",strtotime($param['sdate']))); 
 		$this->db->where('sesi_date <=', date("Y-m-d",strtotime($param['edate']))); 
-		$this->db->where_in('sesi.teacher_id', $param['teacher_id']);
+
+		if(isset($param['class_id'])){
+			$this->db->where('sesi.class_id', $param['class_id']);
+		}
+
+		// $this->db->where_in('sesi.teacher_id', $param['teacher_id']);
 
 		$query = $this->db->get();
 		return $query;

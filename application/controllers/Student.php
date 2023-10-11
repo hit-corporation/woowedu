@@ -251,18 +251,21 @@ class Student extends CI_Controller {
 		// JIKA USER LOGIN SEBAGAI MURID
 		if($this->session->userdata('user_level') == 4){
 			$class_id = $this->session->userdata('class_id');
-			$teachers = $this->db->where('class_id', $class_id)->get('class_teacher')->result_array();
-			$teacher_ids = [];
-			foreach ($teachers as $val) {
-				$teacher_ids[] = $val['teacher_id'];
-			}
-		}else{
+			// $teachers = $this->db->where('class_id', $class_id)->get('class_teacher')->result_array();
+			// $teacher_ids = [];
+			// foreach ($teachers as $val) {
+			// 	$teacher_ids[] = $val['teacher_id'];
+			// }
+		} else{
 			// JIKA USER LOGIN SEBAGAI GURU
-			$teacher = $this->db->where('nik', $this->session->userdata('username'))->get('teacher')->row();
-			$teacher_ids[] = $teacher->teacher_id;
+			// $teacher = $this->db->where('nik', $this->session->userdata('username'))->get('teacher')->row();
+			// $teacher_ids[] = $teacher->teacher_id;
+			$student = $this->db->where('student_id', $_GET['student_id'])->get('student')->row_array();
+			$class_id = $student['class_id'];
 		}
 
-		$params['teacher_id'] = $teacher_ids;
+		// $params['teacher_id'] = $teacher_ids;
+		$params['class_id'] = $class_id;
 		
 		$sesi = $this->model_sesi->data_sesi_student($params);
 

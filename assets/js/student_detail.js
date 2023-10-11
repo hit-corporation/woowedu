@@ -51,7 +51,7 @@ $(document).ready(function () {
 		editable: true,
 		dayMaxEvents: true, // allow "more" link when too many events
 		events: {
-				url: BASE_URL + 'student/sesi_load_data',
+				url: BASE_URL + 'student/sesi_load_data?student_id='+student_id,
 				error: function() {
 					$('#script-warning').show();
 				}
