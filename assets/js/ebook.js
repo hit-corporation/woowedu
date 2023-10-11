@@ -126,8 +126,8 @@ const getCategory = async () => {
             const url = window.location.href + '/detail/' + e.id;
             const img = (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
     
-            return `<div class="col-4 p-2">
-                <a class="card ebook-card flex-row flex-nowrap justify-content-around border-0 shadow-sm" href="${ url }"
+            return `<div class="col-12 col-md-6 col-lg-4 p-2">
+                <a class="card ebook-card flex-row flex-nowrap justify-content-around shadow-sm" href="${ url }"
                     onmouseover="this.classList.remove('shadow-sm'); this.classList.add('shadow')"
                     onmouseout="this.classList.remove('shadow'); this.classList.add('shadow-sm')"
                     style="height: 223px"
