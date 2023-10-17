@@ -93,10 +93,11 @@ class Model_student extends CI_Model {
 
 	public function get_exam($limit = null, $page = null, $student_id){
 		$class_id = $this->get_class($student_id);
-		$this->db->select('e.*, s.subject_name, ec.category_name, t.teacher_name');
+	//	$this->db->select('e.*, s.subject_name, ec.category_name, t.teacher_name');
+		$this->db->select('e.*, s.subject_name, t.teacher_name');
 		$this->db->from('exam e');
 		$this->db->join('subject s', 's.subject_id = e.subject_id');
-		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
+	//	$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
 		$this->db->join('teacher t', 't.teacher_id = e.teacher_id', 'left');
 		$this->db->where('e.class_id', $class_id);
 		$this->db->order_by('start_date', 'desc');
@@ -163,4 +164,25 @@ class Model_student extends CI_Model {
 		$this->db->group_by('book_id, book_code, title, cover_img, author, publish_year, description');
 		return $this->db->get()->num_rows();
 	}
+	
+	public function get_exam_soal($exam_id)
+	{
+		$this->db->select('s.soal_id,question,question_file,
+										choice_a,choice_b,choice_c,choice_d,choice_a_file,
+										choice_b_file,choice_c_file,choice_d_file,s.answer,s.type');
+		$this->db->from('soal s');		 
+		$this->db->join('soal_exam se','s.soal_id=se.soal_id');		 
+		$this->db->where('se.exam_id',$exam_id);  
+		$this->db->order_by('se.no_urut'); 
+		$query=$this->db->get();
+	//	print_r($this->db->last_query());  
+		if($query->num_rows()>0)
+		{
+			return $query->result_array(); 
+		}
+		else
+		{
+			return null;
+		}				
+	}	
 }

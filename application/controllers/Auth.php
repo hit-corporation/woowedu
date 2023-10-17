@@ -86,13 +86,15 @@ class auth extends CI_Controller
 			$this->session->set_userdata(array('teacher_id'=>$teacher_id));
 		}
 		if($dt->user_level==4){  //siswa
-			$this->db->select('k.class_id,k.class_level_id');
+			$this->db->select('k.class_id,k.class_level_id,student_id');
 			$this->db->from('kelas k');
 			$this->db->join('student s', 's.class_id=k.class_id');
 			$this->db->where('nis', $username);
 			$dstudent = $this->db->get()->row();
+			$student_id = $dstudent->student_id;
 			$class_id = $dstudent->class_id;
 			$class_level_id = $dstudent->class_level_id;
+			$this->session->set_userdata(array('student_id'=>$student_id));
 			$this->session->set_userdata(array('class_id'=>$class_id));
 			$this->session->set_userdata(array('class_level_id'=>$class_level_id));
 		}		

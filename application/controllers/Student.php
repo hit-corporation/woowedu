@@ -285,4 +285,70 @@ class Student extends CI_Controller {
 		echo json_encode($list);			
 		exit;
 	}
+	
+	public function save_exam()
+	{
+	//	var_dump($_POST);exit;
+		$_total_soal = $_POST['total_soal'];
+		if($_total_soal>0){
+			
+			$total_nilai = 0;
+			
+			for($i=0;$i<$_total_soal;$i++){ 
+				$no = $i+1;
+				$jawaban = strtolower($_POST['correct_answer'.$no]);//$this->Incer_model->get_soal_answer($_POST['soal_id'.$no]);
+				if($_POST['answer'.$no]==$jawaban)$total_nilai++;
+				
+				$this->db->where('student_id', $_SESSION['student_id']); 
+				$this->db->where('soal_id', $_POST['soal_id'.$no]);
+        $this->db->delete('exam_answer');
+					
+				$data = [  
+					'student_id' => $_SESSION['student_id'], 
+					'soal_id' => $_POST['soal_id'.$no] ,
+					'class_id' => $_SESSION['class_id'],
+					'exam_answer' => $_POST['answer'.$no],
+					'correct_answer' => $_POST['correct_answer'.$no],
+					'exam_submit' =>  date('Y-m-d H:i:s'),
+					'create_by' => $_SESSION['username']
+				];
+				
+				$this->db->insert('exam_answer', $data);
+			}
+			
+			$this->db->where('student_id', $_SESSION['student_id']); 
+			$this->db->where('materi_id', $_POST['materi_id']);
+			$this->db->where('category_id', $_POST['category_id']);
+			$this->db->delete('soal_student');
+				
+			$data = [  
+				'student_id' => $_SESSION['student_id'], 
+				'materi_id' => $_POST['materi_id'], 
+				'total_nilai' => $total_nilai,
+				'create_by' => $_SESSION['username'],  
+				'soal_submit' =>  date('Y-m-d H:i:s'),
+				'category_id' =>  $_POST['category_id'],
+				'ta_id' =>  $_SESSION['ta_id']
+			];
+			
+			$this->db->insert('soal_student', $data);
+				
+		}
+		
+		echo "<script>
+			alert('Submit berhasil');
+			window.location.href = '". base_url()."student/detail/".$this->session->userdata['student_id']."
+			</script>"; 			
+		
+	}
+	
+	public function submit_ujian($examid)
+	{
+		$data_exam = $this->model_student->get_exam_soal($examid);	 
+ 	
+		$data['data_exam'] = $data_exam;						 				 
+		$this->load->view('header');
+		$this->load->view('student/submitexam', $data);
+		$this->load->view('footer');		
+	}
 }
