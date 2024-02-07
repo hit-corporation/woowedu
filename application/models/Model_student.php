@@ -94,10 +94,10 @@ class Model_student extends CI_Model {
 	public function get_exam($limit = null, $page = null, $student_id){
 		$class_id = $this->get_class($student_id);
 	//	$this->db->select('e.*, s.subject_name, ec.category_name, t.teacher_name');
-		$this->db->select('e.*, s.subject_name, t.teacher_name');
+		$this->db->select('e.*, s.subject_name, t.teacher_name, ec.category_name');
 		$this->db->from('exam e');
 		$this->db->join('subject s', 's.subject_id = e.subject_id');
-	//	$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
+		$this->db->join('exam_category ec', 'e.category_id = ec.category_id');
 		$this->db->join('teacher t', 't.teacher_id = e.teacher_id', 'left');
 		$this->db->where('e.class_id', $class_id);
 		$this->db->order_by('start_date', 'desc');
