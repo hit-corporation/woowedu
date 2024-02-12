@@ -15,7 +15,8 @@ function add_js($javascript) {
 	$output = '';
 	if(!is_array($javascript)) return;
 	foreach($javascript as $js) {
-		if(!$js['is_inline_block']) {
+		// if(!$js['is_inline_block']) {
+		if(isset($js['is_inline_block']) && !$js['is_inline_block']) { // tambah isset *fauzi
 			$output .= trim('<script src="'.html_escape($js['path']).'"');
 			if($js['async'])
 				$output .= ' async';
@@ -26,12 +27,13 @@ function add_js($javascript) {
 			unset($js);
 		} else {
 			$output .= '<script type="application/javascript"';
-			if($js['async'])
+			// if($js['async'])
+			if(isset($js['async']) && $js['async']) // tambah isset *fauzi
 				$output .= ' async';
 			if($js['defer'])
 				$output .= ' defer';
 			$output .= '>'.PHP_EOL;
-			$output .= file_get_content($js['path']).PHP_EOL;	
+			$output .= file_get_contents($js['path']).PHP_EOL; // fixing *fauzi
 			$output .= '</script>'.PHP_EOL;
 		}
 	}
