@@ -13,17 +13,17 @@ class User_model extends CI_Model {
 		if($userLevel == 4){
 			$this->db->where('u.userid', $user_id);
 			$this->db->join('student s', 's.nis = u.username');
-			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id');
+			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id', 'left');
 			$query = $this->db->get('users u');
 		}elseif($userLevel == 3 || $userLevel == 6){
 			$this->db->where('u.userid', $user_id);
 			$this->db->join('teacher t', 't.nik = u.username');
-			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id');
+			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id', 'left');
 			$query = $this->db->get('users u');
 		}elseif($userLevel == 5){
 			$this->db->where('u.userid', $user_id);
 			$this->db->join('parent p', 'p.username = u.username');
-			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id');
+			$this->db->join('sekolah sc', 'sc.sekolah_id = u.sekolah_id', 'left');
 			$query = $this->db->get('users u');
 		}
 		
