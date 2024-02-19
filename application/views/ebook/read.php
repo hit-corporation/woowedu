@@ -147,7 +147,7 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/node_modules/pdfjs-dist/build/pdf.worker.min.js';
 
         const pdfLoad = pdfjsLib.getDocument({ 
-            url: "<?=html_escape($book['file_1'])?>",
+            url: "<?=html_escape(base_url('assets/files/ebooks/'.$book['file_1']))?>",
             withCredentials: true
         });
 
