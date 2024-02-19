@@ -6,13 +6,21 @@
 
 <div class="container">
 
-	<h4></h4>
+	<?php if(isset($_SESSION['error'])): ?>
+	<div class="alert alert-danger">
+		<?php 
+			echo $_SESSION['error']['message'];
+			unset($_SESSION['error']);
+		?>
+		
+	</div>
+	<?php endif; ?>
 
 	<!-- section search -->
 	<div class="row mt-4">
-
+		
         <div class="col-12 col-lg-3">
-            <img class="img-thumbnail" src="<?= html_escape($book['cover_img']) ?>"/>
+            <img class="img-thumbnail" src="<?= $book['from_api'] == 1 ? html_escape($book['cover_img']) : base_url('assets/images/ebooks/cover/'.$book['cover_img']) ?>"/>
         </div>
         <div class="col-12 col-lg-9">
             <div class="card" style="min-height: 60vh">
