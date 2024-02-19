@@ -124,7 +124,7 @@ class Ebook extends CI_Controller {
 
 		if($this->db->insert('read_log', $insert))
 		{
-			$url = $book['from_api '] === 0 ? base_url('ebook/read_book?id=' . $id) : $book['file_1']; 
+			$url = $book['from_api'] === 0 ? base_url('ebook/read_book?id=' . $id) : $book['file_1']; 
 		}
 		
 		redirect($url);
@@ -147,11 +147,16 @@ class Ebook extends CI_Controller {
 		}
 
 		$data['book'] = $this->model_ebook->get($id);
+		if (empty($data['book']['file_1'])) {
+			$_SESSION['error']['message'] = 'Buku tidak di temukan !!!';
+			redirect(base_url('ebook/close_book?id='.$id));
+			return;
+		}
 		$data['setting'] = $this->settings;
 		$this->load->view('ebook/read', $data);
 	}
 
-		/**
+	/**
 	 * Closing after read book
 	 *
 	 * @return void
@@ -159,7 +164,7 @@ class Ebook extends CI_Controller {
 	public function close_book(): void
 	{
 		$id = $this->input->get('id');
-		$lastPage = $this->input->get('last-page');
+		$lastPage = !empty($this->input->get('last-page')) ? $this->input->get('last_page') : 0;
 		$cookie = json_decode(base64_decode($_COOKIE['read_book']), TRUE);
 
 		$update = [
@@ -168,7 +173,7 @@ class Ebook extends CI_Controller {
 			'end_time' => date('Y-m-d H:i:s.u'),
 			'last_page'	=> $lastPage
 		];
-
+		
 		$this->db->update('read_log', $update, ['trans_code' => trim($cookie['key'])]);
 
 		setcookie('read_book', NULL, time() - 1000);
