@@ -124,8 +124,9 @@ const getCategory = async () => {
             const imgWidth = 78 * 1.5;
             const imgHeight = 105 * 1.5;
             const url = window.location.href + '/detail/' + e.id;
-            const img = (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
-    
+            const img = BASE_URL + (('assets/images/ebooks/cover/' + e.cover_img).split('.'))[0] + '_thumb.jpg';
+			console.log(url);
+			
             return `<div class="col-12 col-md-6 col-lg-4 p-2">
                 <a class="card ebook-card flex-row flex-nowrap justify-content-around shadow-sm" href="${ url }"
                     onmouseover="this.classList.remove('shadow-sm'); this.classList.add('shadow')"
@@ -134,7 +135,7 @@ const getCategory = async () => {
                 >
                     <img width="${imgWidth}" 
                          height="${imgHeight}" 
-                         src="${ e.cover_img }"
+                         src="${ img }"
                          class="ms-2 my-2" 
                          onerror="this.src = 'assets/images/ebooks/cover/default.png';"/>
                     <div class="card-body flex-grow-1">
