@@ -50,6 +50,7 @@ var arrPage = [];
 								<a href="news/detail/${value.id}"><h6 class="mb-2">${value.judul}</h6></a>
 								<p style="font-size: 14px;">${value.tanggal}</p>
 							</div>
+							<img width="150" class="rounded" src="${BASE_URL+'assets/images/default-news.jpg'}" />
 							<p style="font-size: 14px;">${desc}</p>
 							<div class="container d-flex justify-content-end">${buttonGroup(response.user_level, value.id)}</div>
 						</div>
