@@ -46,7 +46,7 @@
 	<?php if($this->session->userdata('user_level') == 3) : ?>
 	<div class="row mt-4">
 		<div class="container d-flex justify-content-end p-0">
-			<a href="<?=base_url()?>news/create" class="btn btn-success">
+			<a href="<?=base_url()?>news/create" class="btn btn-primary text-white">
 				+ Buat Pengumuman
 			</a>
 		</div>

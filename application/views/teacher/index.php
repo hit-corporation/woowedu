@@ -71,7 +71,7 @@
 				</div>
 
 				<div class="col-xl-9 col-lg-8 col-md-7 col-sm-5 col-xs-4" style="text-align: right;">
-					<button class="btn btn-success" id="download">Download</button>
+					<button class="btn btn-primary text-white" id="download">Download</button>
 				</div>
 			</div>
 

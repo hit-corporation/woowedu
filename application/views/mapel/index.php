@@ -44,7 +44,7 @@
 
 					if(in_array($_level, $bisaliat)):
 				?>
-				<button type="button" class="btn btn-sm btn-success text-white shadow-sm rounded-pill" id="btn-add" data-bs-toggle="modal" data-bs-target="#modal-add">
+				<button type="button" class="btn btn-sm btn-primary text-white shadow-sm rounded-pill" id="btn-add" data-bs-toggle="modal" data-bs-target="#modal-add">
 					<i class="bi bi-plus font-size-12"></i> Tambah
 				</button>
 				<?php endif;  ?>

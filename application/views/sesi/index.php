@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-8"></div>
 		<div class="col-4"> 
-			<a href="<?=base_url()?>sesi/create" class="btn btn-success" style>
+			<a href="<?=base_url()?>sesi/create" class="btn btn-primary text-white" style>
 				+ Buat Sesi
 			</a>
 		</div>

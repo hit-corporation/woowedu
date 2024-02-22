@@ -99,7 +99,7 @@
 							</div>
 
 							<div class="mb-3">
-								<button class="btn btn-success" name="save-profile">Simpan Perubahan</button>
+								<button class="btn btn-primary text-white" name="save-profile">Simpan Perubahan</button>
 							</div>
 						</form>
 				
@@ -127,7 +127,7 @@
 							</div>
 
 							<div class="mb-3">
-								<a class="btn btn-success" name="save-parent">Simpan Perubahan</a>
+								<a class="btn btn-primary text-white" name="save-parent">Simpan Perubahan</a>
 							</div>
 						</form>
 						
@@ -180,7 +180,7 @@
 							</div>
 
 							<div class="mb-3">
-								<button class="btn btn-success" name="change_password">Simpan Perubahan</button>
+								<button class="btn btn-primary text-white" name="change_password">Simpan Perubahan</button>
 							</div>
 						</form>	
 						

@@ -70,7 +70,7 @@
 
 				<div class="mb-3">
 					<?php if($user_level) : ?>
-						<a class="btn btn-success" type="submit" name="save">Simpan</a>
+						<a class="btn btn-primary text-white" type="submit" name="save">Simpan</a>
 					<?php endif ?>
 				</div>
 			</form>
