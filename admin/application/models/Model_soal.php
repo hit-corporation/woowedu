@@ -9,6 +9,7 @@ class Model_soal extends CI_Model {
     public function getAll(array $filters = NULL, int $limit= NULL, int $offset = NULL) {
         $query = $this->queryString();
 
+		$dataArr = [];
         if(!empty($filters))
         {
 
