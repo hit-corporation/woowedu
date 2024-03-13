@@ -24,12 +24,12 @@ class Student extends MY_Controller{
 		
 		$response_class = ['data' => $this->model_common->get_all_class(), 'count' => $this->model_common->count_all_class()];
  
-		if($response['ErrStatus'] === 'error') {
-				http_response_code(422);
-				$msg = ['err_status' => 'error', 'message' => $response['Message'], 'token' => $this->csrfsimple->genToken()];
-				echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
-				return;
-		}
+		// if($response['ErrStatus'] === 'error') {
+		// 		http_response_code(422);
+		// 		$msg = ['err_status' => 'error', 'message' => $response['Message'], 'token' => $this->csrfsimple->genToken()];
+		// 		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_HEX_TAG);
+		// 		return;
+		// }
 						
 		$data['pageTitle']	= 'Data Siswa';
 		$data['data_class']	= $response_class['data'];
