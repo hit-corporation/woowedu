@@ -24,7 +24,7 @@ class Task extends MY_Controller{
 		$data['csrf_token']	= $this->csrfsimple->genToken();
 		$data['page_js']	= [  
 			['path' => 'assets/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js', 'defer' => true],
-			['path' => 'assets/new/libs/tinymce/tinymce.min.js'],
+			['path' => 'assets/new/libs/tinymce/tinymce.min.js', 'defer' => false],
 			['path' => 'assets/new/libs/daterangepicker-master/moment.min.js', 'defer' => true],
 			['path' => 'assets/new/libs/daterangepicker-master/daterangepicker.js', 'defer' => true],
 			['path' => 'assets/new/libs/randomString.js', 'defer' => true],
