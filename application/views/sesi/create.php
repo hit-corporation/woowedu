@@ -153,9 +153,12 @@
 	// ################################# AJAX GET KELAS #################################
 	$.ajax({
 		type: "GET",
-		url: BASE_URL+"admin/API/Kelas/get_all",
+		url: ADMIN_URL + "api/kelas/get_all",
 		data: {},
 		dataType: "JSON",
+		headers: {
+			"Authorization": "Basic "
+		},
 		success: function (response) {
 			$.each(response.data, function (i, val) { 
 				$('#kelas').append(`<option value="${val.class_id}">${val.class_name}</option>`);
