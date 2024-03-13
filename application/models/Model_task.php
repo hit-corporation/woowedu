@@ -46,8 +46,9 @@ class Model_task extends CI_Model {
 		$username 	= $this->session->userdata('username');
 		$this->db->select('t.*,   sj.subject_name');
 		$this->db->from('student s');
-		$this->db->join('task t', 't.class_id = s.class_id', 'left'); 
-		$this->db->join('subject sj', 'sj.subject_id = t.subject_id', 'left'); 
+		$this->db->join('task t', 't.class_id = s.class_id', 'left');
+		$this->db->join('materi m', 'm.subject_id = t.subject_id', 'left');
+		$this->db->join('subject sj', 'sj.subject_id = m.subject_id', 'left'); 
 		$this->db->where('s.nis', $username);
 		
 		if(!empty($mapel))
