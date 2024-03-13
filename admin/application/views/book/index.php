@@ -1,6 +1,7 @@
 <?php 
 $url = parse_url(base_url());
-$base =  $url['scheme'].'://'.$url['host'].':'.$url['port'];
+$port = isset($url['port']) ? $url['port'] : '';
+$base =  $url['scheme'].'://'.$url['host'].':'.$port;
 ?>
 
 <style>
