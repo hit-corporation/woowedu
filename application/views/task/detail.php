@@ -8,7 +8,7 @@
 				<div class="col">
 					<div class="row">
 						<div class="col">Dibuat: <?=date('d M Y H:i', strtotime($task['available_date']))?></div>
-						<div class="col">Batas Pengumpulan: <span class="bg-danger rounded text-white"><?=date('d M Y H:i', strtotime($task['due_date']))?></span></div>
+						<div class="col">Batas Pengumpulan: <span class="bg-danger rounded text-white py-1 px-2"><?=date('d M Y H:i', strtotime($task['due_date']))?></span></div>
 					</div>
 				</div>
 
