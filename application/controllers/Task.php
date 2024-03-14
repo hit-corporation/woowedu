@@ -142,6 +142,8 @@ class Task extends CI_Controller {
 		$this->load->helper('file');
 		$post = $this->input->post(); 
 		$teacher_id = $this->session->userdata('teacher_id');
+
+
 		$dir = './assets/files/teacher_task/'.$teacher_id;
 
 		if (!file_exists($dir)) {
@@ -167,14 +169,15 @@ class Task extends CI_Controller {
 			// upload success
 			$upload_data = $this->upload->data();
 			
-			// insert task student
+			// insert task
 			$data = [
 				'teacher_id' 	=> $teacher_id,
-				'available_date' 		=> $post['tanggal_start'].' '.$post['jamstart'],
+				'available_date'=> $post['tanggal_start'].' '.$post['jamstart'],
 				'due_date' 		=> $post['tanggal_end'].' '.$post['jamend'],
-				'note'		=> $post['keterangan'],
-				'subject_id'		=> $post['select_mapel'],
-				'task_file'		=> $upload_data['file_name'] 
+				'note'			=> $post['keterangan'],
+				'subject_id'	=> $post['select_mapel'],
+				'class_id'		=> $post['select_class'],
+				'task_file'		=> $upload_data['file_name']
 			];
 			$insert = $this->db->insert('task', $data);
 			if($insert){
@@ -190,9 +193,11 @@ class Task extends CI_Controller {
 	 
 	
 	public function create($id = ''){
-		$post = $this->input->post();
+		$teacher_id = $_SESSION['teacher_id'];
 		$data['mapelop'] = $this->model_task->get_mapel();
-
+		$data['class_teachers'] = $this->db->where('teacher_id', $teacher_id)
+									->join('kelas c', 'c.class_id = ct.class_id', 'left')
+									->get('class_teacher ct')->result_array();
  
 		if($id != '') $data['data'] = $this->db->where('task_id', $id)->get('task')->row_array();
 
