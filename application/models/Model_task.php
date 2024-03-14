@@ -91,11 +91,12 @@ class Model_task extends CI_Model {
 	public function get_teacher_task($limit = null, $page = null, $mapel, $startDate, $endDate){
 		
 		$teacher_id 	= $this->session->userdata('teacher_id');
-		$this->db->select('t.*, tc.teacher_name, sj.subject_name');
+		$this->db->select('t.*, tc.teacher_name, sj.subject_name, sj2.subject_name as subject_name2');
 		$this->db->from('task t');
 		$this->db->join('materi m', 'm.materi_id = t.materi_id', 'left');
 		$this->db->join('teacher tc', 'tc.teacher_id = t.teacher_id', 'left');
-		$this->db->join('subject sj', 'sj.subject_id = m.subject_id', 'left'); 
+		$this->db->join('subject sj', 'sj.subject_id = m.subject_id', 'left');
+		$this->db->join('subject sj2', 'sj2.subject_id = t.subject_id', 'left');
 		$this->db->where('tc.teacher_id', $teacher_id);
 		
 		if(!empty($mapel))
