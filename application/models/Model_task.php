@@ -151,4 +151,13 @@ class Model_task extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
+	public function get_all_siswa_task($task_id){
+		$class_id = $this->get_tasks_detail($task_id)['class_id'];
+
+		$this->db->select('*');
+		$this->db->from('student s');
+		$this->db->where('s.class_id', $class_id);
+		return $this->db->get()->result_array();
+	}
+
 }
