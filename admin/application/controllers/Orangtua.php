@@ -61,6 +61,7 @@ class Orangtua extends MY_Controller {
      * @return void
      */
     public function store(): void {
+		$post = $this->input->post();
         $username = $this->input->post('a_username', TRUE);
         $name = $this->input->post('a_full_name', TRUE);
         $address = $this->input->post('a_address', TRUE);
