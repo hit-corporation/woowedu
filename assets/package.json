@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "datatables.net-dt": "^2.0.2",
     "daterangepicker": "^3.1.0",
     "moment": "^2.29.4",
     "pagination-system": "^2.0.2",
