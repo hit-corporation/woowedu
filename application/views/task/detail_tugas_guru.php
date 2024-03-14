@@ -65,13 +65,16 @@
 								<td><?=$val['nis']?></td>
 								<td><?=$val['student_name']?></td>
 								<td><?=(isset($val['detail_jawaban']['task_submit'])) ? date('d M Y, H:i', strtotime($val['detail_jawaban']['task_submit'])) : '' ?></td>
-								<td>
+								<td class="text-center">
 									<?php if(isset($val['detail_jawaban']['task_submit'])) : ?>
 										<a href="<?=base_url('assets/files/student_task/'.$task['class_id'].'/'.$val['detail_jawaban']['task_file'])?>"><img src="<?=base_url('assets/images/paper.png')?>" alt="" width="30"></a>
 									<?php endif ?>	
 								</td>
-								<td><?=(isset($val['detail_jawaban']['task_nilai'])) ? $val['detail_jawaban']['task_nilai'] : '' ?></td>
-								<td></td>
+								<td class="text-center"><?=(isset($val['detail_jawaban']['task_nilai'])) ? $val['detail_jawaban']['task_nilai'] : '' ?></td>
+								<td class="text-center">
+									<a class="mx-1" href="<?=base_url('task/detail/'.$task['task_id'])?>"><i class="bi bi-eye-fill"></i></a>
+									<a class="mx-1" href="<?=base_url('task/detail/'.$task['task_id'])?>"><i class="bi bi-pencil"></i></a>
+								</td>
 							</tr>
 						<?php $i++ ?>		
 						<?php endforeach ?>
