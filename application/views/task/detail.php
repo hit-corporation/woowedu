@@ -30,7 +30,7 @@
 						$string = $task['task_file'];
 						$array = array('mp4', 'ogv', 'webm');
 						$i = contains($array, $string);
-						echo ($i) ? '<video width="500" height="500" controls src="'.base_url('assets/files/teacher_task/').$task['task_file'].'"></video>' : '<a href="'.base_url('assets/files/teacher_task/').$task['task_file'].'">Download File</a><br><embed width="191" height="207" name="plugin" src="'.base_url('assets/files/teacher_task/').$task['task_file'].'" type="application/pdf">';
+						echo ($i) ? '<video width="500" height="500" controls src="'.base_url('assets/files/teacher_task/'.$task['tacher_id'].'/').$task['task_file'].'"></video>' : '<a href="'.base_url('assets/files/teacher_task/'.$task['teacher_id'].'/').$task['task_file'].'">Download File</a><br><embed width="191" height="207" name="plugin" src="'.base_url('assets/files/teacher_task/'.$task['teacher_id'].'/').$task['task_file'].'" type="application/pdf">';
 					
 					}else{
 						echo 'Tidak Ada File Materi Tugas';
