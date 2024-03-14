@@ -67,7 +67,7 @@
 								<td><?=(isset($val['detail_jawaban']['task_submit'])) ? date('d M Y, H:i', strtotime($val['detail_jawaban']['task_submit'])) : '' ?></td>
 								<td>
 									<?php if(isset($val['detail_jawaban']['task_submit'])) : ?>
-										<a href="<?=base_url('assets/files/student_task/'.$val['student_id'].'/'.$val['detail_jawaban']['task_file'])?>"><img src="<?=base_url('assets/images/paper.png')?>" alt="" width="30"></a>
+										<a href="<?=base_url('assets/files/student_task/'.$task['class_id'].'/'.$val['detail_jawaban']['task_file'])?>"><img src="<?=base_url('assets/images/paper.png')?>" alt="" width="30"></a>
 									<?php endif ?>	
 								</td>
 								<td><?=(isset($val['detail_jawaban']['task_nilai'])) ? $val['detail_jawaban']['task_nilai'] : '' ?></td>
@@ -80,65 +80,9 @@
 			</div>
 		</div>
 
-		<div class="card mt-3">
-			<h5 class="card-header">Jawaban Tugas</h5>
-			<div class="card-body">
-				<?php if(!empty($task_student)) : ?>
-					<a href="<?=base_url('assets/files/student_task/').$task['class_id'].'/'.$task_student['task_file']?>">
-						<img src="<?=base_url('assets/images/paper.png')?>" alt="" width="150">
-					Download File</a>
-					<br>
-					<!-- <embed width="191" height="207" name="plugin" src="<? //=base_url('assets/files/student_task/').$task['class_id'].'/'.$task_student['task_file']?>" type="application/pdf"> -->
-					
-					<br>
-					<p>Tanggal Submit: <?=date('d M Y H:i', strtotime($task_student['task_submit']))?></p>
-					<p>Catatan:</p>
-					<p><?=$task_student['task_note']?></p>
-				<?php endif ?>
-				
-				<?php if(strtotime($task['due_date']) >= time()): ?>
-					<button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Kumpulkan Tugas</button>
-				<?php else : ?>
-					<div class="alert alert-warning" role="alert">
-						Batas pengumpulan tugas telah berakhir!
-					</div>
-				<?php endif ?>
-			</div>
-		</div>
 		
 	</div>
 </section>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">Upload Jawaban Tugas</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div> 
-			<form action="<?=base_url('task/store_file')?>" method="POST" enctype="multipart/form-data">
-				<div class="modal-body">
-					<div class="mb-3">
-						<label for="formFile" class="form-label">Pilih File dari komputer</label>
-						<input type="hidden" name="task_id" value="<?=$task['task_id']?>">
-						<input type="hidden" name="class_id" value="<?=$task['class_id']?>">
-						<input class="form-control" type="file" name="formFile" id="formFile">
-						<span class="text-danger">* </span><span class="fs-12">ukuran file maksimal 30 MB</span>
-					</div>
-					<div class="form-floating">
-						<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="task_note"></textarea>
-						<label for="floatingTextarea2">Comments</label>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-					<button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?=base_url('assets/node_modules/datatables.net/js/dataTables.min.js')?>"></script>
@@ -167,5 +111,6 @@
 
 	$(document).ready(function () {
 		let table = new DataTable('#myTable');
+		$('.dt-layout-cell.dt-start').addClass('d-none');
 	});
 </script>
