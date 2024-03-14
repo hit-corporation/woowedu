@@ -20,10 +20,25 @@
 					<select class="form-select" name="select_mapel" id="select_mapel" aria-label="Pilih Matapelajaran">
 						<option value="" >==Pilih==</option>
 						<?php foreach($mapelop as $key => $val) : ?>
-							<?php if($data['subject_id']==$val['subject_id']){ ?>
+							<?php if(isset($data['subject_id']) && $data['subject_id'] == $val['subject_id']){ ?>
 								<option selected value="<?=$val['subject_id']?>"><?=$val['subject_name']?></option>
 							<?php } else { ?>
 								<option value="<?=$val['subject_id']?>"><?=$val['subject_name']?></option>
+							<?php } ?>
+						<?php endforeach ?>
+					</select>	
+				</div>
+
+				<div class="mb-3 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+					<label for="title" class="form-label">Kelas</label>
+
+					<select class="form-select" name="select_class" id="select_class" aria-label="Pilih Kelas">
+						<option value="" >==Pilih==</option>
+						<?php foreach($class_teachers as $key => $val) : ?>
+							<?php if(isset($data['class_id']) && $data['class_id'] == $val['class_id']){ ?>
+								<option selected value="<?=$val['class_id']?>"><?=$val['class_name']?></option>
+							<?php } else { ?>
+								<option value="<?=$val['class_id']?>"><?=$val['class_name']?></option>
 							<?php } ?>
 						<?php endforeach ?>
 					</select>	
