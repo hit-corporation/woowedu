@@ -61,12 +61,26 @@ class Task extends CI_Controller {
 		$user_level 				= $this->session->userdata('user_level');
 		
 		if($user_level == 4 ){		
-		$student = $this->db->where('nis', $this->session->userdata('username'))->get('student')->row_array();
-		$data['task_student'] = $this->db->where('student_id', $student['student_id'])->where('task_id', $id)->order_by('ts_id', 'desc')->get('task_student')->row_array();
+			$student = $this->db->where('nis', $this->session->userdata('username'))->get('student')->row_array();
+			$data['task_student'] = $this->db->where('student_id', $student['student_id'])->where('task_id', $id)->order_by('ts_id', 'desc')->get('task_student')->row_array();
 		}
 		
 		$this->load->view('header');
-		$this->load->view('task/detail', $data);
+
+		if($user_level == 3 ){
+			// get data semua siswa yang ada di kelas tugas tersebut
+			$data_siswa_kelas = $this->model_task->get_all_siswa_task($id);
+			
+			// looping untuk mencari siswa yang sudah mengerjakan tugas
+			foreach ($data_siswa_kelas as $key => $val) {
+				$data_siswa_kelas[$key]['detail_jawaban'] = $this->db->where('task_id', $id)->where('student_id', $val['student_id'])->get('task_student')->row_array();
+			}
+			$data['data_siswa_kelas'] = $data_siswa_kelas;
+
+			$this->load->view('task/detail_tugas_guru', $data);
+		} else {
+			$this->load->view('task/detail', $data);	
+		}
 		$this->load->view('footer');
 	}
 
