@@ -121,7 +121,7 @@
 					$('#task-content').append(`
 						<div class="container border rounded-4 bg-clear p-3 mb-3 task-item">
 							<div class="d-flex justify-content-between">
-								<a href="task/detail/${value.task_id}"><h6 class="mb-2">${value.subject_name}</h6></a>
+								<a href="task/detail/${value.task_id}"><h6 class="mb-2">${(value.subject_name != null) ? value.subject_name : value.subject_name2}</h6></a>
 								<p style="font-size: 14px;"><span class="task-card-date">batas akhir : ${value.due_date}</span></p>
 							</div>
 							<p style="font-size: 14px;"><a href="task/detail/${value.task_id}">${desc}</a></p>
