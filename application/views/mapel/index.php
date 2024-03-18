@@ -1,6 +1,6 @@
 <section class="explore-section section-padding" id="section_2">
 	
-<div class="container">
+<div class="container mt-3">
 
 	<form class="row mb-3" name="frm-filter">
 		
@@ -15,15 +15,64 @@
        
     </form>
 
+	<div class="row mb-3">
+
+		<div class="col-4 p-2">
+		
+			<a href="<?=base_url('materi/materi_saya')?>" class="border rounded" style="height: 100%; cursor: pointer;">
+				<div class="row p-3">
+					<div class="col-5"><img src="<?=base_url('assets/images/folder-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
+					<div class="col-6">
+						<p style="font-size: 18px"><b>Materi Saya</b></h6>
+						<p style="font-size: 12px;">Anda dapat mengunggah materi yang anda buat sendiri di sini (contoh file-file PDF), mengelompokkan mereka, 
+							dan kemudian menugaskan mereka ke kelas(kelas-kelas) yang Anda ajar.
+						</p>
+					</div>
+				</div>
+			</a>
+
+		</div>
+
+		<div class="col-4 p-2">
+		
+			<a href="<?=base_url('materi/materi_sekolah')?>" class="border rounded" style="height: 100%; cursor: pointer;">
+				<div class="row p-3">
+					<div class="col-5"><img src="<?=base_url('assets/images/school-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
+					<div class="col-6">
+						<p style="font-size: 18px"><b>Materi Sekolah</b></h6>
+						<p style="font-size: 12px;">Folder materi umum untuk semua guru sekolah.
+						</p>
+					</div>
+				</div>
+			</a>
+
+		</div>
+
+		<div class="col-4 p-2">
+		
+			<a href="<?=base_url('materi/materi_sekolah')?>" class="border rounded" style="height: 100%; cursor: pointer;">
+				<div class="row p-3">
+					<div class="col-5"><img src="<?=base_url('assets/images/globe-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
+					<div class="col-6">
+						<p style="font-size: 18px"><b>Materi Global</b></h6>
+						<p style="font-size: 12px;">Materi ini dibagikan kepada semua sekolah.
+						</p>
+					</div>
+				</div>
+			</a>
+
+		</div>
+	</div>
+
 	<div class="row">
 		<!-- <div class="col"> -->
-			<!--<?php for($i=0; $i<10; $i++):?>
+			<!--<?php // for($i=0; $i<10; $i++):?>
 			<div class="col-lg-4 col-md-6">
 				<div class="card rounded border mb-4">
 					<div class="row">
 						<div class="col-lg-5 col-md-5 col-sm-3 col-xs-3">
 							<div class="container mt-2">
-								<img src="<?=base_url()?>assets/images/faq_graphic.jpg" alt="" width="90" height="125">
+								<img src="<?//=base_url()?>assets/images/faq_graphic.jpg" alt="" width="90" height="125">
 							</div>
 						</div>
 						<div class="col-lg-7 col-md-5 col-sm-9 col-xs-9">
@@ -33,7 +82,7 @@
 					</div>
 				</div>
 			</div>
-			<?php endfor?> -->
+			<?php // endfor?> -->
 		<!-- </div> -->
 		<div class="row mb-2">
 			<div class="col-md-8 col-lg-10"></div>
