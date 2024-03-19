@@ -1,10 +1,12 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "datatables.net-dt": "^2.0.2",
     "daterangepicker": "^3.1.0",
     "moment": "^2.29.4",
     "pagination-system": "^2.0.2",
-    "pdfjs-dist": "^3.10.111"
+    "pdfjs-dist": "^3.10.111",
+    "sweetalert2": "^11.10.6"
   },
   "devDependencies": {
     "node-sass": "^9.0.0",
