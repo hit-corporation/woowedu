@@ -106,14 +106,15 @@ class Materi extends CI_Controller {
 	public function materi_saya(){
 		$header['add_css'] = [
 			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css',
-			'assets/libs/sweetalert2/sweetalert2.min.css',
+			'assets/node_modules/sweetalert2/dist/sweetalert2.min.css',
 			'assets/node_modules/pagination-system/dist/pagination-system.min.css',
 		];
 
 		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'];
 		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js'];
-		$data['page_js'][] = ['path' => 'assets/libs/sweetalert2/sweetalert2.min.js'];
+		$data['page_js'][] = ['path' => 'assets/node_modules/sweetalert2/dist/sweetalert2.min.js'];
 		$data['page_js'][] = ['path' => 'https://kit.fontawesome.com/b377b34fd7.js'];
+		$data['page_js'][] = ['path' => 'assets/js/_materi_saya.js'];
 
 		$teacher_id = $_SESSION['teacher_id'];
 		// $data['materies'] = $this->db->where('teacher_id', $teacher_id)->get('materi')->result_array();

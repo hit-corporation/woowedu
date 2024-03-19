@@ -1,7 +1,5 @@
 <section class="explore-section section-padding" id="section_2">
 
-	<link rel="stylesheet" href="<?=base_url('assets/node_modules/sweetalert2/dist/sweetalert2.min.css')?>">
-
 	<div class="container mt-3">
 		<h5>Materi Saya</h5>
 
@@ -82,9 +80,6 @@
 	</div>
 
 </section>
-
-<script src="<?=base_url('').'assets/js/_materi_saya.js'?>"></script>
-<script src="<?=base_url('').'assets/node_modules/sweetalert2/dist/sweetalert2.min.js'?>"></script>
 
 <script>
 	// create swall alert
