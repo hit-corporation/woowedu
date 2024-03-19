@@ -104,6 +104,7 @@ class Materi extends CI_Controller {
 	}
 
 	public function materi_saya(){
+
 		$header['add_css'] = [
 			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css',
 			'assets/node_modules/sweetalert2/dist/sweetalert2.min.css',
@@ -117,16 +118,6 @@ class Materi extends CI_Controller {
 		$data['page_js'][] = ['path' => 'assets/js/_materi_saya.js'];
 
 		$teacher_id = $_SESSION['teacher_id'];
-		// $data['materies'] = $this->db->where('teacher_id', $teacher_id)->get('materi')->result_array();
-
-		// foreach ($data['materies'] as $key => $val) {
-		// 	$dir = str_replace('\application\controllers','',__DIR__).'/assets/files/materi/'; // get direktory file
-		// 	if(file_exists($dir.$val['materi_file'])){
-		// 		$data['materies'][$key]['file_size'] = filesize($dir.$val['materi_file']);
-		// 	}else{
-		// 		$data['materies'][$key]['file_size'] = 0;
-		// 	}
-		// }
 
 		$data['mapels'] = $this->db->where('teacher_id', $teacher_id)->join('subject s', 's.subject_id=st.subject_id')->get('subject_teacher st')->result_array();
 
@@ -216,4 +207,8 @@ class Materi extends CI_Controller {
 		redirect('materi/materi_saya');
 
 	}
+
+	public function relasi(){
+		$this->load->view('mapel/relasi', true);
+	}	
 }

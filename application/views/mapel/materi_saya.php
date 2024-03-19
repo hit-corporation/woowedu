@@ -41,7 +41,7 @@
 
 	</div>
 
-	<!-- Modal -->
+	<!-- Modal Create New --> 
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
@@ -78,6 +78,32 @@
 			</div>
 		</div>
 	</div>
+	<!-- End Modal -->
+
+	<!-- Modal Relasi -->
+	<section class="modal fade" id="modal-relasi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content border-0">
+				<div class="modal-header bg-success">
+					<h5 class="modal-title text-capitalize text-light text-shadow">Atur Relasi</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form name="form-relasi" id="form-relasi" class="d-flex flex-column">
+					<div class="modal-body">
+						<div  id="div_relasi">
+						</div>  
+						<input type="hidden" name="a_teacher_id" id="relasi_teacher_id" />
+						<input type="hidden" name="xsrf" id="relasi_xsrf" />
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary btn-sm text-white">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	<!-- end modal relasi-->
 
 </section>
 
