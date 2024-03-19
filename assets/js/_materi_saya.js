@@ -51,13 +51,61 @@ $(document).ready(function () {
 
 	/**
 	 * SAVE RELASI
-	 */	 
-		
+	 */
+	$("#save-relasi").click(function(){
+		$.ajax({
+			url: BASE_URL + 'materi/set_relasi',
+			type: 'POST',
+			data: $("#form-relasi").serialize(),
+			contentType: 'application/x-www-form-urlencoded',
+			beforeSend(xhr) {
+							Swal.fire({
+								html: 	'<div class="d-flex flex-column align-items-center">'
+								+ '<span class="spinner-border text-primary"></span>'
+								+ '<h3 class="mt-2">Loading...</h3>'
+								+ '<div>',
+								showConfirmButton: false,
+								width: '10rem'
+								});
+			},
+			success(resp) {
+				
+				if(resp.success){
+					Swal.fire({
+						icon: 'success',
+						title: '<h4 class="text-success"></h4>',
+						html: '<span class="text-success">'+resp.message+'</span>',
+						timer: 5000
+					});
+				}else{
+					Swal.fire({
+						icon: 'error',
+						title: '<h4 class="text-danger"></h4>',
+						html: '<span class="text-danger">'+resp.message+'</span>',
+						timer: 5000
+					});
+				}
+			},
+			error(err) {
+				var response = JSON.parse(err);
+				Swal.fire({
+					type: response.message,
+					title: '<h5 class="text-danger text-uppercase">'+response.message+'</h5>',
+					html: response.message
+				});
+			},
+			complete() {
+				table.ajax.reload();
+			}
+		});
+	});	 
+	
+	// button relasi di klik
 	$('#myTable tbody').on('click', '.btn.relasi_teacher', e => {
 		
 		let row = table.row($(e.target).parents('tr')).data(); 
-		$('#div_relasi').load(BASE_URL + 'materi/relasi?id='+row.teacher_id);
-		$('#relasi_teacher_id').val(row.teacher_id);
+		$('#div_relasi').load(BASE_URL + 'materi/relasi?id='+row.teacher_id+'&materi_id='+row.materi_id);
+		$('#relasi_materi_id').val(row.materi_id);
 		$('#modal-relasi').modal('show');
 		
 	});

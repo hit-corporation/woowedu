@@ -92,12 +92,12 @@
 					<div class="modal-body">
 						<div  id="div_relasi">
 						</div>  
-						<input type="hidden" name="a_teacher_id" id="relasi_teacher_id" />
+						<input type="hidden" name="a_materi_id" id="relasi_materi_id" />
 						<input type="hidden" name="xsrf" id="relasi_xsrf" />
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary btn-sm text-white">Submit</button>
+						<button type="submit" class="btn btn-primary btn-sm text-white" id="save-relasi">simpan</button>
 					</div>
 				</form>
 			</div>

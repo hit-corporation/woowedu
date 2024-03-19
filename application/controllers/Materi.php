@@ -210,5 +210,24 @@ class Materi extends CI_Controller {
 
 	public function relasi(){
 		$this->load->view('mapel/relasi', true);
-	}	
+	}
+
+	public function set_relasi(){
+		$post = $this->input->post();
+		$materi_id = $post['a_materi_id'];
+
+		$this->db->delete('materi_kelas', ['materi_id' => $materi_id]);
+
+		foreach ($post['teacher_class'] as $val) {
+			$insert = $this->db->insert('materi_kelas', ['class_id'=>$val, 'materi_id'=>$materi_id]);
+		}
+
+		if(!$insert){
+			$data = ['success'=>false, 'message'=>'Data gagal di simpan!'];
+		}else{
+			$data = ['success'=>true, 'message'=>'Data berhasil di simpan!'];
+		}
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode($data);
+	}
 }

@@ -189,9 +189,10 @@ class Model_student extends CI_Model {
 	public function get_materi_guru($limit = null, $page = null, $student_id){
 		$class_id = $this->get_class($student_id);
 
-		$this->db->select('m.*');
+		$this->db->select('m.*, s.subject_name');
 		$this->db->from('materi_kelas mk');
 		$this->db->join('materi m', 'm.materi_id = mk.materi_id');
+		$this->db->join('subject s', 's.subject_id = m.subject_id');
 		$this->db->where('mk.class_id', $class_id);
 		$this->db->order_by('available_date', 'desc');
 		$this->db->limit($limit, $page);
