@@ -69,13 +69,13 @@
     padding: 2px;
 }
 .data-by-date input{ border-radius: 10px; border: 1px solid #bdc1b8; }
-.table-rounded{ border-collapse: separate; border: solid #a8ded8 1px; border-radius: 10px; }
+.table-rounded{ border-collapse: separate; border: solid #a8ded863 1px; border-radius: 10px; }
 .table-rounded td, .table-rounded th {
-	border-left: solid #a8ded8 1px;
-	border-top: solid #a8ded8 1px;
+	border-left: solid #a8ded863 1px;
+	border-top: solid #a8ded863 1px;
 	padding: 10px;
 }
-.table-rounded th { background-color: #59c2ff; border-top: none; } 
+.table-rounded th { background-color: #59c2ff1e; border-top: none; } 
 .table-rounded td:first-child, .table-rounded th:first-child { border-left: none; } 
 a { cursor: pointer; } 
 @media screen and (min-width:1080px) and (max-width: 1080px) and (min-height: 2160px) and (min-height: 2160px){

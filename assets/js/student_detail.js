@@ -96,6 +96,42 @@ function getSummary(student_id, start, end){
 }
 
 // ###########################################################################################
+// ################################## DATA TABLE MATERI GURU #################################
+// ###########################################################################################
+
+var tableTask = $('#tableMateriGuru').DataTable({
+	serverSide: true,
+	ajax: {
+		url: BASE_URL + 'student/get_materi_kelas',
+		method: 'GET',
+		data: {
+			student_id: student_id
+		}
+	},
+	select: {
+		style:	'multi',  
+		selector: 'td:first-child'
+	},
+	columns: [
+		{
+			data: 'title',
+		},
+		{
+			data: 'subject_name',
+		},
+		{
+			data: 'available_date',
+			render(data, row, type, meta) {
+				return moment(data).format('DD MMM YYYY, HH:mm');
+			}
+		}
+	]
+});
+
+
+
+
+// ###########################################################################################
 // ################################## DATA TABLE LIST TUGAS ##################################
 // ###########################################################################################
 
@@ -310,7 +346,8 @@ var tableBookHistory = $('#tableBookHistory').DataTable({
 		{
 			data: 'description',
 			render(data, type, row, meta){
-				return data.substring(0,100)+' ...';
+				let desc = (data != null) ? data.substring(0,100)+' ...' : '';
+				return desc;
 			}
 		},
 		{

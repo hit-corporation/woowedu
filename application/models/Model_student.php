@@ -185,4 +185,25 @@ class Model_student extends CI_Model {
 			return null;
 		}				
 	}	
+
+	public function get_materi_guru($limit = null, $page = null, $student_id){
+		$class_id = $this->get_class($student_id);
+
+		$this->db->select('m.*');
+		$this->db->from('materi_kelas mk');
+		$this->db->join('materi m', 'm.materi_id = mk.materi_id');
+		$this->db->where('mk.class_id', $class_id);
+		$this->db->order_by('available_date', 'desc');
+		$this->db->limit($limit, $page);
+		return $this->db->get()->result_array();
+	}
+
+	public function get_total_row_materi_guru($student_id){
+		$class_id = $this->get_class($student_id);
+		$this->db->select('m.*');
+		$this->db->from('materi_kelas mk');
+		$this->db->join('materi m', 'm.materi_id = mk.materi_id');
+		$this->db->where('mk.class_id', $class_id);
+		return $this->db->get()->num_rows();
+	}
 }

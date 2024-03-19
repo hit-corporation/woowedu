@@ -351,4 +351,22 @@ class Student extends CI_Controller {
 		$this->load->view('student/submitexam', $data);
 		$this->load->view('footer');		
 	}
+
+	public function get_materi_kelas(){
+		$get = $this->input->get();
+		$page 		= isset($get['start']) ? (int)$get['start'] : 0;
+		$limit 		= isset($get['length']) ? (int)$get['length'] : 10;
+
+		$data['data'] = $this->model_student->get_materi_guru($limit, $page, $get['student_id']);
+
+		$data['draw'] 				= $get['draw'];
+		$data['recordsTotal'] 		= $this->model_student->get_total_row_materi_guru($get['student_id']);
+		$data['recordsFiltered'] 	= $this->model_student->get_total_row_materi_guru($get['student_id']);
+		$data['total_pages'] 		= ceil($data['recordsTotal'] / $limit);
+
+		// create json header	
+		header('Content-Type: application/json');
+		echo json_encode($data);
+
+	}
 }
