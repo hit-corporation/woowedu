@@ -119,6 +119,9 @@ var tableTask = $('#tableMateriGuru').DataTable({
 	columns: [
 		{
 			data: 'title',
+			render(data, type, row, meta) {
+				return `<a href="${BASE_URL+'assets/files/materi/'+row.materi_file}">${data}</a>`;
+			}
 		},
 		{
 			data: 'subject_name',

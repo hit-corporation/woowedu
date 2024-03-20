@@ -120,7 +120,6 @@
 								<th>Nama Matapelajaran</th>
 								<th>Nama Materi</th>
 								<th>Ditugaskan</th>
-								<th>Ukuran</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
