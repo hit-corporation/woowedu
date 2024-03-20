@@ -32,20 +32,18 @@ $(document).ready(function () {
 	var calendarEl = document.getElementById('calendar');
 	var calendar = new FullCalendar.Calendar(calendarEl, {
 		height:500,
-		headerToolbar: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'listDay,listWeek'
-		},
+		headerToolbar: { left: 'dayGridMonth', center: 'title' }, // buttons for switching between views
 
 		// customize the button names,
 		// otherwise they'd all just say "list"
 		views: {
-			listDay: { buttonText: 'list day' },
-			listWeek: { buttonText: 'list week' },
+				dayGridMonth: { // name of view
+					// titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
+					// other view-specific options here
+			}
 		},
 
-		initialView: 'listWeek',
+		initialView: 'dayGridMonth',
 		initialDate: moment().format('YYYY-MM-DD'),
 		navLinks: true, // can click day/week names to navigate views
 		editable: true,

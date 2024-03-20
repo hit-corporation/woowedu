@@ -94,15 +94,15 @@
 			<h6 class="text-center mt-4">Laporan Kinerja Siswa</h6>
 			<nav>
 				<div class="nav nav-tabs" id="nav-tab" role="tablist">
-					<button class="nav-link active" id="nav-materi-guru-tab" data-bs-toggle="tab" data-bs-target="#nav-materi-guru" type="button" role="tab" aria-controls="nav-materi-guru" aria-selected="false"><i class="fa-solid fa-chalkboard-user h6"></i> Materi Guru</button>
+					<button class="nav-link active" id="nav-sesi-tab" data-bs-toggle="tab" data-bs-target="#nav-sesi" type="button" role="tab" aria-controls="nav-sesi" aria-selected="true"><i class="fa-regular fa-calendar-days h6"></i> Sesi</button>
+					<button class="nav-link" id="nav-materi-guru-tab" data-bs-toggle="tab" data-bs-target="#nav-materi-guru" type="button" role="tab" aria-controls="nav-materi-guru" aria-selected="false"><i class="fa-solid fa-chalkboard-user h6"></i> Materi Guru</button>
 					<button class="nav-link" id="nav-tugas-tab" data-bs-toggle="tab" data-bs-target="#nav-tugas" type="button" role="tab" aria-controls="nav-tugas" aria-selected="false"><i class="fa-solid fa-pen-clip h6"></i> Tugas</button>
 					<button class="nav-link" id="nav-ujian-tab" data-bs-toggle="tab" data-bs-target="#nav-ujian" type="button" role="tab" aria-controls="nav-ujian" aria-selected="false"><i class="fa-solid fa-list-check h6"></i> Ujian</button>
-					<button class="nav-link" id="nav-ebook-tab" data-bs-toggle="tab" data-bs-target="#nav-ebook" type="button" role="tab" aria-controls="nav-ebook" aria-selected="true"><i class="fa-solid fa-book-bookmark h6"></i> Ebook</button>
-					<button class="nav-link" id="nav-sesi-tab" data-bs-toggle="tab" data-bs-target="#nav-sesi" type="button" role="tab" aria-controls="nav-sesi" aria-selected="true"><i class="fa-regular fa-calendar-days h6"></i> Sesi</button>
+					<button class="nav-link" id="nav-ebook-tab" data-bs-toggle="tab" data-bs-target="#nav-ebook" type="button" role="tab" aria-controls="nav-ebook" aria-selected="false"><i class="fa-solid fa-book-bookmark h6"></i> Ebook</button>
 				</div>
 			</nav>
 			<div class="tab-content mb-4" id="nav-tabContent" style="overflow-x: auto;">
-				<div class="tab-pane fade show active p-3" id="nav-materi-guru" role="tabpanel" aria-labelledby="nav-materi-guru-tab" tabindex="0">
+				<div class="tab-pane fade p-3" id="nav-materi-guru" role="tabpanel" aria-labelledby="nav-materi-guru-tab" tabindex="0">
 					<table class="table-rounded" id="tableMateriGuru" style="width: 100%;">
 						<thead>
 							<tr>
@@ -178,15 +178,15 @@
 					</div>
 				</div>
 				
-				<div class="tab-pane fade" id="nav-sesi" role="tabpanel" aria-labelledby="nav-sesi-tab" tabindex="0">
-					<div class="container px-5">
-						<div class="row">
+				<div class="tab-pane fade show active" id="nav-sesi" role="tabpanel" aria-labelledby="nav-sesi-tab" tabindex="0">
+					<div class="container p-3 border rounded" style="height: 100%;">
+						<!-- <div class="row"> -->
 							
-							<div class="col-8">
-								<div id="calendar" class="col"></div>
-							</div>
-							<div class="col-4" id="sesi_content"></div>
-						</div>
+							<!-- <div class="col-8"> -->
+								<div id="calendar"></div>
+							<!-- </div> -->
+							<!-- <div class="col-4" id="sesi_content"></div> -->
+						<!-- </div> -->
 					</div>
 				</div>
 			</div>
