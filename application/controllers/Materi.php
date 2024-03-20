@@ -160,46 +160,58 @@ class Materi extends CI_Controller {
 
 	public function store_materi_saya(){
 		$post 		= $this->input->post();
-		$title		= trim($post['input_materi']);
-		$materi_id	= ($post['materi_id'] != '') ? $post['materi_id'] : null;
-		$file_name 	= $_FILES['input_file']['name'];
+		// save materi ==========================================================
+		if($post['materi_id'] == ''){
+			$title		= trim($post['input_materi']);
+			$materi_id	= ($post['materi_id'] != '') ? $post['materi_id'] : null;
+			$file_name 	= $_FILES['input_file']['name'];
 
-		$subject = $this->db->where('subject_id', $post['subject_id'])->get('subject')->row_array();
+			$subject = $this->db->where('subject_id', $post['subject_id'])->get('subject')->row_array();
 
-		// upload file
-		$dir = 'assets/files/materi/';
-		if(!is_dir($dir))  @mkdir($dir, 0777);
-		$filename = str_replace(' ', '_', strtolower($subject['subject_name'])).'-'.str_replace(' ', '_', strtolower($post['input_materi']));
-		$ext = pathinfo(basename($file_name), PATHINFO_EXTENSION);
-		$move = move_uploaded_file($_FILES['input_file']['tmp_name'], FCPATH.$dir.$filename.'.'.$ext);
+			// upload file
+			$dir = 'assets/files/materi/';
+			if(!is_dir($dir))  @mkdir($dir, 0777);
+			$filename = str_replace(' ', '_', strtolower($subject['subject_name'])).'-'.str_replace(' ', '_', strtolower($post['input_materi']));
+			$ext = pathinfo(basename($file_name), PATHINFO_EXTENSION);
+			$move = move_uploaded_file($_FILES['input_file']['tmp_name'], FCPATH.$dir.$filename.'.'.$ext);
 
-		if(!$move){
-			$message = ['success' => false, 'message' => 'File gagal di upload !!!'];
-		}else{ 
+			if(!$move){
+				$message = ['success' => false, 'message' => 'File gagal di upload !!!'];
+			}else{ 
 
-			// cek materi sudah pernah ada atau belum		
-			$cek = $this->db->where('materi_id', $materi_id)->get('materi')->num_rows();
+				// cek materi sudah pernah ada atau belum		
+				$cek = $this->db->where('materi_id', $materi_id)->get('materi')->num_rows();
+				
+				if($cek > 0){
+					// edit
+					$data = [
+						'title' 	=> $title,
+						'edit_at' 	=> date('Y-m-d H:i:s'),
+					];
+					$this->db->update('materi', $data, ['subject_id' => $post['subject_id']]);
+					$message = ['success' => true, 'message' => 'Data berhasil di update !!!'];
+				}else{
+					// save
+					$data = [
+						'subject_id' 		=> $post['subject_id'],
+						'teacher_id'		=> $_SESSION['teacher_id'],
+						'title' 			=> trim($title),
+						'available_date' 	=> date('Y-m-d H:i:s'),
+						'edit_at'			=> date('Y-m-d H:i:s'),
+						'materi_file'       => $filename.'.'.$ext,
+					];
+					$this->db->insert('materi', $data);
+					$message = ['success' => true, 'message' => 'Data berhasil di simpan !!!'];
+				}
+			}
+		}else{
+		// update materi ========================================================
+			$update = $this->db->update('materi', ['title' => trim($post['input_materi'])], ['materi_id' => $post['materi_id']]);
 			
-			if($cek > 0){
-				// edit
-				$data = [
-					'title' 	=> $title,
-					'edit_at' 	=> date('Y-m-d H:i:s'),
-				];
-				$this->db->update('materi', $data, ['subject_id' => $post['subject_id']]);
-				$message = ['success' => true, 'message' => 'Data berhasil di update !!!'];
+			if($update){
+				$message = ['success' => true, 'message' => 'Data berhasil di Update !!!'];
 			}else{
-				// save
-				$data = [
-					'subject_id' 		=> $post['subject_id'],
-					'teacher_id'		=> $_SESSION['teacher_id'],
-					'title' 			=> $title,
-					'available_date' 	=> date('Y-m-d H:i:s'),
-					'edit_at'			=> date('Y-m-d H:i:s'),
-					'materi_file'       => $filename.'.'.$ext,
-				];
-				$this->db->insert('materi', $data);
-				$message = ['success' => true, 'message' => 'Data berhasil di simpan !!!'];
+				$message = ['success' => false, 'message' => 'Data gagal di Update !!!'];
 			}
 		}
 		
@@ -229,5 +241,25 @@ class Materi extends CI_Controller {
 		}
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode($data);
+	}
+
+	function delete(){
+		$post = $this->input->post();
+
+		// cek di materi_kelas sudah ada atau belum datanya
+		$materi_kelas = $this->db->where('materi_id', $post['materi_id'])->get('materi_kelas')->num_rows();
+		if($materi_kelas > 0){
+			$this->db->delete('materi_kelas', ['materi_id' => $post['materi_id']]);
+		}
+
+		$delete = $this->db->delete('materi', ['materi_id' => $post['materi_id']]);
+
+		if($delete){
+			$res = ['success' => true, 'message' => 'Data berhasil di hapus !!!'];
+		}else{
+			$res = ['success' => false, 'message' => 'Data gagal di hapus !!!'];
+		}
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode($res);
 	}
 }

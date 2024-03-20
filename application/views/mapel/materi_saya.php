@@ -27,6 +27,7 @@
 			<table class="table" id="myTable">
 				<thead>
 					<tr>
+						<th>ID</th>
 						<th>Nama Materi</th>
 						<th>File / Tautan</th>
 						<th>Terakhir di update</th>
@@ -50,7 +51,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body p-4">
-					<form method="POST" action="materi/store_materi_saya" enctype="multipart/form-data">
+					<form name="form-add" method="POST" action="materi/store_materi_saya" enctype="multipart/form-data">
 						<div class="mb-3">
 							<label for="subject_id" class="form-label">Mapel *</label>
 							<select class="form-select" name="subject_id" id="subject_id" aria-label="Pilih Matapelajaran">
@@ -109,22 +110,24 @@
 
 <script>
 	// create swall alert
-	<?php if(!empty($_SESSION['success']) && $_SESSION['success']['success'] == true) : ?>
-		Swal.fire({
-            icon: 'success',
-            title: '<h4 class="text-success"></h4>',
-            html: '<span class="text-success"><?= $_SESSION['success']['message'] ?></span>',
-            timer: 5000
-        });
-
-	<?php endif; ?>
-
-	<?php if(!empty($_SESSION['success']) && $_SESSION['success']['success'] == false) : ?>
-		Swal.fire({
-			icon: 'error',
-			title: '<h4 class="text-danger"></h4>',
-			html: '<span class="text-danger"><?= $_SESSION['success']['message'] ?></span>',
-			timer: 5000
-		});
-	<?php endif; ?>
+	$(document).ready(function () {
+		<?php if(!empty($_SESSION['success']) && $_SESSION['success']['success'] == true) : ?>
+			Swal.fire({
+				icon: 'success',
+				title: '<h4 class="text-success"></h4>',
+				html: '<span class="text-success"><?= $_SESSION['success']['message'] ?></span>',
+				timer: 5000
+			});
+	
+		<?php endif; ?>
+	
+		<?php if(!empty($_SESSION['success']) && $_SESSION['success']['success'] == false) : ?>
+			Swal.fire({
+				icon: 'error',
+				title: '<h4 class="text-danger"></h4>',
+				html: '<span class="text-danger"><?= $_SESSION['success']['message'] ?></span>',
+				timer: 5000
+			});
+		<?php endif; ?>
+	});
 </script>
