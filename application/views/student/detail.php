@@ -1,6 +1,17 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/node_modules/daterangepicker/daterangepicker.css')?>" />
 
+<style>
+	.fc-event-title {
+		inline-size: 300px;
+		overflow-wrap: break-word;
+	}
+
+	.fc-daygrid-dot-event .fc-event-title{
+		overflow-x: auto !important;
+	}
+</style>
+
 <?php 
 	$user_level = $this->session->userdata('user_level');
 ?>
@@ -183,7 +194,7 @@
 						<!-- <div class="row"> -->
 							
 							<!-- <div class="col-8"> -->
-								<div id="calendar"></div>
+								<div id="calendar" class="mb-3"></div>
 							<!-- </div> -->
 							<!-- <div class="col-4" id="sesi_content"></div> -->
 						<!-- </div> -->

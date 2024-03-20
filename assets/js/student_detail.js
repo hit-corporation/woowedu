@@ -58,9 +58,15 @@ $(document).ready(function () {
 				let title = info.el.children[2].innerText;
 				let teacher = info.event._def.extendedProps.teacher;
 				let subject_name = info.event._def.extendedProps.subject_name;
+				let sesi_note = info.event._def.extendedProps.sesi_note;
 				info.el.children[2].innerHTML = (`<p class="fs-14">${title}</p>
 					<p class="text-success fw-bold fs-14">Guru: ${teacher}</p>
-					<span>Mata Pelajaran: <span style="background-color: #3989d9; color: white; padding-left: 5px; padding-right: 5px; border-radius: 10px; box-shadow: 3px 3px 5px lightblue;">${subject_name}</span></span>`);
+					<span>Mata Pelajaran: 
+						<span style="background-color: #3989d9; color: white; padding-left: 5px; padding-right: 5px; border-radius: 10px; box-shadow: 3px 3px 5px lightblue;">
+							${subject_name}
+						</span>
+					</span>
+					<br><span class="sesi-note">${sesi_note}</span>`);
 			},
 		eventClick: function(info) {
 				var eventObj = info.event;

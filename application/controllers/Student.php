@@ -278,7 +278,8 @@ class Student extends CI_Controller {
 				'teacher' 		=> $data->teacher_name,
 				'subject_name'	=> $data->subject_name,
 				'start' 		=> $data->sesi_date.'T'.$data->sesi_jam_start,
-				'end' 			=> $data->sesi_date.'T'.$data->sesi_jam_end  
+				'end' 			=> $data->sesi_date.'T'.$data->sesi_jam_end,
+				'sesi_note'		=> strip_tags($data->sesi_note)
 			];
 		}	
 		if($list == null) $list[] = array(0);

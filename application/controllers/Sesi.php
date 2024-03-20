@@ -54,7 +54,7 @@ class Sesi extends CI_Controller {
 								<p style="font-size: 14px;">'.$data['sesi_date'].'</p> 
 								<p style="font-size: 14px;">'.$data['sesi_jam_start'].' - '.$data['sesi_jam_end'].'</p>
 							</div>							
-							<p style="font-size: 14px;">'.$data['sesi_note'].'</p>
+							<p style="font-size: 11px;">'.$data['sesi_note'].'</p>
 							<div class="container d-flex justify-content-end">
 								'.$button.'
 							</div>
