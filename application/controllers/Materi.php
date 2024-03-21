@@ -126,6 +126,9 @@ class Materi extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	/**
+	 * GET list_materi_saya
+	 */
 	public function list_materi_saya(): void {
 		$draw	= $this->input->get('draw') ?? '';
 		$limit  = $this->input->get('length');
@@ -220,6 +223,9 @@ class Materi extends CI_Controller {
 
 	}
 
+	/**
+	 * view modal relasi
+	 */
 	public function relasi(){
 		$this->load->view('mapel/relasi', true);
 	}
@@ -243,6 +249,9 @@ class Materi extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	/**
+	 * Delete, Post ID
+	 */
 	function delete(){
 		$post = $this->input->post();
 
@@ -261,5 +270,100 @@ class Materi extends CI_Controller {
 		}
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode($res);
+	}
+
+	/**
+	 * Index Materi Sekolah
+	 */
+	public function materi_sekolah(){
+		$datamodel = 'table';
+		if(!empty($this->input->get('mode')) && in_array($this->input->get('mode'), ['table', 'grid']))
+			$datamodel = $this->input->get('data_model');
+
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'];
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js'];
+		$data['page_js'][] = ['path' => 'assets/libs/sweetalert2/sweetalert2.min.js'];
+		if($datamodel == 'grid')
+			$data['page_js'][] = ['path' => 'assets/js/materi_grid.js', 'defer' => true, 'type' => 'module'];
+		else
+			$data['page_js'][] = ['path' => 'assets/js/materi_table.js', 'defer' => true];
+
+		$header['add_css'] = [
+			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css',
+			'assets/libs/sweetalert2/sweetalert2.min.css',
+			'assets/node_modules/pagination-system/dist/pagination-system.min.css',
+			'assets/css/materi.css'
+
+		];
+
+		$data['datamodel'] = $datamodel;
+
+		$this->load->view('header', $header);
+		$this->load->view('mapel/materi_sekolah', $data);
+		$this->load->view('footer');
+	}
+
+	/**
+	 * Materi Global
+	 */
+	public function materi_global(){
+		$datamodel = 'table';
+		if(!empty($this->input->get('mode')) && in_array($this->input->get('mode'), ['table', 'grid']))
+			$datamodel = $this->input->get('data_model');
+
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'];
+		$data['page_js'][] = ['path' => 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js'];
+		$data['page_js'][] = ['path' => 'assets/libs/sweetalert2/sweetalert2.min.js'];
+		$data['page_js'][] = ['path' => 'assets/node_modules/moment/moment.js'];
+		if($datamodel == 'grid')
+			$data['page_js'][] = ['path' => 'assets/js/materi_grid.js', 'defer' => true, 'type' => 'module'];
+		else
+			$data['page_js'][] = ['path' => 'assets/js/_materi_global.js', 'defer' => true];
+
+		$header['add_css'] = [
+			'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css',
+			'assets/libs/sweetalert2/sweetalert2.min.css',
+			'assets/node_modules/pagination-system/dist/pagination-system.min.css',
+			'assets/css/materi.css'
+
+		];
+
+		$data['datamodel'] = $datamodel;
+
+		$this->load->view('header', $header);
+		$this->load->view('mapel/materi_global', $data);
+		$this->load->view('footer');
+	}
+
+	/**
+	 * GET list_materi_saya
+	 */
+	public function list_materi_global(): void {
+		$draw	= $this->input->get('draw') ?? '';
+		$limit  = $this->input->get('length');
+		$offset = $this->input->get('start');
+		$count  = $this->db->count_all_results('materi');
+		$filter = $this->input->get('columns');
+		
+		$data   = $this->model_mapel->get_all_materi_global($limit, $offset, $filter);
+
+		foreach ($data as $key => $val) {
+			$dir = str_replace('\application\controllers','',__DIR__).'/assets/files/materi/'; // get direktory file
+			if(file_exists($dir.$val['materi_file'])){
+				$data[$key]['file_size'] = filesize($dir.$val['materi_file']);
+			}else{
+				$data[$key]['file_size'] = 0;
+			}
+		}
+
+		$json = [
+			'draw'				=> $draw,
+			'data' 		   		=> $data,
+			'recordsTotal' 		=> count($data),
+			'recordsFiltered'	=> $this->model_mapel->num_all_materi_global($filter)
+		];
+
+		header('Content-Type: application/json');
+		echo json_encode($json, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_QUOT);
 	}
 }
