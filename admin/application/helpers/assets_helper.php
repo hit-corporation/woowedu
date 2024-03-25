@@ -14,6 +14,7 @@ function add_css($stylesheet) {
 function add_js($javascript) {
 	$output = '';
 	if(!is_array($javascript)) return;
+	// echo json_encode($javascript, true);die;
 	foreach($javascript as $js) {
 		// if(!$js['is_inline_block']) {
 		if(isset($js['is_inline_block']) && !$js['is_inline_block']) { // tambah isset *fauzi
@@ -30,7 +31,7 @@ function add_js($javascript) {
 			// if($js['async'])
 			if(isset($js['async']) && $js['async']) // tambah isset *fauzi
 				$output .= ' async';
-			if($js['defer'])
+			if(isset($js['defer']) && $js['defer'])
 				$output .= ' defer';
 			$output .= '>'.PHP_EOL;
 			$output .= file_get_contents($js['path']).PHP_EOL; // fixing *fauzi

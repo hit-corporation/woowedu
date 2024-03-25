@@ -34,8 +34,8 @@ const params = Object.fromEntries(hasParams);
         plugins: ['image', 'FMathEditor', 'advlist', 'lists'],
         toolbar: 'undo redo | blocks |  styleselect | fontsizeselect |' +
                  'bold italic underline backcolor | alignleft aligncenter ' +
-                 'alignright alignjustify | bullist numlist outdent indent | FMathEditor',
-        height: 150,
+                 'alignright alignjustify | bullist numlist outdent indent | FMathEditor subscript superscript visualaid styles',
+        height: 500,
         video_template_callback(data) {
             return '<video width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' + '<source src="' + data.source + '"' + (data.sourcemime ? ' type="' + data.sourcemime + '"' : '') + ' />\n' + (data.altsource ? '<source src="' + data.altsource + '"' + (data.altsourcemime ? ' type="' + data.altsourcemime + '"' : '') + ' />\n' : '') + '</video>';
         },
@@ -44,27 +44,28 @@ const params = Object.fromEntries(hasParams);
         file_picker_callback: function(callback, value, meta) {
             // if file is media (video or audio)
 
-                // let input = document.getElementsByName('a_soal_file')[0];
-                // //input.type = 'file';
-                // if(meta.filetype == 'image')
-                //     input.accept = "image/png,image/webp,image/jpg,image/jpeg";
+                let input = document.getElementsByName('a_soal_file')[0];
+                //input.type = 'file';
+                if(meta.filetype == 'image')
+                    input.accept = "image/png,image/webp,image/jpg,image/jpeg";
                 
-                // input.addEventListener('change', e => {
-                //     let file = e.target.files[0];
-                //     const reader = new FileReader();
-                //     reader.addEventListener('load', e => {
-                //         let id = "blobid" + (new Date()).getTime();
-                //         let blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                //         let base64 = reader.result.split(",")[1];
-                //         let blobInfo = blobCache.create(id, file, base64);
-                //         blobCache.add(blobInfo);
-                //         callback(blobInfo.blobUri(), {name: file.name});
-                //     })
-                //     reader.readAsDataURL(file);
-                // });
-                // input.click();
+                input.addEventListener('change', e => {
+                    let file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.addEventListener('load', e => {
+                        let id = "blobid" + (new Date()).getTime();
+                        let blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        let base64 = reader.result.split(",")[1];
+                        let blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+                        callback(blobInfo.blobUri(), {name: file.name});
+                    })
+                    reader.readAsDataURL(file);
+                });
+                input.click();
         }
     });
+
     $(mapel).selectpicker('val', null); 
     $(tipe).selectpicker('val', null);
 

@@ -47,9 +47,9 @@ class Soal extends MY_Controller {
 		$data['csrf_token']	= $this->csrfsimple->genToken();
 		$data['page_js']	= [  
 			['path' => 'assets/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js'],
-			['path' => 'assets/new/libs/tinymce/tinymce.min.js'],
-			//['path' => 'assets/new/libs/tinymce/jquery.tinymce.min.js', 'defer' => true],
-			['path' => 'assets/new/libs/bootstrap4-datetimepicker/js/bootstrap4-datetimepicker.min.js'],
+			// ['path' => 'assets/new/libs/tinymce/tinymce.min.js'],
+			// ['path' => 'assets/new/libs/tinymce/jquery.tinymce.min.js', 'defer' => true],
+			// ['path' => 'assets/new/libs/bootstrap4-datetimepicker/js/bootstrap4-datetimepicker.min.js'],
 			['path' => 'assets/new/libs/randomString.js'],
 			['path' => 'assets/new/js/pages/_question_new.js', 'defer' => true],
 		]; 

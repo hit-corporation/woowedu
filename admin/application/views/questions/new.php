@@ -121,3 +121,5 @@
        <?=json_encode($soal, JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT)?>
     </script>
 <?php endif; ?>
+
+<script src="https://cdn.tiny.cloud/1/yj3hulphodusa2w55igxgbtlhapz0w10lja2gm88r8z0w195/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
