@@ -53,6 +53,12 @@ class Model_materi extends CI_Model {
         $res = $this->db->query($query);
         return $res->num_rows();
     }
+
+	public function countAllGlobal(array $filter = NULL) {
+        $query = "SELECT * FROM materi_global a";
+        $res = $this->db->query($query);
+        return $res->num_rows();
+    }
 		
 	public function get_materi_by_subject($sid) {
 		$this->db->select('materi_id, title'); 
@@ -75,5 +81,51 @@ class Model_materi extends CI_Model {
 		return $res->result_array();
 	}	
 		
-		
+	/**
+     * get all data
+     *
+     * @param int $limit
+     * @param int $offset
+     * @param array $filter
+     * @return array
+     */
+	public function getAllGlobal(array $filter = NULL, int $limit = NULL, $offset = NULL) {
+		if(!empty($filter[0]['search']['value']))
+			$this->db->where('LOWER(title) LIKE \'%'.trim(strtolower($filter[0]['search']['value'])).'%\'', NULL, FALSE);
+
+		if(!empty($filter[1]['search']['value']))
+			$this->db->where('parent_id', $filter[1]['search']['value']);
+
+		if(!empty($filter[2]['search']['value']))
+			$this->db->where('parent_id', null, false);
+
+		if(!empty($limit) && !is_null($offset))
+			$this->db->limit($limit, $offset);
+
+		$this->db->order_by('a.materi_global_id ', 'DESC');
+		$get = $this->db->get('materi_global a');
+
+		return $get->result_array() ?? [];
+    }
+
+	/**
+     * Num rows with filter
+     *
+     * @param array $filter
+     * @return integer
+     */
+    public function num_all_global(array $filter = NULL): int {
+		if(!empty($filter[0]['search']['value']))
+			$this->db->where('LOWER(title) LIKE \'%'.trim(strtolower($filter[0]['search']['value'])).'%\'', NULL, FALSE);
+
+		if(!empty($filter[1]['search']['value']))
+			$this->db->where('parent_id', $filter[1]['search']['value']);
+
+		if(!empty($filter[2]['search']['value']))
+			$this->db->where('parent_id', null, false);
+
+        $get = $this->db->get('materi_global a');
+
+        return $get->num_rows() ?? 0;
+    }
 }

@@ -471,4 +471,63 @@ class Materi extends MY_Controller {
 		echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
 		exit;
     }
+
+	public function getAllGlobal() {
+        $draw   = $this->input->get('draw');
+		$limit  = $this->input->get('length');
+		$offset = $this->input->get('start');
+		$filter = $this->input->get('columns');
+        // data
+        $record = $this->model_materi->getAllGlobal($filter, $limit, $offset);
+        $data = [
+            'draw'            => $draw,
+            'data'            => $record,
+            'recordTotal'     => $this->db->count_all_results('materi_global'),
+            'recordsFiltered' =>  $this->model_materi->num_all_global($filter)
+        ];
+
+        echo json_encode($data, JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT);
+        exit();
+    }
+
+	public function delete_global() {
+		header('Content-Type: application/json');
+
+        $_input = file_get_contents('php://input');
+        $input  = json_decode($_input, TRUE);
+
+        if($input['isBulk'] == 1)
+            $this->db->where_in('materi_global_id', $input['data']);
+        else
+            $this->db->where('materi_global_id', $input['data']);
+
+        if(!$this->db->delete('materi_global')) {
+            http_response_code(422);
+            $msg = ['err_status' => 'error', 'message' => $this->lang->line('woow_delete_error')];
+            echo json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT);
+            return;
+        }
+
+        http_response_code(200);
+        $msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_delete_success')];
+        exit(json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT));
+	}
+
+	public function create_folder(){
+		header('Content-Type: application/json');
+
+		$post = $this->input->post();
+
+		$data = [
+			'title'				=> $post['folder_name'],
+			'parent_id'			=> isset($post['materi_global_id']) ? $post['materi_global_id'] : null,
+			'materi_type'		=> 0
+		];
+
+		$this->db->insert('materi_global', $data);
+
+		http_response_code(200);
+        $msg = ['err_status' => 'success', 'message' => $this->lang->line('woow_delete_success')];
+        exit(json_encode($msg, JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_TAG|JSON_HEX_QUOT));
+	}
 }

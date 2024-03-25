@@ -119,4 +119,70 @@ class Materi extends MY_Controller {
 				window.location.href = '". base_url()."materi';
 				</script>"; 		 
 	}	
+
+	/**
+	 * View Materi Global
+	 */
+	public function materi_global() {
+		$data['pageTitle']	= 'Data Materi Global';
+		//$data['tableName']	= 'tbl_device';
+		$data['csrf_token']	= $this->csrfsimple->genToken();
+		$data['page_js']	= [  
+			['path' => 'assets/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js', 'defer' => true],
+			['path' => 'assets/new/libs/summernote/summernote-bs4.min.js', 'defer' => true],
+			['path' => 'assets/new/libs/moment/min/moment.min.js', 'defer' => true],
+			['path' => 'assets/new/libs/bootstrap4-datetimepicker/js/bootstrap-datetimepicker.min.js', 'defer' => true],
+			['path' => 'assets/new/js/pages/_materi_global.js', 'defer' => true],
+		]; 
+		$data['page_css']	= [  
+			'assets/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
+			'assets/new/libs/summernote/summernote-bs4.min.css',
+			'assets/new/libs/bootstrap4-datetimepicker/css/bootstrap-datetimepicker.min.css',
+			'assets/new/css/fpersonno.css'
+		]; 
+
+		$this->template->load('template', 'materi/index_global', $data);
+	}
+
+	public function store_global(){
+		$title      = trim($_POST['a_title']);
+		$link      	= isset($_POST['a_link']) ? $_POST['a_link']: null;
+		$type     	= $_POST['a_type'];
+		$parent_id 	= isset($_POST['parent_id']) ? $_POST['parent_id'] : null;
+
+		// file
+		$file_name   	= $_FILES['input-file1']['name'];
+		$file_size   	= $_FILES['input-file1']['size'];
+
+		$dir = 'assets/files/materi/materi-global/';
+		if(!is_dir($dir))  @mkdir($dir, 0777);
+		$filename 	= base64_encode($file_name);
+		$ext 		= pathinfo(basename($file_name), PATHINFO_EXTENSION);
+
+		$move 		= move_uploaded_file($_FILES['input-file1']['tmp_name'], str_replace('admin','',FCPATH).$dir.$filename.'.'.$ext);
+		if(!$move) 
+		{ 
+			$status = 'Gagal'; 	 		
+		}else{
+			$data = [
+				'title'         => $title,
+				'parent_id'		=> $parent_id,
+				'materi_type'	=> ($type == 'file') ? 1 : 2,
+			];
+			if($type == 'file'){
+				$data['materi_file'] 	= $filename.'.'.$ext; 
+				$data['file_size'] 		= $file_size/1000;
+			}else{
+				$data['materi_url'] = $link;
+			}
+		
+			$this->db->insert('materi_global', $data) ;		
+			$status = 'Berhasil'; 				
+		}
+		
+		echo "<script>
+			alert('Data ".$status." diinput');
+			window.location.href = '". base_url()."materi/materi_global';
+			</script>"; 		 
+	}
 }
