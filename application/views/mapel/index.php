@@ -15,54 +15,56 @@
        
     </form>
 
-	<div class="row mb-3">
+	<?php if(isset($_SESSION['teacher_id'])): ?>
+		<div class="row mb-3">
 
-		<div class="col-4 p-2">
-		
-			<a href="<?=base_url('materi/materi_saya')?>" class="border rounded" style="height: 100%; cursor: pointer;">
-				<div class="row p-3">
-					<div class="col-5"><img src="<?=base_url('assets/images/folder-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
-					<div class="col-6">
-						<p style="font-size: 18px"><b>Materi Saya</b></h6>
-						<p style="font-size: 12px;">Anda dapat mengunggah materi yang anda buat sendiri di sini (contoh file-file PDF), mengelompokkan mereka, 
-							dan kemudian menugaskan mereka ke kelas(kelas-kelas) yang Anda ajar.
-						</p>
+			<div class="col-4 p-2">
+			
+				<a href="<?=base_url('materi/materi_saya')?>" class="border rounded" style="height: 100%; cursor: pointer;">
+					<div class="row p-3">
+						<div class="col-5"><img src="<?=base_url('assets/images/folder-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
+						<div class="col-6">
+							<p style="font-size: 18px"><b>Materi Saya</b></h6>
+							<p style="font-size: 12px;">Anda dapat mengunggah materi yang anda buat sendiri di sini (contoh file-file PDF), mengelompokkan mereka, 
+								dan kemudian menugaskan mereka ke kelas(kelas-kelas) yang Anda ajar.
+							</p>
+						</div>
 					</div>
-				</div>
-			</a>
+				</a>
 
-		</div>
+			</div>
 
-		<div class="col-4 p-2">
-		
-			<a href="<?=base_url('materi/materi_sekolah')?>" class="border rounded" style="height: 100%; cursor: pointer;">
-				<div class="row p-3">
-					<div class="col-5"><img src="<?=base_url('assets/images/school-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
-					<div class="col-6">
-						<p style="font-size: 18px"><b>Materi Sekolah</b></h6>
-						<p style="font-size: 12px;">Folder materi umum untuk semua guru sekolah.
-						</p>
+			<div class="col-4 p-2">
+			
+				<a href="<?=base_url('materi/materi_sekolah')?>" class="border rounded" style="height: 100%; cursor: pointer;">
+					<div class="row p-3">
+						<div class="col-5"><img src="<?=base_url('assets/images/school-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
+						<div class="col-6">
+							<p style="font-size: 18px"><b>Materi Sekolah</b></h6>
+							<p style="font-size: 12px;">Folder materi umum untuk semua guru sekolah.
+							</p>
+						</div>
 					</div>
-				</div>
-			</a>
+				</a>
 
-		</div>
+			</div>
 
-		<div class="col-4 p-2">
-		
-			<a href="<?=base_url('materi/materi_global')?>" class="border rounded" style="height: 100%; cursor: pointer;">
-				<div class="row p-3">
-					<div class="col-5"><img src="<?=base_url('assets/images/globe-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
-					<div class="col-6">
-						<p style="font-size: 18px"><b>Materi Global</b></h6>
-						<p style="font-size: 12px;">Materi ini dibagikan kepada semua sekolah.
-						</p>
+			<div class="col-4 p-2">
+			
+				<a href="<?=base_url('materi/materi_global')?>" class="border rounded" style="height: 100%; cursor: pointer;">
+					<div class="row p-3">
+						<div class="col-5"><img src="<?=base_url('assets/images/globe-icon.png')?>" alt="folder-icon" width="100" height="100"></div>
+						<div class="col-6">
+							<p style="font-size: 18px"><b>Materi Global</b></h6>
+							<p style="font-size: 12px;">Materi ini dibagikan kepada semua sekolah.
+							</p>
+						</div>
 					</div>
-				</div>
-			</a>
+				</a>
 
+			</div>
 		</div>
-	</div>
+	<?php endif ?>
 
 	<div class="row">
 		<!-- <div class="col"> -->
