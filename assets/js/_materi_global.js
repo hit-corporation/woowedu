@@ -222,7 +222,7 @@ $(document).ready(function () {
 		let button;
 		switch(row.materi_type){
 			case 1: 
-				button = `<a href="${BASE_URL+'assets/files/materi/'+row.materi_file}" class="btn btn-success" target="_blank"><i class="fa-solid fa-download text-white"></i></a>`;
+				button = `<a href="${BASE_URL+'assets/files/materi/materi-global/'+row.materi_file}" class="btn btn-success" target="_blank"><i class="fa-solid fa-download text-white"></i></a>`;
 				break;
 			case 2: 
 				button = `<a href="${row.materi_url}" class="btn btn-success" target="_blank"><i class="fa-solid fa-link text-white"></i></a>`;
