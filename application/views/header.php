@@ -165,6 +165,10 @@ endif
                                 <a class="nav-link" href="<?=base_url()?>materi?mode=table">Materi</a>
                             </li>
 
+							<li class="nav-item">
+                                <a class="nav-link" href="<?=base_url()?>asesmen?mode=table">Asesmen</a>
+                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="<?=base_url()?>ebook">Ebook</a>
                             </li>
