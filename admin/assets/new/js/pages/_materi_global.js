@@ -101,13 +101,13 @@ let materiGlobalIdSelected = null;
 	function buttonGroupAction(row){
 		let button;
 		switch(row.materi_type){
-			case "1": 
+			case 1: 
 				button = `<a href="${base_url.replace('admin','')+'assets/files/materi/materi-global/'+row.materi_file}" class="btn btn-success" target="_blank"><i class="fa fa-download text-white"></i></a>`;
 				break;
-			case "2": 
+			case 2: 
 				button = `<a href="${row.materi_url}" class="btn btn-success" target="_blank"><i class="fa fa-link text-white"></i></a>`;
 				break;
-			case "0":
+			case 0:
 				button = `<a class="btn btn-success folder"><i class="fa fa-folder text-white"></i></a>`;
 		}
 		return button
