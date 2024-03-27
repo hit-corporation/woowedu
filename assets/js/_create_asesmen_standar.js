@@ -3,56 +3,118 @@ const form = document.forms['form-add'];
 var is_update = false;
 
 $(document).ready(function () {
-	let table = $('#myTable').DataTable({
-		ajax: BASE_URL + 'materi/list_materi_saya',
+	
+	/**
+	 * radio button bank soal
+	 */
+	$('input[name="flexRadioDefault"]').on('click', function(e){
+		if(e.currentTarget.value == 'sendiri'){
+			$('.tambah-pertanyaan').removeClass('d-none');
+			$('.tambah-bagian-baru').addClass('d-none');
+		}else{
+			$('.tambah-pertanyaan').addClass('d-none');
+			$('.tambah-bagian-baru').removeClass('d-none');
+		}
+	});
+	
+
+	let table = $('#tabelPilihSoal').DataTable({
+		ajax: BASE_URL + 'asesmen/getAll',
 		serverSide: true,
 		processing: true,
 		columns: [
 			{
-				data: 'materi_id',
+				data: 'soal_id',
 				visible: false
 			},
 			{
-				data: 'title',
+				data: 'tema_title',
 			},
 			{
-				data: 'materi_file',
-				render(data, row, type, meta) {
-					return `<a href="${BASE_URL+'assets/files/materi/'+data}">
-						<img src="${BASE_URL+'assets/images/paper.png'}" width="30">
-					</a>`;
-				}
+				data: 'sub_tema_title'
 			},
 			{
-				data: 'edit_at'
-			},
-			{
-				data: null,
-				render(row, data, type, meta) {
-					return Math.round(row.file_size/1000) + ' KB'
-				}
+				data: 'question'
 			},
 			{
 				data: null,
 				render(data, row, type, meta) {
-					var view = '<div class="btn-group btn-group-sm float-right">'+
-                                '<button class="btn btn-warning relasi_teacher"><i class="fa-solid fa-share-from-square text-white"></i></button>' +
-                                '<button class="btn btn-success edit_materi"><i class="fa-solid fa-pencil text-white"></i></button>' +
-                                '<button class="btn btn-sm btn-danger delete_materi"><i class="fa-solid fa-trash text-white"></i></button>' +
-                            '</div>';
+					var view = `<div class="btn-group btn-group-sm float-right">
+                                <button class="btn btn-warning detail_soal"><i class="fa-solid fa-eye text-white"></i></button>
+                                <button class="btn btn-success add_soal"><i class="fa-solid fa-plus text-white"></i></button>
+							</div>`;
                	 	return view;
 				}
 			}
 		],
+	}).columns(0).search($('select[name="select-mapel"]').val()).draw();
+
+	/**
+	 * Button pilih-pertanyaan di klik
+	 * lakukan refresh table
+	 */
+	$('button.pilih-pertanyaan').on('click', function(e){
+		e.preventDefault();
+		table.columns(0).search($('select[name="select-mapel"]').val()).draw();
+		table.columns(2).search($('select[name="a_jenis_pertanyaan"]').val()).draw();
 	});
 
 	/**
-	 * clik button create
-	 * reset form
+	 * function klik add_soal
 	 */
-	$('#create').on('click', function(){
-		form.reset();
-	});
+	let nomor = 1;
+	$('#tabelPilihSoal > tbody').on('click', '.btn.add_soal', e => {
+        isUpdate = 1;
+        const count = table.row(e.target.parentNode.closest('tr')).count(),
+              item = table.row(e.target.parentNode.closest('tr')).data();
+
+		// kondisi jika jumlah pertanyaan sudah melebihi batas
+		let jumlahPertanyaan = document.querySelector('input[name="a_jumlah_petanyaan"]').value;
+		let cardQuestion = document.getElementsByClassName('card-question-1');
+
+		if(jumlahPertanyaan <= cardQuestion.length){
+			return alert('Sudah melewati batas jumlah pertanyaan')
+		}
+		
+		let content1 = document.querySelector('.content-1');
+
+		// card untuk jawaban
+		htmlContent = `<div class="card card-question-1 p-3">
+				<div class="col text-end mb-2">
+					<button class="btn btn-sm btn-danger delete-card"><i class="fa fa-trash text-white"></i></button>
+				</div>
+				<p><span>${nomor++})</span> ${item.question}</p>
+				<p>A. ${item.choice_a}</p>
+				<p>B. ${item.choice_b}</p>
+				<p>C. ${item.choice_c}</p>
+				<p>D. ${item.choice_d}</p>
+			</div>
+			<br>`;
+		$('.content-1').append(htmlContent);
+
+		// ketika button hapus di klik
+		let btnHapus = document.getElementsByClassName('delete-card');
+		for(let i=0; i < btnHapus.length; i++){
+			btnHapus[i].addEventListener('click', e => {
+				console.log(e)
+			});
+		}
+
+    //     frm['a_id'].value = item.materi_id;
+	// 			frm['a_materi_tema_title'].value = item.tema_title; 
+	// 			frm['a_materi_sub_tema_title'].value = item.sub_tema_title; 
+    //     frm['a_materi_title'].value = item.title; 
+    //     frm['a_materi_no_urut'].value = item.no_urut; 
+    //     $(mapel).selectpicker('val', item.subject_id); 
+    //     frm['a_materi_subject_text'].value = item.subject_name;
+    //   //  frm['a_materi_date'].value = item.available_date;
+    //     frm['a_materi_note'].value = item.note;
+    //     document.getElementById("preview").src = item.materi_file;
+
+
+    //     $('#modal-add').modal('show');
+        
+    });
 
 	/**
 	 * Cari
@@ -187,9 +249,6 @@ $(document).ready(function () {
 		is_update = true;
 		let target = e.target;
 		let row = table.rows($(target).parents('tr')).data();
-		form['subject_id'].value = row[0].subject_id;
-		form['materi_id'].value = row[0].materi_id;
-		form['input_materi'].value = row[0].title;
 
 		$('#exampleModal').modal('show');
 	});

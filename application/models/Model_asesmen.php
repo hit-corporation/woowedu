@@ -100,7 +100,68 @@ class Model_asesmen extends CI_Model {
 
     }
 
-    private function data_generator() {
+   /**
+     * get all data soal
+     *
+     * @param int $limit
+     * @param int $offset
+     * @param array $filter
+     * @return array
+     */
+    public function getAllSoal(int $limit = NULL, int $offset = NULL, array $filter = NULL): array {
 
+		if(!empty($filter[0]['search']['value']))
+			$this->db->where('s.subject_id', $filter[0]['search']['value']);
+
+        if(!empty($filter[1]['search']['value']))
+			$this->db->where('LOWER(tema_title) LIKE \'%'.trim(strtolower($filter[1]['search']['value'])).'%\'', NULL, FALSE);
+
+		if(!empty($filter[2]['search']['value']))
+			$this->db->where('s.type', $filter[2]['search']['value']);
+		// if(!empty($filter[1]['search']['value']))
+		// 	$this->db->where('parent_id', $filter[1]['search']['value']);
+
+		// if($filter[2]['search']['value'])
+		// 	$this->db->where('parent_id', null, false);
+
+        if(!empty($limit) && !is_null($offset))
+            $this->db->limit($limit, $offset);
+
+		$this->db->join('materi m', 'm.materi_id = s.materi_id', 'left');
+        $this->db->order_by('s.soal_id ', 'DESC');
+        $get = $this->db->get('soal s');
+
+        return $get->result_array() ?? [];
     }
+
+	 /**
+     * count all data soal
+     *
+     * @param int $limit
+     * @param int $offset
+     * @param array $filter
+     * @return array
+     */
+	public function getAcountAllSoal(array $filter = NULL): int {
+
+        if(!empty($filter[0]['search']['value']))
+			$this->db->where('s.subject_id', $filter[0]['search']['value']);
+
+        if(!empty($filter[1]['search']['value']))
+			$this->db->where('LOWER(tema_title) LIKE \'%'.trim(strtolower($filter[1]['search']['value'])).'%\'', NULL, FALSE);
+
+		if(!empty($filter[2]['search']['value']))
+			$this->db->where('s.type', $filter[2]['search']['value']);
+		// if(!empty($filter[1]['search']['value']))
+		// 	$this->db->where('parent_id', $filter[1]['search']['value']);
+
+		// if($filter[2]['search']['value'])
+		// 	$this->db->where('parent_id', null, false);
+
+		$this->db->join('materi m', 'm.materi_id = s.materi_id', 'left');
+        $this->db->order_by('s.soal_id ', 'DESC');
+        $get = $this->db->get('soal s');
+
+        return $get->num_rows();
+	}
 }

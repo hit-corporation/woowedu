@@ -76,4 +76,22 @@ class Asesmen extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function getAll() {
+        $draw = $this->input->get('draw');
+        $limit = $this->input->get('length');
+        $offset = $this->input->get('start');
+        $filters = $this->input->get('columns');
+
+        $data = $this->model_asesmen->getAllSoal($limit, $offset, $filters);
+
+        $datas = [
+            'draw' => $draw,
+            'data' => $data,
+            'recordsTotal' => $this->db->count_all_results('soal'),
+            'recordsFiltered' => $this->model_asesmen->getAcountAllSoal($filters)
+        ];
+
+        echo json_encode($datas, JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);
+    }
+
 }
